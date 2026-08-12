@@ -322,7 +322,6 @@ export default function Mapa() {
                 <Popup
                   longitude={selectedProperty.lng}
                   latitude={selectedProperty.lat}
-                  anchor="bottom"
                   offset={30}
                   closeOnClick={false}
                   onClose={() => updateParams({ seleccion: null })}

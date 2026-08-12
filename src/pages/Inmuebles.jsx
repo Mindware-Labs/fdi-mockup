@@ -1,10 +1,17 @@
 import { useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import PropertyCard from "../components/PropertyCard";
+import ProvinceCombobox from "../components/ProvinceCombobox";
+import SelectField from "../components/SelectField";
 import { PROPERTIES, TYPES, STATUS } from "../data/properties";
 import { PROVINCES } from "../data/provinces";
 
 const PAGE_SIZE = 9;
+
+const ESTADO_OPTIONS = [
+  { value: "", label: "Todos los estados" },
+  ...Object.entries(STATUS).map(([key, s]) => ({ value: key, label: s.label })),
+];
 
 export default function Inmuebles() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -67,7 +74,7 @@ export default function Inmuebles() {
       <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8">
         {/* Filters sidebar */}
         <aside className={`${filtersOpen ? "block" : "hidden"} lg:block`}>
-          <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-6 sticky top-28">
+          <div className="bg-white border border-gray-200 rounded-xl p-4 space-y-5 sticky top-28">
             <div className="flex items-center justify-between">
               <h3 className="font-semibold text-navy-900">Filtros</h3>
               {activeFilterCount > 0 && (
@@ -90,33 +97,24 @@ export default function Inmuebles() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1.5">Provincia</label>
-              <select
+              <ProvinceCombobox
+                provinces={PROVINCES}
                 value={provincia}
-                onChange={(e) => updateFilter("provincia", e.target.value)}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-navy-400"
-              >
-                <option value="">Todas las provincias</option>
-                {PROVINCES.map((p) => (
-                  <option key={p} value={p}>{p}</option>
-                ))}
-              </select>
+                onChange={(value) => updateFilter("provincia", value)}
+              />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1.5">Estado del inmueble</label>
-              <select
+              <SelectField
+                options={ESTADO_OPTIONS}
                 value={estado}
-                onChange={(e) => updateFilter("estado", e.target.value)}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-navy-400"
-              >
-                <option value="">Todos los estados</option>
-                {Object.entries(STATUS).map(([key, s]) => (
-                  <option key={key} value={key}>{s.label}</option>
-                ))}
-              </select>
+                onChange={(value) => updateFilter("estado", value)}
+                placeholder="Todos los estados"
+              />
             </div>
 
-            <div className="bg-navy-50 rounded-lg p-4 text-xs text-navy-700 leading-relaxed">
+            <div className="bg-navy-50 rounded-lg p-3.5 text-xs text-navy-700 leading-relaxed">
               El precio de la mayoría de los inmuebles del fideicomiso se define
               durante el proceso de oferta. Consulta el detalle de cada propiedad.
             </div>

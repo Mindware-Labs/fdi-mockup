@@ -292,20 +292,20 @@ export default function ComoComprar() {
           </ScrollReveal>
         </section>
 
-        {/* Cierre */}
+        {/* Cierre: banda navy, eco del ritmo navy/blanco que marca las transiciones de la página */}
         <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 sm:pb-24">
-          <ScrollReveal as="div" className="grid border border-navy-100 bg-navy-50 lg:grid-cols-[1fr_22rem] lg:items-stretch">
-            <div className="p-8 sm:p-10 sm:grid sm:grid-cols-[13rem_1fr] sm:gap-8 sm:items-baseline">
-              <h2 className="font-semibold text-navy-950">¿Tienes dudas del proceso?</h2>
-              <p className="mt-2.5 text-sm text-gray-600 leading-relaxed sm:mt-0">
+          <ScrollReveal as="div" className="grid bg-navy-950 lg:grid-cols-[1fr_auto] lg:items-stretch">
+            <div className="p-8 sm:p-10 lg:py-10">
+              <h2 className="text-lg font-semibold text-white leading-snug">¿Tienes dudas del proceso?</h2>
+              <p className="mt-3 text-sm text-navy-300 leading-relaxed max-w-xl">
                 El equipo del FDI da seguimiento a cada consulta y a cada oferta
                 presentada sobre los inmuebles del fideicomiso.
               </p>
             </div>
-            <div className="flex items-center border-t border-navy-100 p-8 sm:p-10 lg:border-t-0 lg:border-l">
+            <div className="flex items-center border-t border-white/10 p-8 sm:p-10 lg:border-t-0 lg:border-l lg:border-white/10">
               <Link
                 to="/contacto"
-                className={`group inline-flex w-full items-center justify-center gap-2.5 bg-navy-800 px-6 py-3.5 text-sm font-semibold text-white shadow-[0_1px_3px_rgba(0,23,51,0.12)] whitespace-nowrap transition-[transform,box-shadow,background-color] duration-200 hover:-translate-y-0.5 hover:bg-navy-900 hover:shadow-[0_10px_24px_-6px_rgba(0,23,51,0.4)] active:translate-y-0 active:bg-navy-950 active:shadow-[0_2px_6px_rgba(0,23,51,0.2)] focus-visible:ring-offset-navy-50 ${FOCUS}`}
+                className="group inline-flex items-center justify-center gap-2.5 bg-orange-400 px-6 py-3.5 text-sm font-semibold text-navy-950 shadow-[0_1px_3px_rgba(0,0,0,0.2)] whitespace-nowrap transition-[transform,box-shadow,background-color] duration-200 hover:-translate-y-0.5 hover:bg-orange-500 hover:shadow-[0_10px_24px_-6px_rgba(245,130,32,0.5)] active:translate-y-0 active:bg-orange-600 outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-navy-950"
               >
                 Contactar al FDI
                 <ArrowRight

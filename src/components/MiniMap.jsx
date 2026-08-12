@@ -35,7 +35,6 @@ export default function MiniMap({ property, height = "320px" }) {
         <Popup
           longitude={property.lng}
           latitude={property.lat}
-          anchor="bottom"
           offset={30}
           closeButton={false}
           closeOnClick={false}

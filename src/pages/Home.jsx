@@ -17,9 +17,6 @@ const CARD_VARIANTS = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.21, 0.47, 0.32, 0.98] } },
 };
 
-const HERO_BUTTON =
-  "inline-flex items-center justify-center rounded-full px-7 py-3.5 text-sm sm:text-base font-semibold whitespace-nowrap shadow-[0_4px_14px_rgba(0,0,0,0.18)] transition-[transform,box-shadow,background-color] duration-200 outline-none hover:scale-105 hover:shadow-[0_14px_32px_-4px_rgba(0,0,0,0.4)] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-navy-950";
-
 const STEPS = [
   {
     n: "01",
@@ -71,19 +68,6 @@ export default function Home() {
             El FDI comercializa terrenos, apartamentos y locales comerciales a nivel
             nacional para financiar proyectos de infraestructura del Estado dominicano.
           </p>
-
-          {/* Trío de botones del brandbook: Buscar Inmuebles (navy) · ¿Cómo Comprar? (naranja) · Ver Mapa (celeste) */}
-          <div className="mt-8 flex flex-wrap gap-3.5">
-            <Link to="/inmuebles" className={`${HERO_BUTTON} bg-navy-800 hover:bg-navy-900 active:bg-navy-950 text-white`}>
-              Buscar Inmuebles
-            </Link>
-            <Link to="/como-comprar" className={`${HERO_BUTTON} bg-orange-400 hover:bg-orange-500 active:bg-orange-600 text-navy-950`}>
-              ¿Cómo Comprar?
-            </Link>
-            <Link to="/mapa" className={`${HERO_BUTTON} bg-sky-400 hover:bg-sky-500 active:bg-sky-600 text-navy-950`}>
-              Ver Mapa
-            </Link>
-          </div>
         </div>
 
       </section>
@@ -118,7 +102,7 @@ export default function Home() {
           variants={GRID_VARIANTS}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
+          viewport={{ once: true, margin: "0px" }}
           className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
         >
           {destacados.map((p) => (

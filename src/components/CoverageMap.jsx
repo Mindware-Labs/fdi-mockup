@@ -50,13 +50,13 @@ export default function CoverageMap() {
 
   return (
     <div className="border border-navy-900/10 bg-white">
-      <div className="grid gap-8 p-8 sm:p-10 lg:grid-cols-[1fr_auto] lg:items-end">
+      <div className="grid gap-6 p-6 sm:p-8 lg:grid-cols-[1fr_auto] lg:items-end">
         <div className="max-w-2xl">
           <div className="h-px w-12 bg-orange-400" />
-          <h2 className="mt-5 text-3xl font-bold tracking-tight text-navy-950">
+          <h2 className="mt-4 text-2xl font-bold tracking-tight text-navy-950 sm:text-3xl">
             Explora las propiedades en el mapa
           </h2>
-          <p className="mt-4 leading-relaxed text-gray-600">
+          <p className="mt-3 leading-relaxed text-gray-600">
             Visualiza la ubicación exacta de cada inmueble a nivel nacional, incluyendo
             las zonas no deslindadas catastral y registralmente dentro de las parcelas.
             El inventario se distribuye en {provincias} de las {PROVINCES.length}{" "}
@@ -74,27 +74,17 @@ export default function CoverageMap() {
         </Link>
       </div>
 
-      {/* Altura reservada por proporción para que el montaje diferido no desplace el layout */}
-      <div
-        ref={ref}
-        className="relative aspect-[4/3] border-t border-navy-900/10 bg-navy-50 sm:aspect-[21/9]"
-      >
+      {/* Altura fija y compacta: el montaje diferido no desplaza el layout, y el mapa
+          ya es interactivo (clic en un pin abre su ficha), así que no hace falta que sea grande. */}
+      <div ref={ref} className="relative h-[260px] border-t border-navy-900/10 bg-navy-50 sm:h-[340px]">
         {inView && (
           <Suspense fallback={null}>
             <CoverageMapCanvas properties={LOCATED} bounds={bounds} />
           </Suspense>
         )}
-
-        {/* Toda la vista previa lleva al mapa completo. Deja libre una franja inferior
-            para que la atribución de Mapbox/OSM (obligatoria) siga siendo clicable. */}
-        <Link
-          to="/mapa"
-          aria-label="Ver el mapa completo de inmuebles"
-          className="absolute inset-x-0 top-0 bottom-6 z-[500] outline-none transition-colors duration-200 hover:bg-navy-950/5 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-orange-400"
-        />
       </div>
 
-      <ul className="flex flex-wrap gap-x-8 gap-y-3 border-t border-navy-900/10 px-8 py-5 sm:px-10">
+      <ul className="flex flex-wrap gap-x-8 gap-y-3 border-t border-navy-900/10 px-6 py-4 sm:px-8">
         {tiposPresentes.map((tipo) => (
           <li key={tipo} className="flex items-center gap-2.5">
             <span

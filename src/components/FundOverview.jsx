@@ -110,21 +110,23 @@ export default function FundOverview() {
           ))}
         </ScrollReveal>
 
-        {/* Cierre de sección: aviso legal y acceso, escuadrados y separados por filete */}
-        <ScrollReveal className="mt-16 grid border border-navy-100 bg-navy-50 lg:grid-cols-[1fr_22rem] lg:items-stretch">
-          <div className="p-8 sm:p-10 sm:grid sm:grid-cols-[13rem_1fr] sm:gap-8 sm:items-baseline">
-            <h3 className="font-semibold text-navy-950">Respeto a derechos de terceros</h3>
-            <p className="mt-2.5 text-sm text-gray-600 leading-relaxed sm:mt-0">
+        {/* Cierre de sección: banda navy, eco del ritmo navy/blanco que marca las transiciones de la página */}
+        <ScrollReveal className="mt-16 grid bg-navy-950 lg:grid-cols-[1fr_auto] lg:items-stretch">
+          <div className="p-8 sm:p-10 lg:py-10">
+            <h3 className="text-lg font-semibold text-white leading-snug">
+              Respeto a derechos de terceros
+            </h3>
+            <p className="mt-3 text-sm text-navy-300 leading-relaxed max-w-xl">
               En todos los casos se respetan los derechos legítimos de terceros que hayan
               sido adquiridos previamente y que se encuentren debidamente amparados
               conforme a la legislación dominicana vigente.
             </p>
           </div>
 
-          <div className="flex items-center border-t border-navy-100 p-8 sm:p-10 lg:border-t-0 lg:border-l">
+          <div className="flex items-center border-t border-white/10 p-8 sm:p-10 lg:border-t-0 lg:border-l lg:border-white/10">
             <Link
               to="/sobre-el-fondo"
-              className="group inline-flex w-full items-center justify-center gap-2.5 bg-navy-800 shadow-[0_1px_3px_rgba(0,23,51,0.12)] hover:-translate-y-0.5 hover:bg-navy-900 hover:shadow-[0_10px_24px_-6px_rgba(0,23,51,0.4)] active:translate-y-0 active:bg-navy-950 active:shadow-[0_2px_6px_rgba(0,23,51,0.2)] text-white font-semibold text-sm px-6 py-3.5 whitespace-nowrap transition-[transform,box-shadow,background-color] duration-200 outline-none focus-visible:ring-2 focus-visible:ring-orange-400 focus-visible:ring-offset-2 focus-visible:ring-offset-navy-50"
+              className="group inline-flex items-center justify-center gap-2.5 bg-orange-400 shadow-[0_1px_3px_rgba(0,0,0,0.2)] hover:-translate-y-0.5 hover:bg-orange-500 hover:shadow-[0_10px_24px_-6px_rgba(245,130,32,0.5)] active:translate-y-0 active:bg-orange-600 text-navy-950 font-semibold text-sm px-6 py-3.5 whitespace-nowrap transition-[transform,box-shadow,background-color] duration-200 outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-navy-950"
             >
               Conoce más sobre el fondo
               <ArrowRight

@@ -14,7 +14,7 @@ export default function ScrollReveal({
   y = 16,
   duration = 0.6,
   delay = 0,
-  margin = "-80px",
+  margin = "0px",
   once = true,
   className = "",
 }) {
