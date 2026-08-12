@@ -1,10 +1,13 @@
+import { lazy, Suspense } from "react";
 import { Link, useParams } from "react-router-dom";
 import PropertyMedia from "../components/PropertyMedia";
 import PropertyCard from "../components/PropertyCard";
 import StatusBadge from "../components/StatusBadge";
-import MiniMap from "../components/MiniMap";
 import { PROPERTIES, formatArea, formatPrice } from "../data/properties";
 import NotFound from "./NotFound";
+
+// Mapbox GL pesa ~500 kB gzip: se descarga solo al abrir la ficha de un inmueble.
+const MiniMap = lazy(() => import("../components/MiniMap"));
 
 const DOCS = [
   "Certificado de Título (referencial)",
@@ -41,7 +44,7 @@ export default function PropertyDetail() {
                 {property.tipo}
               </span>
               {property.tourVirtual && (
-                <span className="bg-gold-400 text-navy-950 text-xs font-semibold px-3 py-1.5 rounded-full">
+                <span className="bg-orange-400 text-navy-950 text-xs font-semibold px-3 py-1.5 rounded-full">
                   Tour Virtual disponible
                 </span>
               )}
@@ -75,7 +78,9 @@ export default function PropertyDetail() {
 
           <div>
             <h2 className="text-xl font-semibold text-navy-950 mb-4">Ubicación</h2>
-            <MiniMap property={property} />
+            <Suspense fallback={<div className="h-[320px] rounded-xl bg-navy-50 border border-navy-100" />}>
+              <MiniMap property={property} />
+            </Suspense>
           </div>
 
           <div>
@@ -107,7 +112,7 @@ export default function PropertyDetail() {
             <div className="space-y-3">
               <a
                 href="/como-comprar#formularios"
-                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-gold-400 hover:bg-gold-500 text-navy-950 font-semibold text-sm px-5 py-3 transition-colors"
+                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-orange-400 hover:bg-orange-500 text-navy-950 font-semibold text-sm px-5 py-3 transition-colors"
               >
                 Hacer una oferta
               </a>

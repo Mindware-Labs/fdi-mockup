@@ -1,30 +1,46 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Inter", "Segoe UI", system-ui, sans-serif;
+  --font-sans: "Montserrat", "Segoe UI", system-ui, sans-serif;
 
-  --color-navy-50: #eef3f9;
-  --color-navy-100: #d6e2f0;
-  --color-navy-200: #adc5e1;
-  --color-navy-300: #7fa3ce;
-  --color-navy-400: #4f7cb4;
-  --color-navy-500: #305d94;
-  --color-navy-600: #204a7c;
-  --color-navy-700: #183a63;
-  --color-navy-800: #122c4c;
-  --color-navy-900: #0b1d33;
-  --color-navy-950: #071322;
+  /* Azul Marino institucional — Pantone 654 C / #003876 (navy-700) */
+  --color-navy-50: #ebf4ff;
+  --color-navy-100: #d1e7ff;
+  --color-navy-200: #99c9ff;
+  --color-navy-300: #52a4ff;
+  --color-navy-400: #0079ff;
+  --color-navy-500: #005cc2;
+  --color-navy-600: #004999;
+  --color-navy-700: #003876;
+  --color-navy-800: #002c5c;
+  --color-navy-900: #001d3d;
+  --color-navy-950: #001124;
 
-  --color-gold-50: #fdf8ec;
-  --color-gold-100: #faedc7;
-  --color-gold-200: #f4d98a;
-  --color-gold-300: #edc158;
-  --color-gold-400: #e2a52f;
-  --color-gold-500: #c98920;
-  --color-gold-600: #a86a1a;
-  --color-gold-700: #854e18;
-  --color-gold-800: #6b3e19;
-  --color-gold-900: #59341a;
+  /* Naranja institucional — Pantone 158 C / #F58220 (orange-400) */
+  --color-orange-50: #fef7f0;
+  --color-orange-100: #fdecdd;
+  --color-orange-200: #fcd6b6;
+  --color-orange-300: #fabb85;
+  --color-orange-400: #f58220;
+  --color-orange-500: #f58423;
+  --color-orange-600: #e16d0a;
+  --color-orange-700: #b95a08;
+  --color-orange-800: #924707;
+  --color-orange-900: #753905;
+  --color-orange-950: #4e2604;
+
+  /* Celeste institucional — Pantone 299 C / #00A7E1 (sky-400) */
+  --color-sky-50: #f0fbff;
+  --color-sky-100: #d6f4ff;
+  --color-sky-200: #a8e9ff;
+  --color-sky-300: #70daff;
+  --color-sky-400: #00a7e1;
+  --color-sky-500: #009fd6;
+  --color-sky-600: #0081ad;
+  --color-sky-700: #006a8f;
+  --color-sky-800: #005370;
+  --color-sky-900: #00445c;
+  --color-sky-950: #002d3d;
 }
 
 html {
@@ -46,51 +62,38 @@ input {
   -webkit-tap-highlight-color: rgb(32 74 124 / 0.14);
 }
 
-.leaflet-container {
+/* Mapbox GL: contenedor y controles con la tipografía y paleta de marca */
+.mapboxgl-map {
   font-family: var(--font-sans);
-  background: #eef3f9;
 }
 
-.leaflet-control-zoom a {
-  color: #0b1d33;
+.mapboxgl-ctrl-group {
+  border-radius: 8px !important;
+  box-shadow: 0 4px 14px rgb(7 19 34 / 0.18) !important;
+  overflow: hidden;
 }
 
-.leaflet-popup-content-wrapper {
-  border-radius: 12px;
-  box-shadow: 0 16px 44px rgb(11 29 51 / 0.18);
+.mapboxgl-ctrl-group button + button {
+  border-top-color: rgb(7 19 34 / 0.08) !important;
 }
 
-.leaflet-popup-content {
-  margin: 16px;
+.mapboxgl-popup-content {
+  border-radius: 12px !important;
+  padding: 16px !important;
+  box-shadow: 0 16px 44px rgb(11 29 51 / 0.18) !important;
 }
 
-.property-map-marker {
-  background: transparent;
-  border: 0;
+.mapboxgl-popup-close-button {
+  color: #001d3d;
+  font-size: 18px;
+  padding: 4px 8px;
 }
 
-.property-map-marker__pin {
-  width: var(--marker-size);
-  height: var(--marker-size);
-  transform: rotate(-45deg);
-  border: 3px solid white;
-  border-radius: 50% 50% 50% 0;
-  background: var(--marker-color);
-  box-shadow: 0 5px 14px rgb(7 19 34 / 0.28);
-  transition: transform 180ms ease-out, box-shadow 180ms ease-out;
-}
-
-.property-map-marker__pin span {
-  position: absolute;
-  inset: 28%;
-  border-radius: 50%;
-  background: white;
-  opacity: 0.92;
-}
-
-.property-map-marker__pin--selected {
-  transform: rotate(-45deg) scale(1.06);
-  box-shadow: 0 8px 20px rgb(7 19 34 / 0.36);
+/* La capa de "ver mapa completo" (CoverageMap) cubre el mapa pero deja la
+   atribución obligatoria de Mapbox/OSM en su franja inferior; que quede visible. */
+.mapboxgl-ctrl-bottom-left,
+.mapboxgl-ctrl-bottom-right {
+  z-index: 501;
 }
 
 @media (prefers-reduced-motion: reduce) {

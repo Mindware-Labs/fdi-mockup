@@ -1,57 +1,66 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import { ArrowRight, CaretDown, DownloadSimple } from "@phosphor-icons/react";
 
 const STEPS = [
   {
-    n: 1,
+    n: "01",
     title: "Selección del inmueble",
     text: "Explora el catálogo o el mapa nacional de propiedades del FDI y elige el inmueble de tu interés.",
   },
   {
-    n: 2,
+    n: "02",
     title: "Verificación KYC",
-    text: "Completa el checklist de documentos KYC y el formulario de tercero (persona física o jurídica) correspondiente.",
+    text: "Completa el checklist de documentos KYC y el formulario de tercero, según participes como persona física o jurídica.",
   },
   {
-    n: 3,
+    n: "03",
     title: "Formulario de oferta de compra",
     text: "Presenta el formulario oficial de oferta de compra del inmueble seleccionado ante el FDI.",
   },
   {
-    n: 4,
+    n: "04",
     title: "Evaluación del fideicomiso",
     text: "El FDI evalúa la oferta recibida, verificando la documentación y las condiciones de la propuesta.",
   },
   {
-    n: 5,
+    n: "05",
     title: "Firma y formalización",
     text: "Una vez aprobada la oferta, se procede a la firma de los documentos y la formalización de la venta.",
   },
 ];
 
+// `file`: ruta pública del documento. Mientras sea null la fila se muestra sin
+// acción de descarga, para no ofrecer un enlace que no resuelve.
 const DOCUMENTS = [
   {
     name: "Checklist documentos KYC ofertas FDI",
     ext: "XLSX",
+    file: null,
     desc: "Lista de verificación de los documentos requeridos para el proceso de conocimiento del cliente (KYC).",
   },
   {
     name: "FR-002 Tercero Persona Física",
     ext: "XLS",
+    file: null,
     desc: "Formulario de registro para oferentes que participan como personas físicas.",
   },
   {
     name: "FR-003 Tercero Persona Jurídica",
     ext: "XLS",
-    desc: "Formulario de registro para oferentes que participan como personas jurídicas (empresas).",
+    file: null,
+    desc: "Formulario de registro para oferentes que participan como personas jurídicas.",
   },
   {
     name: "Formulario Oferta Compra Inmueble FDI",
     ext: "PDF",
+    file: null,
     desc: "Formulario oficial para formalizar una oferta de compra sobre un inmueble del fideicomiso.",
   },
   {
     name: "Formulario Registro Intermediario Inmobiliario FDI",
     ext: "PDF",
+    file: null,
     desc: "Formulario de registro para intermediarios inmobiliarios que deseen participar en el proceso.",
   },
 ];
@@ -79,114 +88,230 @@ const FAQS = [
   },
 ];
 
+const JUMPS = [
+  { href: "#proceso", label: "El proceso" },
+  { href: "#formularios", label: "Formularios" },
+  { href: "#faq", label: "Preguntas frecuentes" },
+];
+
+const FOCUS =
+  "outline-none focus-visible:ring-2 focus-visible:ring-orange-400 focus-visible:ring-offset-2";
+
 export default function ComoComprar() {
   const [openFaq, setOpenFaq] = useState(0);
 
   return (
     <div>
+      {/* Portada */}
       <section className="bg-navy-950">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
-          <p className="text-gold-400 font-semibold text-sm uppercase tracking-wide mb-3">Proceso de comercialización</p>
-          <h1 className="text-4xl font-bold text-white mb-4">¿Cómo Comprar un Inmueble?</h1>
-          <p className="text-navy-200 max-w-2xl mx-auto">
-            Conoce el proceso de comercialización de inmuebles del Fondo de
-            Desarrollo de Infraestructuras, desde la selección hasta el cierre.
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-14 sm:pt-24 sm:pb-16">
+          <div className="h-px w-12 bg-orange-400" />
+          <h1 className="mt-6 text-4xl sm:text-5xl font-bold text-white tracking-tight leading-[1.1] max-w-3xl">
+            ¿Cómo comprar un inmueble?
+          </h1>
+          <p className="mt-6 text-lg text-navy-200 leading-relaxed max-w-2xl">
+            El proceso de comercialización del FDI es público y documentado, desde la
+            selección del inmueble hasta la formalización de la venta.
           </p>
+
+          <nav
+            aria-label="Secciones de esta página"
+            className="mt-12 flex flex-wrap gap-x-8 gap-y-3 border-t border-white/15 pt-6"
+          >
+            {JUMPS.map((j) => (
+              <a
+                key={j.href}
+                href={j.href}
+                className={`rounded-sm text-sm font-semibold text-navy-200 transition-colors duration-200 hover:text-white focus-visible:ring-offset-navy-950 ${FOCUS}`}
+              >
+                {j.label}
+              </a>
+            ))}
+          </nav>
         </div>
       </section>
 
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="relative">
-          <div className="hidden sm:block absolute left-6 top-6 bottom-6 w-px bg-navy-200" />
-          <ol className="space-y-8">
+      <div className="bg-white border-b border-navy-900/10">
+        {/* El proceso: registro numerado */}
+        <section
+          id="proceso"
+          className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24 scroll-mt-24"
+        >
+          <h2 className="text-2xl font-bold text-navy-950 tracking-tight">
+            El proceso, paso a paso
+          </h2>
+
+          <ol className="mt-10 border-b border-navy-900/10">
             {STEPS.map((s) => (
-              <li key={s.n} className="relative flex gap-5">
-                <span className="shrink-0 w-12 h-12 rounded-full bg-navy-800 text-white font-bold flex items-center justify-center relative z-10">
+              <li
+                key={s.n}
+                className="grid grid-cols-[3rem_1fr] sm:grid-cols-[6rem_1fr] border-t border-navy-900/10 py-7"
+              >
+                <span className="text-lg font-bold tabular-nums text-orange-700 leading-snug">
                   {s.n}
                 </span>
-                <div className="bg-white border border-gray-200 rounded-xl p-5 flex-1">
-                  <h3 className="font-semibold text-navy-950 mb-1.5">{s.title}</h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">{s.text}</p>
+                <div>
+                  <h3 className="text-lg font-semibold text-navy-950 leading-snug">
+                    {s.title}
+                  </h3>
+                  <p className="mt-2 text-gray-600 leading-relaxed max-w-2xl">{s.text}</p>
                 </div>
               </li>
             ))}
           </ol>
-        </div>
-      </section>
+        </section>
 
-      <section className="bg-white border-y border-gray-100">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <h2 className="text-2xl font-bold text-navy-950 mb-4">Marco legal</h2>
-          <p className="text-gray-600 leading-relaxed mb-4">
-            El Fondo de Desarrollo de Infraestructuras (FDI) fue constituido mediante
-            el <strong>Decreto 581-23</strong>, emitido por el Presidente Luis
-            Abinader en noviembre de 2023. Esta iniciativa fue posteriormente
-            respaldada por el <strong>Congreso Nacional en noviembre de 2024</strong>,
-            en cumplimiento de la Constitución de la República Dominicana.
-          </p>
-          <p className="text-gray-600 leading-relaxed">
-            Los interesados pueden obtener información registral detallada de los
-            inmuebles en la <strong>Sala de Consultas de la Jurisdicción Inmobiliaria</strong>,
-            de acceso público y gratuito.
-          </p>
-        </div>
-      </section>
-
-      <section id="formularios" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 scroll-mt-24">
-        <h2 className="text-2xl font-bold text-navy-950 mb-2">Formularios y descargas</h2>
-        <p className="text-gray-500 mb-8">
-          Descarga los formularios oficiales necesarios para participar en el proceso de comercialización.
-        </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {DOCUMENTS.map((doc) => (
-            <div key={doc.name} className="bg-white border border-gray-200 rounded-xl p-5 flex gap-4">
-              <span className="shrink-0 w-11 h-11 rounded-lg bg-navy-50 text-navy-600 flex items-center justify-center font-bold text-xs">
-                {doc.ext}
-              </span>
-              <div>
-                <h4 className="font-semibold text-navy-900 text-sm mb-1">{doc.name}</h4>
-                <p className="text-xs text-gray-500 leading-relaxed mb-3">{doc.desc}</p>
-                <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-navy-700">
-                  <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M12 3v12m0 0 4-4m-4 4-4-4M4 21h16" />
-                  </svg>
-                  Descargar
-                </span>
-              </div>
+        {/* Antes de ofertar */}
+        <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24 border-t border-navy-900/10">
+          <div className="grid gap-8 lg:grid-cols-[13rem_1fr] lg:gap-16">
+            <h2 className="text-sm font-semibold text-navy-900">Antes de ofertar</h2>
+            <div>
+              <p className="text-xl text-navy-900 leading-relaxed max-w-2xl">
+                Puedes verificar la situación registral de cualquier inmueble antes de
+                presentar una oferta.
+              </p>
+              <p className="mt-6 text-gray-600 leading-relaxed max-w-2xl">
+                La información registral detallada está disponible en la Sala de
+                Consultas de la Jurisdicción Inmobiliaria, de acceso público y gratuito.
+                En todos los casos se respetan los derechos legítimos de terceros
+                adquiridos conforme a la ley con anterioridad a la constitución del
+                fideicomiso.
+              </p>
+              <Link
+                to="/sobre-el-fondo"
+                className={`group mt-8 inline-flex items-center gap-2 rounded-sm text-sm font-semibold text-navy-800 transition-colors duration-200 hover:text-navy-950 focus-visible:ring-offset-white ${FOCUS}`}
+              >
+                Ver el marco legal del fideicomiso
+                <ArrowRight
+                  size={16}
+                  weight="bold"
+                  aria-hidden="true"
+                  className="transition-transform duration-200 group-hover:translate-x-0.5"
+                />
+              </Link>
             </div>
-          ))}
-        </div>
-      </section>
-
-      <section id="faq" className="bg-navy-50 border-t border-navy-100 scroll-mt-24">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <h2 className="text-2xl font-bold text-navy-950 mb-8">Preguntas frecuentes</h2>
-          <div className="space-y-3">
-            {FAQS.map((f, i) => (
-              <div key={f.q} className="bg-white border border-gray-200 rounded-xl overflow-hidden">
-                <button
-                  onClick={() => setOpenFaq(openFaq === i ? -1 : i)}
-                  className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left"
-                >
-                  <span className="font-medium text-navy-900 text-sm">{f.q}</span>
-                  <svg
-                    viewBox="0 0 24 24"
-                    className={`w-5 h-5 text-navy-400 shrink-0 transition-transform ${openFaq === i ? "rotate-180" : ""}`}
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path d="m6 9 6 6 6-6" />
-                  </svg>
-                </button>
-                {openFaq === i && (
-                  <div className="px-5 pb-4 text-sm text-gray-600 leading-relaxed">{f.a}</div>
-                )}
-              </div>
-            ))}
           </div>
-        </div>
-      </section>
+        </section>
+
+        {/* Formularios */}
+        <section
+          id="formularios"
+          className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24 border-t border-navy-900/10 scroll-mt-24"
+        >
+          <h2 className="text-2xl font-bold text-navy-950 tracking-tight">
+            Formularios y documentos
+          </h2>
+          <p className="mt-3 text-gray-600 leading-relaxed max-w-2xl">
+            Documentos oficiales requeridos en el proceso de comercialización de
+            inmuebles del fideicomiso.
+          </p>
+
+          <ul className="mt-10 border-b border-navy-900/10">
+            {DOCUMENTS.map((doc) => (
+              <li
+                key={doc.name}
+                className="grid grid-cols-1 gap-x-6 gap-y-3 border-t border-navy-900/10 py-6 sm:grid-cols-[4.5rem_1fr_auto] sm:items-start"
+              >
+                <span className="justify-self-start border border-navy-100 bg-navy-50 px-2.5 py-1 text-xs font-semibold tracking-wide text-navy-700">
+                  {doc.ext}
+                </span>
+                <div>
+                  <h3 className="font-semibold text-navy-950">{doc.name}</h3>
+                  <p className="mt-1.5 text-sm text-gray-600 leading-relaxed max-w-xl">
+                    {doc.desc}
+                  </p>
+                </div>
+                {doc.file && (
+                  <a
+                    href={doc.file}
+                    download
+                    className={`inline-flex items-center gap-2 self-center justify-self-start rounded-sm text-sm font-semibold text-navy-800 transition-colors duration-200 hover:text-navy-950 focus-visible:ring-offset-white ${FOCUS}`}
+                  >
+                    <DownloadSimple size={16} weight="bold" aria-hidden="true" />
+                    Descargar
+                  </a>
+                )}
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        {/* Preguntas frecuentes */}
+        <section
+          id="faq"
+          className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24 border-t border-navy-900/10 scroll-mt-24"
+        >
+          <h2 className="text-2xl font-bold text-navy-950 tracking-tight">
+            Preguntas frecuentes
+          </h2>
+
+          <dl className="mt-10 border-b border-navy-900/10">
+            {FAQS.map((f, i) => {
+              const abierta = openFaq === i;
+              return (
+                <div key={f.q} className="border-t border-navy-900/10">
+                  <dt>
+                    <button
+                      type="button"
+                      id={`faq-boton-${i}`}
+                      aria-expanded={abierta}
+                      aria-controls={`faq-panel-${i}`}
+                      onClick={() => setOpenFaq(abierta ? -1 : i)}
+                      className={`flex w-full items-center justify-between gap-6 py-5 text-left transition-colors duration-200 hover:text-navy-600 focus-visible:ring-offset-white ${FOCUS}`}
+                    >
+                      <span className="font-semibold text-navy-950">{f.q}</span>
+                      <CaretDown
+                        size={18}
+                        weight="bold"
+                        aria-hidden="true"
+                        className={`shrink-0 text-navy-500 transition-transform duration-200 ${
+                          abierta ? "rotate-180" : ""
+                        }`}
+                      />
+                    </button>
+                  </dt>
+                  <dd
+                    id={`faq-panel-${i}`}
+                    role="region"
+                    aria-labelledby={`faq-boton-${i}`}
+                    hidden={!abierta}
+                    className="pb-6 text-gray-600 leading-relaxed max-w-2xl"
+                  >
+                    {f.a}
+                  </dd>
+                </div>
+              );
+            })}
+          </dl>
+        </section>
+
+        {/* Cierre */}
+        <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 sm:pb-24">
+          <div className="grid border border-navy-100 border-l-2 border-l-orange-400 bg-navy-50 lg:grid-cols-[1fr_22rem] lg:items-stretch">
+            <div className="p-8 sm:p-10 sm:grid sm:grid-cols-[13rem_1fr] sm:gap-8 sm:items-baseline">
+              <h2 className="font-semibold text-navy-950">¿Tienes dudas del proceso?</h2>
+              <p className="mt-2.5 text-sm text-gray-600 leading-relaxed sm:mt-0">
+                El equipo del FDI da seguimiento a cada consulta y a cada oferta
+                presentada sobre los inmuebles del fideicomiso.
+              </p>
+            </div>
+            <div className="flex items-center border-t border-navy-100 p-8 sm:p-10 lg:border-t-0 lg:border-l">
+              <Link
+                to="/contacto"
+                className={`group inline-flex w-full items-center justify-center gap-2.5 bg-navy-800 px-6 py-3.5 text-sm font-semibold text-white whitespace-nowrap transition-colors duration-200 hover:bg-navy-900 active:bg-navy-950 focus-visible:ring-offset-navy-50 ${FOCUS}`}
+              >
+                Contactar al FDI
+                <ArrowRight
+                  size={16}
+                  weight="bold"
+                  aria-hidden="true"
+                  className="transition-transform duration-200 group-hover:translate-x-0.5"
+                />
+              </Link>
+            </div>
+          </div>
+        </section>
+      </div>
     </div>
   );
 }

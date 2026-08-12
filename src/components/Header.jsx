@@ -12,7 +12,7 @@ const NAV = [
 ];
 
 const FOCUS_RING =
-  "outline-none focus-visible:ring-2 focus-visible:ring-gold-400 focus-visible:ring-offset-2";
+  "outline-none focus-visible:ring-2 focus-visible:ring-orange-400 focus-visible:ring-offset-2";
 
 function PhoneLink({ className = "", ringOffsetClass = "focus-visible:ring-offset-white" }) {
   return (
@@ -99,7 +99,7 @@ export default function Header() {
                   to={item.to}
                   end={item.end}
                   className={({ isActive }) =>
-                    `relative inline-block py-2 text-sm rounded-sm transition-colors duration-200 after:absolute after:left-0 after:right-0 after:-bottom-1 after:h-0.5 after:bg-gold-400 after:origin-center after:transition-transform after:duration-200 ${FOCUS_RING} focus-visible:ring-offset-white ${
+                    `relative inline-block py-2 text-sm rounded-sm transition-colors duration-200 after:absolute after:left-0 after:right-0 after:-bottom-1 after:h-0.5 after:bg-orange-400 after:origin-center after:transition-transform after:duration-200 ${FOCUS_RING} focus-visible:ring-offset-white ${
                       isActive
                         ? "text-navy-900 font-semibold after:scale-x-100"
                         : "text-navy-600 font-medium after:scale-x-0 hover:text-navy-900 hover:after:scale-x-100"
@@ -114,7 +114,7 @@ export default function Header() {
             <div className="hidden md:flex items-center gap-3">
               <NavLink
                 to="/inmuebles"
-                className={`inline-flex items-center gap-2 rounded-md bg-gold-400 hover:bg-gold-500 active:bg-gold-600 text-navy-950 font-semibold text-sm tracking-[0.01em] px-5 py-2.5 ring-1 ring-inset ring-navy-950/5 shadow-[0_1px_2px_rgba(7,19,34,0.08)] hover:shadow-[0_4px_12px_-2px_rgba(7,19,34,0.18)] transition-[background-color,box-shadow] duration-200 ${FOCUS_RING} focus-visible:ring-offset-white`}
+                className={`inline-flex items-center gap-2 rounded-md bg-orange-400 hover:bg-orange-500 active:bg-orange-600 text-navy-950 font-semibold text-sm tracking-[0.01em] px-5 py-2.5 ring-1 ring-inset ring-navy-950/5 shadow-[0_1px_2px_rgba(7,19,34,0.08)] hover:shadow-[0_4px_12px_-2px_rgba(7,19,34,0.18)] transition-[background-color,box-shadow] duration-200 ${FOCUS_RING} focus-visible:ring-offset-white`}
               >
                 Buscar Inmuebles
               </NavLink>
@@ -175,7 +175,7 @@ export default function Header() {
                   className={({ isActive }) =>
                     `pr-3 py-3 text-base rounded-r-md transition-colors duration-150 ${FOCUS_RING} focus-visible:ring-offset-white ${
                       isActive
-                        ? "pl-[14px] text-navy-900 font-semibold border-l-2 border-gold-400 bg-navy-50/60"
+                        ? "pl-[14px] text-navy-900 font-semibold border-l-2 border-orange-400 bg-navy-50/60"
                         : "pl-4 text-navy-700 font-medium hover:bg-navy-50/60 hover:text-navy-900"
                     }`
                   }

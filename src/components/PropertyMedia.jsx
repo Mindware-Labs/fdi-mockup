@@ -3,7 +3,7 @@ import PropertyIcon from "./PropertyIcon";
 const PALETTES = {
   Terreno: "from-emerald-700 to-emerald-900",
   Apartamento: "from-navy-600 to-navy-900",
-  Comercial: "from-gold-600 to-gold-900",
+  Comercial: "from-orange-600 to-orange-900",
   Industrial: "from-slate-600 to-slate-900",
 };
 

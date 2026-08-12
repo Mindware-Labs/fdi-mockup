@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
+import { ArrowRight } from "@phosphor-icons/react";
+import CoverageMap from "../components/CoverageMap";
+import FundOverview from "../components/FundOverview";
 import PropertyCard from "../components/PropertyCard";
 import { PROPERTIES } from "../data/properties";
-import { PROVINCES } from "../data/provinces";
 
 const STEPS = [
   {
@@ -28,8 +30,6 @@ const STEPS = [
 
 export default function Home() {
   const destacados = PROPERTIES.filter((p) => p.destacado).slice(0, 6);
-  const totalM2 = PROPERTIES.reduce((acc, p) => acc + (p.tamano || 0), 0);
-  const provinciasConInventario = new Set(PROPERTIES.map((p) => p.provincia)).size;
 
   return (
     <div>
@@ -45,8 +45,8 @@ export default function Home() {
         />
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(7,19,34,0.98)_0%,rgba(7,19,34,0.91)_38%,rgba(7,19,34,0.42)_68%,rgba(7,19,34,0.12)_100%)]" />
         <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(7,19,34,0.72)_0%,transparent_48%)]" />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-28 sm:pt-24 sm:pb-36">
-          <p className="text-gold-400 font-semibold tracking-wide text-sm uppercase mb-4">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-20 sm:pt-24 sm:pb-24">
+          <p className="text-orange-400 font-semibold tracking-wide text-sm uppercase mb-4">
             Fideicomiso público · Decreto 581-23
           </p>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight max-w-3xl">
@@ -60,146 +60,88 @@ export default function Home() {
 
       </section>
 
-      {/* Stats */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 text-center">
-          <Stat value={`${PROPERTIES.length}+`} label="Inmuebles en cartera" />
-          <Stat value={provinciasConInventario} label="Provincias con inventario" />
-          <Stat value={PROVINCES.length} label="Provincias a nivel nacional" />
-          <Stat value={`${Math.round(totalM2 / 1_000_000).toLocaleString("es-DO")} M`} label="m² en gestión" />
-        </div>
-      </section>
-
-      {/* Sobre el Fondo */}
-      <section className="bg-white border-y border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div>
-            <p className="text-navy-500 font-semibold text-sm uppercase tracking-wide mb-3">Sobre el Fondo</p>
-            <h2 className="text-3xl font-bold text-navy-950 mb-5">
-              Fondo de Desarrollo de Infraestructuras
-            </h2>
-            <p className="text-gray-600 leading-relaxed mb-4">
-              El Fondo de Desarrollo de Infraestructuras (FDI) es un fideicomiso que
-              procura ser una fuente alterna de financiamiento para el desarrollo de
-              infraestructuras del país, constituido mediante el Decreto 581-23 emitido
-              por el Presidente Luis Abinader en noviembre de 2023.
-            </p>
-            <p className="text-gray-600 leading-relaxed mb-6">
-              En todos los casos se respetan los derechos legítimos de terceros que
-              hayan sido adquiridos previamente conforme a la ley.
-            </p>
-            <Link
-              to="/sobre-el-fondo"
-              className="inline-flex items-center gap-2 text-navy-800 font-semibold hover:text-navy-600 transition-colors"
-            >
-              Conoce más sobre el fondo
-              <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M5 12h14M13 5l7 7-7 7" />
-              </svg>
-            </Link>
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <InfoCard title="Base legal" text="Decreto 581-23 y ley aprobada por el Congreso Nacional en noviembre de 2024." />
-            <InfoCard title="Administración" text="Fideicomiso administrado en conjunto con Fiduciaria Reservas." />
-            <InfoCard title="Alcance" text="Inventario de inmuebles distribuido en las 32 provincias del país." />
-            <InfoCard title="Transparencia" text="Proceso de comercialización público, con formularios y requisitos accesibles." />
-          </div>
-        </div>
-      </section>
+      <div className="pb-16 sm:pb-20">
+        <FundOverview />
+      </div>
 
       {/* Propiedades destacadas */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="flex items-end justify-between mb-8 gap-4">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+        <div className="flex flex-wrap items-end justify-between gap-4 border-b border-navy-900/10 pb-6">
           <div>
-            <p className="text-navy-500 font-semibold text-sm uppercase tracking-wide mb-2">Catálogo</p>
-            <h2 className="text-3xl font-bold text-navy-950">Inmuebles destacados</h2>
+            <div className="h-px w-12 bg-orange-400" />
+            <h2 className="mt-5 text-3xl font-bold text-navy-950 tracking-tight">
+              Inmuebles destacados
+            </h2>
           </div>
-          <Link to="/inmuebles" className="hidden sm:inline-flex text-navy-800 font-semibold hover:text-navy-600 transition-colors">
-            Ver todos →
+          <Link
+            to="/inmuebles"
+            className="group inline-flex items-center gap-2 rounded-sm text-sm font-semibold text-navy-800 outline-none transition-colors duration-200 hover:text-navy-950 focus-visible:ring-2 focus-visible:ring-orange-400 focus-visible:ring-offset-2"
+          >
+            Ver todo el catálogo
+            <ArrowRight
+              size={16}
+              weight="bold"
+              aria-hidden="true"
+              className="transition-transform duration-200 group-hover:translate-x-0.5"
+            />
           </Link>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {destacados.map((p) => (
             <PropertyCard key={p.id} property={p} />
           ))}
         </div>
-        <div className="mt-8 sm:hidden">
-          <Link to="/inmuebles" className="inline-flex text-navy-800 font-semibold hover:text-navy-600 transition-colors">
-            Ver todos →
-          </Link>
-        </div>
       </section>
 
-      {/* Proceso */}
+      {/* Proceso: secuencia vertical, encabezado y acceso en la columna izquierda */}
       <section className="bg-navy-950">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="flex items-end justify-between mb-10 gap-4">
-            <div>
-              <p className="text-gold-400 font-semibold text-sm uppercase tracking-wide mb-2">Proceso</p>
-              <h2 className="text-3xl font-bold text-white">¿Cómo comprar un inmueble?</h2>
-            </div>
-            <Link to="/como-comprar" className="hidden sm:inline-flex text-gold-300 font-semibold hover:text-gold-200 transition-colors">
-              Ver proceso completo →
-            </Link>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {STEPS.map((s) => (
-              <div key={s.n} className="bg-white/5 border border-white/10 rounded-xl p-6">
-                <span className="text-gold-400 font-bold text-2xl">{s.n}</span>
-                <h3 className="text-white font-semibold mt-3 mb-2">{s.title}</h3>
-                <p className="text-navy-300 text-sm leading-relaxed">{s.text}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Mapa preview */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="rounded-2xl bg-navy-50 border border-navy-100 p-8 sm:p-12 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24 grid gap-12 lg:grid-cols-[minmax(0,21rem)_1fr] lg:gap-20">
           <div>
-            <p className="text-navy-500 font-semibold text-sm uppercase tracking-wide mb-2">Cobertura nacional</p>
-            <h2 className="text-3xl font-bold text-navy-950 mb-4">Explora las propiedades en el mapa</h2>
-            <p className="text-gray-600 leading-relaxed mb-6">
-              Visualiza la ubicación exacta de cada inmueble disponible a nivel
-              nacional, incluyendo las zonas no deslindadas catastral y
-              registralmente dentro de las parcelas.
+            <div className="h-px w-12 bg-orange-400" />
+            <h2 className="mt-5 text-3xl font-bold text-white tracking-tight leading-tight">
+              ¿Cómo comprar un inmueble?
+            </h2>
+            <p className="mt-5 text-navy-200 leading-relaxed">
+              El proceso de comercialización es público y documentado. Cada etapa cuenta
+              con formularios y requisitos disponibles para cualquier interesado.
             </p>
             <Link
-              to="/mapa"
-              className="inline-flex items-center gap-2 rounded-lg bg-navy-800 hover:bg-navy-900 text-white font-semibold text-sm px-5 py-3 transition-colors"
+              to="/como-comprar"
+              className="group mt-8 inline-flex items-center gap-2 rounded-sm text-sm font-semibold text-orange-300 outline-none transition-colors duration-200 hover:text-orange-200 focus-visible:ring-2 focus-visible:ring-orange-400 focus-visible:ring-offset-2 focus-visible:ring-offset-navy-950"
             >
-              Ver mapa completo
-              <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M5 12h14M13 5l7 7-7 7" />
-              </svg>
+              Ver proceso completo
+              <ArrowRight
+                size={16}
+                weight="bold"
+                aria-hidden="true"
+                className="transition-transform duration-200 group-hover:translate-x-0.5"
+              />
             </Link>
           </div>
-          <div className="aspect-video rounded-xl bg-navy-900 flex items-center justify-center text-navy-400 border border-navy-200">
-            <svg viewBox="0 0 24 24" className="w-16 h-16" fill="none" stroke="currentColor" strokeWidth="1.2">
-              <path d="M9 20l-6-3V4l6 3m0 13 6-3m-6 3V7m6 10 6 3V6l-6-3m0 17V4m0 3L9 4" />
-            </svg>
-          </div>
+
+          <ol>
+            {STEPS.map((s) => (
+              <li
+                key={s.n}
+                className="grid grid-cols-[2.5rem_1fr] gap-x-4 border-t border-white/10 mt-6 pt-6 first:border-t-0 first:mt-0 first:pt-0"
+              >
+                <span className="text-lg font-bold tabular-nums text-orange-400 leading-snug">
+                  {s.n}
+                </span>
+                <div>
+                  <h3 className="text-lg font-semibold text-white leading-snug">{s.title}</h3>
+                  <p className="mt-2 text-sm text-navy-300 leading-relaxed max-w-xl">{s.text}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
         </div>
       </section>
-    </div>
-  );
-}
 
-function Stat({ value, label }) {
-  return (
-    <div>
-      <p className="text-3xl sm:text-4xl font-bold text-navy-900">{value}</p>
-      <p className="text-sm text-gray-500 mt-1">{label}</p>
-    </div>
-  );
-}
-
-function InfoCard({ title, text }) {
-  return (
-    <div className="bg-navy-50 rounded-xl p-5 border border-navy-100">
-      <h4 className="font-semibold text-navy-900 text-sm mb-2">{title}</h4>
-      <p className="text-xs text-gray-600 leading-relaxed">{text}</p>
+      {/* Cobertura nacional */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24">
+        <CoverageMap />
+      </section>
     </div>
   );
 }

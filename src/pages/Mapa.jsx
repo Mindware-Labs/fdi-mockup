@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
+import Map, { Marker, NavigationControl, Popup } from "react-map-gl/mapbox";
 import {
   ArrowRight,
   Buildings,
@@ -10,41 +10,36 @@ import {
   SlidersHorizontal,
   X,
 } from "@phosphor-icons/react";
-import "leaflet/dist/leaflet.css";
-import { pinIcon, TYPE_COLORS } from "../components/leafletIcons";
+import "mapbox-gl/dist/mapbox-gl.css";
+import PropertyMapMarker, { TYPE_COLORS } from "../components/PropertyMapMarker";
+import MapTokenNotice from "../components/MapTokenNotice";
+import { MAPBOX_TOKEN, MAP_STYLE, DEFAULT_CENTER, boundsFromPoints } from "../components/mapConfig";
 import { PROPERTIES, STATUS, TYPES, formatArea } from "../data/properties";
 
-const DEFAULT_CENTER = [18.9, -70.4];
-
-function MapViewport({ properties, selectedProperty, fitRequest }) {
-  const map = useMap();
-
+/** Centra/ajusta el mapa cuando cambia la selección, el filtro o se pide "ver todas". */
+function useMapViewport(mapRef, mapReady, { properties, selectedProperty, fitRequest }) {
   useEffect(() => {
-    const frame = window.requestAnimationFrame(() => map.invalidateSize());
-    return () => window.cancelAnimationFrame(frame);
-  }, [map]);
+    const map = mapRef.current;
+    if (!map || !mapReady) return;
 
-  useEffect(() => {
     if (selectedProperty) {
-      map.flyTo([selectedProperty.lat, selectedProperty.lng], Math.max(map.getZoom(), 12), {
-        duration: 0.7,
+      map.flyTo({
+        center: [selectedProperty.lng, selectedProperty.lat],
+        zoom: Math.max(map.getZoom(), 12),
+        duration: 700,
       });
       return;
     }
 
     if (properties.length === 0) return;
     if (properties.length === 1) {
-      map.flyTo([properties[0].lat, properties[0].lng], 12, { duration: 0.6 });
+      map.flyTo({ center: [properties[0].lng, properties[0].lat], zoom: 12, duration: 600 });
       return;
     }
 
-    map.flyToBounds(
-      properties.map((property) => [property.lat, property.lng]),
-      { padding: [48, 48], maxZoom: 10, duration: 0.7 }
-    );
-  }, [fitRequest, map, properties, selectedProperty]);
-
-  return null;
+    map.fitBounds(boundsFromPoints(properties), { padding: 48, maxZoom: 10, duration: 700 });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mapReady, fitRequest, properties, selectedProperty]);
 }
 
 function ResultItem({ property, selected, onSelect }) {
@@ -107,6 +102,8 @@ function ResultItem({ property, selected, onSelect }) {
 export default function Mapa() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [fitRequest, setFitRequest] = useState(0);
+  const [mapReady, setMapReady] = useState(false);
+  const mapRef = useRef(null);
 
   const query = searchParams.get("q") ?? "";
   const selectedId = searchParams.get("seleccion");
@@ -129,6 +126,8 @@ export default function Mapa() {
   }, [activeTypes, query]);
 
   const selectedProperty = visible.find((property) => property.id === selectedId) ?? null;
+
+  useMapViewport(mapRef, mapReady, { properties: visible, selectedProperty, fitRequest });
 
   function updateParams(changes) {
     setSearchParams((current) => {
@@ -286,50 +285,64 @@ export default function Mapa() {
             )}
           </aside>
 
-          <div className="relative order-1 h-[58dvh] min-h-[440px] bg-navy-50 lg:order-2 lg:h-[680px]">
-            <MapContainer
-              center={DEFAULT_CENTER}
-              zoom={8}
-              scrollWheelZoom
-              className="h-full w-full"
-              aria-label="Mapa de propiedades del fideicomiso"
+          <div
+            className="relative order-1 h-[58dvh] min-h-[440px] bg-navy-50 lg:order-2 lg:h-[680px]"
+            role="application"
+            aria-label="Mapa de propiedades del fideicomiso"
+          >
+            {!MAPBOX_TOKEN && <MapTokenNotice className="absolute inset-0" />}
+            {MAPBOX_TOKEN && (
+            <Map
+              ref={mapRef}
+              mapboxAccessToken={MAPBOX_TOKEN}
+              mapStyle={MAP_STYLE}
+              initialViewState={DEFAULT_CENTER}
+              onLoad={() => setMapReady(true)}
+              style={{ height: "100%", width: "100%" }}
             >
-              <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
-              <MapViewport
-                properties={visible}
-                selectedProperty={selectedProperty}
-                fitRequest={fitRequest}
-              />
+              <NavigationControl position="top-left" showCompass={false} />
               {visible.map((property) => (
                 <Marker
                   key={property.id}
-                  position={[property.lat, property.lng]}
-                  icon={pinIcon(property.tipo, selectedProperty?.id === property.id)}
-                  title={property.titulo}
-                  alt={`Ubicación de ${property.titulo}`}
-                  eventHandlers={{
-                    click: () => updateParams({ seleccion: property.id }),
+                  longitude={property.lng}
+                  latitude={property.lat}
+                  anchor="bottom"
+                  onClick={(event) => {
+                    event.originalEvent.stopPropagation();
+                    updateParams({ seleccion: property.id });
                   }}
                 >
-                  <Popup minWidth={230}>
-                    <div className="min-w-0 text-sm">
-                      <p className="text-pretty font-semibold leading-snug text-navy-950">{property.titulo}</p>
-                      <p className="mt-1 text-gray-600">{property.ciudad}, {property.provincia}</p>
-                      <p className="mt-1 font-semibold tabular-nums text-navy-800">{formatArea(property.tamano)}</p>
-                      <Link
-                        to={`/inmuebles/${property.id}`}
-                        className="mt-3 inline-flex items-center gap-1.5 font-semibold text-navy-700 hover:text-navy-950 hover:underline"
-                      >
-                        Ver detalles <ArrowRight aria-hidden="true" className="h-4 w-4" />
-                      </Link>
-                    </div>
-                  </Popup>
+                  <PropertyMapMarker
+                    tipo={property.tipo}
+                    selected={selectedProperty?.id === property.id}
+                  />
                 </Marker>
               ))}
-            </MapContainer>
+              {selectedProperty && (
+                <Popup
+                  longitude={selectedProperty.lng}
+                  latitude={selectedProperty.lat}
+                  anchor="bottom"
+                  offset={30}
+                  closeOnClick={false}
+                  onClose={() => updateParams({ seleccion: null })}
+                  className="fdi-map-popup"
+                >
+                  <div className="min-w-0 text-sm">
+                    <p className="text-pretty font-semibold leading-snug text-navy-950">{selectedProperty.titulo}</p>
+                    <p className="mt-1 text-gray-600">{selectedProperty.ciudad}, {selectedProperty.provincia}</p>
+                    <p className="mt-1 font-semibold tabular-nums text-navy-800">{formatArea(selectedProperty.tamano)}</p>
+                    <Link
+                      to={`/inmuebles/${selectedProperty.id}`}
+                      className="mt-3 inline-flex items-center gap-1.5 font-semibold text-navy-700 hover:text-navy-950 hover:underline"
+                    >
+                      Ver detalles <ArrowRight aria-hidden="true" className="h-4 w-4" />
+                    </Link>
+                  </div>
+                </Popup>
+              )}
+            </Map>
+            )}
 
             <button
               type="button"
