@@ -18,7 +18,7 @@ const CARD_VARIANTS = {
 };
 
 const HERO_BUTTON =
-  "inline-flex items-center justify-center rounded-full px-7 py-3.5 text-sm sm:text-base font-semibold whitespace-nowrap shadow-[0_4px_14px_rgba(0,0,0,0.18)] transition-colors duration-200 outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-navy-950 active:scale-[0.98]";
+  "inline-flex items-center justify-center rounded-full px-7 py-3.5 text-sm sm:text-base font-semibold whitespace-nowrap shadow-[0_4px_14px_rgba(0,0,0,0.18)] transition-[transform,box-shadow,background-color] duration-200 outline-none hover:scale-105 hover:shadow-[0_14px_32px_-4px_rgba(0,0,0,0.4)] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-navy-950";
 
 const STEPS = [
   {

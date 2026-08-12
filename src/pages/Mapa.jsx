@@ -277,7 +277,7 @@ export default function Mapa() {
                 <button
                   type="button"
                   onClick={clearFilters}
-                  className="mt-5 inline-flex h-[60px] items-center justify-center rounded-md bg-navy-800 px-7 text-base font-semibold whitespace-nowrap text-white hover:bg-navy-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-500 focus-visible:ring-offset-2 active:scale-[0.98]"
+                  className="mt-5 inline-flex h-[60px] items-center justify-center rounded-md bg-navy-800 px-7 text-base font-semibold whitespace-nowrap text-white shadow-[0_1px_3px_rgba(0,23,51,0.12)] transition-[transform,box-shadow,background-color] duration-200 hover:-translate-y-0.5 hover:bg-navy-950 hover:shadow-[0_10px_24px_-6px_rgba(0,23,51,0.4)] active:translate-y-0 active:scale-[0.98] active:shadow-[0_2px_6px_rgba(0,23,51,0.2)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-500 focus-visible:ring-offset-2"
                 >
                   Mostrar todas
                 </button>

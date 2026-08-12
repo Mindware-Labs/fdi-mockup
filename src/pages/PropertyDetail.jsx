@@ -112,7 +112,7 @@ export default function PropertyDetail() {
             <div className="space-y-3">
               <a
                 href="/como-comprar#formularios"
-                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-orange-400 hover:bg-orange-500 text-navy-950 font-semibold text-sm px-5 py-3 transition-colors"
+                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-orange-400 shadow-[0_1px_3px_rgba(0,23,51,0.12)] hover:-translate-y-0.5 hover:bg-orange-500 hover:shadow-[0_10px_24px_-6px_rgba(245,130,32,0.5)] active:translate-y-0 active:shadow-[0_2px_6px_rgba(0,23,51,0.15)] text-navy-950 font-semibold text-sm px-5 py-3 transition-[transform,box-shadow,background-color] duration-200"
               >
                 Hacer una oferta
               </a>

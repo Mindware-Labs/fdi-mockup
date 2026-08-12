@@ -294,7 +294,7 @@ export default function ComoComprar() {
 
         {/* Cierre */}
         <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 sm:pb-24">
-          <ScrollReveal as="div" className="grid border border-navy-100 border-l-2 border-l-orange-400 bg-navy-50 lg:grid-cols-[1fr_22rem] lg:items-stretch">
+          <ScrollReveal as="div" className="grid border border-navy-100 bg-navy-50 lg:grid-cols-[1fr_22rem] lg:items-stretch">
             <div className="p-8 sm:p-10 sm:grid sm:grid-cols-[13rem_1fr] sm:gap-8 sm:items-baseline">
               <h2 className="font-semibold text-navy-950">¿Tienes dudas del proceso?</h2>
               <p className="mt-2.5 text-sm text-gray-600 leading-relaxed sm:mt-0">
@@ -305,7 +305,7 @@ export default function ComoComprar() {
             <div className="flex items-center border-t border-navy-100 p-8 sm:p-10 lg:border-t-0 lg:border-l">
               <Link
                 to="/contacto"
-                className={`group inline-flex w-full items-center justify-center gap-2.5 bg-navy-800 px-6 py-3.5 text-sm font-semibold text-white whitespace-nowrap transition-colors duration-200 hover:bg-navy-900 active:bg-navy-950 focus-visible:ring-offset-navy-50 ${FOCUS}`}
+                className={`group inline-flex w-full items-center justify-center gap-2.5 bg-navy-800 px-6 py-3.5 text-sm font-semibold text-white shadow-[0_1px_3px_rgba(0,23,51,0.12)] whitespace-nowrap transition-[transform,box-shadow,background-color] duration-200 hover:-translate-y-0.5 hover:bg-navy-900 hover:shadow-[0_10px_24px_-6px_rgba(0,23,51,0.4)] active:translate-y-0 active:bg-navy-950 active:shadow-[0_2px_6px_rgba(0,23,51,0.2)] focus-visible:ring-offset-navy-50 ${FOCUS}`}
               >
                 Contactar al FDI
                 <ArrowRight
