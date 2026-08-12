@@ -1,9 +1,24 @@
+import { motion } from "motion/react";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "@phosphor-icons/react";
 import CoverageMap from "../components/CoverageMap";
 import FundOverview from "../components/FundOverview";
 import PropertyCard from "../components/PropertyCard";
+import ScrollReveal from "../components/ScrollReveal";
 import { PROPERTIES } from "../data/properties";
+
+// Grid de destacados: entrada escalonada y discreta, tarjeta por tarjeta.
+const GRID_VARIANTS = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.06 } },
+};
+const CARD_VARIANTS = {
+  hidden: { opacity: 0, y: 16 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.21, 0.47, 0.32, 0.98] } },
+};
+
+const HERO_BUTTON =
+  "inline-flex items-center justify-center rounded-full px-7 py-3.5 text-sm sm:text-base font-semibold whitespace-nowrap shadow-[0_4px_14px_rgba(0,0,0,0.18)] transition-colors duration-200 outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-navy-950 active:scale-[0.98]";
 
 const STEPS = [
   {
@@ -56,6 +71,19 @@ export default function Home() {
             El FDI comercializa terrenos, apartamentos y locales comerciales a nivel
             nacional para financiar proyectos de infraestructura del Estado dominicano.
           </p>
+
+          {/* Trío de botones del brandbook: Buscar Inmuebles (navy) · ¿Cómo Comprar? (naranja) · Ver Mapa (celeste) */}
+          <div className="mt-8 flex flex-wrap gap-3.5">
+            <Link to="/inmuebles" className={`${HERO_BUTTON} bg-navy-800 hover:bg-navy-900 active:bg-navy-950 text-white`}>
+              Buscar Inmuebles
+            </Link>
+            <Link to="/como-comprar" className={`${HERO_BUTTON} bg-orange-400 hover:bg-orange-500 active:bg-orange-600 text-navy-950`}>
+              ¿Cómo Comprar?
+            </Link>
+            <Link to="/mapa" className={`${HERO_BUTTON} bg-sky-400 hover:bg-sky-500 active:bg-sky-600 text-navy-950`}>
+              Ver Mapa
+            </Link>
+          </div>
         </div>
 
       </section>
@@ -66,7 +94,7 @@ export default function Home() {
 
       {/* Propiedades destacadas */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-        <div className="flex flex-wrap items-end justify-between gap-4 border-b border-navy-900/10 pb-6">
+        <ScrollReveal className="flex flex-wrap items-end justify-between gap-4 border-b border-navy-900/10 pb-6">
           <div>
             <div className="h-px w-12 bg-orange-400" />
             <h2 className="mt-5 text-3xl font-bold text-navy-950 tracking-tight">
@@ -85,18 +113,26 @@ export default function Home() {
               className="transition-transform duration-200 group-hover:translate-x-0.5"
             />
           </Link>
-        </div>
-        <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        </ScrollReveal>
+        <motion.div
+          variants={GRID_VARIANTS}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-80px" }}
+          className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+        >
           {destacados.map((p) => (
-            <PropertyCard key={p.id} property={p} />
+            <motion.div key={p.id} variants={CARD_VARIANTS} className="grid h-full">
+              <PropertyCard property={p} />
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </section>
 
       {/* Proceso: secuencia vertical, encabezado y acceso en la columna izquierda */}
       <section className="bg-navy-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24 grid gap-12 lg:grid-cols-[minmax(0,21rem)_1fr] lg:gap-20">
-          <div>
+          <ScrollReveal>
             <div className="h-px w-12 bg-orange-400" />
             <h2 className="mt-5 text-3xl font-bold text-white tracking-tight leading-tight">
               ¿Cómo comprar un inmueble?
@@ -117,9 +153,9 @@ export default function Home() {
                 className="transition-transform duration-200 group-hover:translate-x-0.5"
               />
             </Link>
-          </div>
+          </ScrollReveal>
 
-          <ol>
+          <ScrollReveal as="ol" delay={0.1}>
             {STEPS.map((s) => (
               <li
                 key={s.n}
@@ -134,13 +170,15 @@ export default function Home() {
                 </div>
               </li>
             ))}
-          </ol>
+          </ScrollReveal>
         </div>
       </section>
 
       {/* Cobertura nacional */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24">
-        <CoverageMap />
+        <ScrollReveal>
+          <CoverageMap />
+        </ScrollReveal>
       </section>
     </div>
   );

@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Bank, MapTrifold, Scales, SealCheck } from "@phosphor-icons/react";
+import ScrollReveal from "./ScrollReveal";
 
 const MILESTONES = [
   {
@@ -48,7 +49,7 @@ export default function FundOverview() {
     <section aria-labelledby="fondo-titulo" className="bg-white border-b border-navy-900/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24">
         {/* Encabezado editorial: apilado, medida controlada */}
-        <div className="max-w-3xl">
+        <ScrollReveal className="max-w-3xl">
           <div className="h-px w-12 bg-orange-400" />
           <h2
             id="fondo-titulo"
@@ -65,10 +66,10 @@ export default function FundOverview() {
             comercializa de forma pública y documentada. Los recursos obtenidos se
             destinan a financiar obras de infraestructura a nivel nacional.
           </p>
-        </div>
+        </ScrollReveal>
 
         {/* Recorrido institucional: eje horizontal continuo en escritorio */}
-        <div className="mt-16 sm:mt-20">
+        <ScrollReveal className="mt-16 sm:mt-20">
           <h3 className="text-sm font-semibold text-navy-900">Recorrido institucional</h3>
           <ol className="mt-6 grid gap-10 sm:grid-cols-3 sm:gap-0">
             {MILESTONES.map((m) => (
@@ -86,10 +87,10 @@ export default function FundOverview() {
               </li>
             ))}
           </ol>
-        </div>
+        </ScrollReveal>
 
         {/* Ficha institucional: lista de definición con filetes, no tarjetas */}
-        <dl className="mt-16 sm:mt-20 grid sm:grid-cols-2 border-t border-navy-900/10">
+        <ScrollReveal as="dl" className="mt-16 sm:mt-20 grid sm:grid-cols-2 border-t border-navy-900/10">
           {FACTS.map(({ icon: Icon, title, text }) => (
             <div
               key={title}
@@ -107,10 +108,10 @@ export default function FundOverview() {
               </div>
             </div>
           ))}
-        </dl>
+        </ScrollReveal>
 
         {/* Cierre de sección: aviso legal y acceso, escuadrados y separados por filete */}
-        <div className="mt-16 grid border border-navy-100 border-l-2 border-l-orange-400 bg-navy-50 lg:grid-cols-[1fr_22rem] lg:items-stretch">
+        <ScrollReveal className="mt-16 grid border border-navy-100 border-l-2 border-l-orange-400 bg-navy-50 lg:grid-cols-[1fr_22rem] lg:items-stretch">
           <div className="p-8 sm:p-10 sm:grid sm:grid-cols-[13rem_1fr] sm:gap-8 sm:items-baseline">
             <h3 className="font-semibold text-navy-950">Respeto a derechos de terceros</h3>
             <p className="mt-2.5 text-sm text-gray-600 leading-relaxed sm:mt-0">
@@ -134,7 +135,7 @@ export default function FundOverview() {
               />
             </Link>
           </div>
-        </div>
+        </ScrollReveal>
       </div>
     </section>
   );

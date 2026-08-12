@@ -114,7 +114,7 @@ export default function Header() {
             <div className="hidden md:flex items-center gap-3">
               <NavLink
                 to="/inmuebles"
-                className={`inline-flex items-center gap-2 rounded-md bg-orange-400 hover:bg-orange-500 active:bg-orange-600 text-navy-950 font-semibold text-sm tracking-[0.01em] px-5 py-2.5 ring-1 ring-inset ring-navy-950/5 shadow-[0_1px_2px_rgba(7,19,34,0.08)] hover:shadow-[0_4px_12px_-2px_rgba(7,19,34,0.18)] transition-[background-color,box-shadow] duration-200 ${FOCUS_RING} focus-visible:ring-offset-white`}
+                className={`inline-flex items-center gap-2 rounded-md bg-navy-800 hover:bg-navy-900 active:bg-navy-950 text-white font-semibold text-sm tracking-[0.01em] px-5 py-2.5 shadow-[0_1px_2px_rgba(7,19,34,0.08)] hover:shadow-[0_4px_12px_-2px_rgba(7,19,34,0.18)] transition-[background-color,box-shadow] duration-200 ${FOCUS_RING} focus-visible:ring-offset-white`}
               >
                 Buscar Inmuebles
               </NavLink>

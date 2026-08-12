@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "@phosphor-icons/react";
+import ScrollReveal from "../components/ScrollReveal";
 
 /** Cabecera documental del fideicomiso. */
 const IDENTITY = [
@@ -84,86 +85,94 @@ export default function SobreElFondo() {
       <div className="bg-white border-b border-navy-900/10">
         {/* Propósito: remate de apertura, etiqueta apilada sobre la declaración */}
         <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
-          <h2 className="text-sm font-semibold text-navy-900">Propósito</h2>
-          <p className="mt-8 text-2xl sm:text-3xl font-medium text-navy-950 tracking-tight leading-snug max-w-4xl">
-            Constituir una fuente alterna de financiamiento para el desarrollo de
-            infraestructuras públicas de la República Dominicana.
-          </p>
-          <p className="mt-8 text-gray-600 leading-relaxed max-w-2xl">
-            El fideicomiso recibe en administración un inventario de inmuebles del Estado
-            y lo comercializa de forma pública. Los recursos obtenidos se destinan a
-            financiar obras de infraestructura a nivel nacional, sin recurrir a las vías
-            tradicionales de endeudamiento.
-          </p>
+          <ScrollReveal>
+            <h2 className="text-sm font-semibold text-navy-900">Propósito</h2>
+            <p className="mt-8 text-2xl sm:text-3xl font-medium text-navy-950 tracking-tight leading-snug max-w-4xl">
+              Constituir una fuente alterna de financiamiento para el desarrollo de
+              infraestructuras públicas de la República Dominicana.
+            </p>
+            <p className="mt-8 text-gray-600 leading-relaxed max-w-2xl">
+              El fideicomiso recibe en administración un inventario de inmuebles del Estado
+              y lo comercializa de forma pública. Los recursos obtenidos se destinan a
+              financiar obras de infraestructura a nivel nacional, sin recurrir a las vías
+              tradicionales de endeudamiento.
+            </p>
+          </ScrollReveal>
         </section>
 
         {/* Marco normativo */}
         <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 border-t border-navy-900/10">
-          <Spine label="Marco normativo">
-            <ul>
-              {INSTRUMENTS.map((item, i) => (
-                <li
-                  key={item.title}
-                  className={i === 0 ? "" : "border-t border-navy-900/10 mt-9 pt-9"}
-                >
-                  <p className="text-sm font-semibold text-orange-700">{item.origin}</p>
-                  <h3 className="mt-2.5 text-lg font-semibold text-navy-950">{item.title}</h3>
-                  <p className="mt-2.5 text-gray-600 leading-relaxed max-w-2xl">{item.text}</p>
-                </li>
-              ))}
-            </ul>
-          </Spine>
+          <ScrollReveal>
+            <Spine label="Marco normativo">
+              <ul>
+                {INSTRUMENTS.map((item, i) => (
+                  <li
+                    key={item.title}
+                    className={i === 0 ? "" : "border-t border-navy-900/10 mt-9 pt-9"}
+                  >
+                    <p className="text-sm font-semibold text-orange-700">{item.origin}</p>
+                    <h3 className="mt-2.5 text-lg font-semibold text-navy-950">{item.title}</h3>
+                    <p className="mt-2.5 text-gray-600 leading-relaxed max-w-2xl">{item.text}</p>
+                  </li>
+                ))}
+              </ul>
+            </Spine>
+          </ScrollReveal>
         </section>
 
         {/* Gobernanza */}
         <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 border-t border-navy-900/10">
-          <Spine label="Gobernanza">
-            <p className="text-gray-600 leading-relaxed max-w-2xl">
-              El FDI es administrado en conjunto con Fiduciaria Reservas, bajo los
-              principios de transparencia que rigen el sistema fiduciario dominicano. El
-              proceso de comercialización es público y se apoya en formularios y
-              requisitos disponibles para cualquier interesado.
-            </p>
+          <ScrollReveal>
+            <Spine label="Gobernanza">
+              <p className="text-gray-600 leading-relaxed max-w-2xl">
+                El FDI es administrado en conjunto con Fiduciaria Reservas, bajo los
+                principios de transparencia que rigen el sistema fiduciario dominicano. El
+                proceso de comercialización es público y se apoya en formularios y
+                requisitos disponibles para cualquier interesado.
+              </p>
 
-            <dl className="mt-10 border-t border-navy-900/10">
-              {GOVERNANCE.map((item) => (
-                <div
-                  key={item.term}
-                  className="grid gap-1 border-b border-navy-900/10 py-5 sm:grid-cols-[16rem_1fr] sm:gap-8"
-                >
-                  <dt className="text-sm text-gray-500">{item.term}</dt>
-                  <dd className="font-medium text-navy-900">{item.definition}</dd>
-                </div>
-              ))}
-            </dl>
+              <dl className="mt-10 border-t border-navy-900/10">
+                {GOVERNANCE.map((item) => (
+                  <div
+                    key={item.term}
+                    className="grid gap-1 border-b border-navy-900/10 py-5 sm:grid-cols-[16rem_1fr] sm:gap-8"
+                  >
+                    <dt className="text-sm text-gray-500">{item.term}</dt>
+                    <dd className="font-medium text-navy-900">{item.definition}</dd>
+                  </div>
+                ))}
+              </dl>
 
-            <Link
-              to="/como-comprar"
-              className="group mt-8 inline-flex items-center gap-2 text-sm font-semibold text-navy-800 hover:text-navy-950 rounded-sm outline-none transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-orange-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
-            >
-              Ver requisitos y proceso de compra
-              <ArrowRight
-                size={16}
-                weight="bold"
-                aria-hidden="true"
-                className="transition-transform duration-200 group-hover:translate-x-0.5"
-              />
-            </Link>
-          </Spine>
+              <Link
+                to="/como-comprar"
+                className="group mt-8 inline-flex items-center gap-2 text-sm font-semibold text-navy-800 hover:text-navy-950 rounded-sm outline-none transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-orange-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+              >
+                Ver requisitos y proceso de compra
+                <ArrowRight
+                  size={16}
+                  weight="bold"
+                  aria-hidden="true"
+                  className="transition-transform duration-200 group-hover:translate-x-0.5"
+                />
+              </Link>
+            </Spine>
+          </ScrollReveal>
         </section>
 
         {/* Cierre: remate simétrico a la apertura */}
         <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 border-t border-navy-900/10">
-          <h2 className="text-sm font-semibold text-navy-900">Derechos de terceros</h2>
-          <p className="mt-8 text-2xl sm:text-3xl font-medium text-navy-950 tracking-tight leading-snug max-w-4xl">
-            En todos los casos se respetan los derechos legítimos de terceros que hayan
-            sido adquiridos y que se encuentren debidamente amparados conforme a la
-            legislación dominicana vigente.
-          </p>
-          <p className="mt-8 text-gray-600 leading-relaxed max-w-2xl">
-            Este principio aplica a los derechos constituidos con anterioridad a la
-            constitución del fideicomiso y al levantamiento de su inventario de inmuebles.
-          </p>
+          <ScrollReveal>
+            <h2 className="text-sm font-semibold text-navy-900">Derechos de terceros</h2>
+            <p className="mt-8 text-2xl sm:text-3xl font-medium text-navy-950 tracking-tight leading-snug max-w-4xl">
+              En todos los casos se respetan los derechos legítimos de terceros que hayan
+              sido adquiridos y que se encuentren debidamente amparados conforme a la
+              legislación dominicana vigente.
+            </p>
+            <p className="mt-8 text-gray-600 leading-relaxed max-w-2xl">
+              Este principio aplica a los derechos constituidos con anterioridad a la
+              constitución del fideicomiso y al levantamiento de su inventario de inmuebles.
+            </p>
+          </ScrollReveal>
         </section>
       </div>
     </div>

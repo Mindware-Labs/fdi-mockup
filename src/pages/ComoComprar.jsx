@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, CaretDown, DownloadSimple } from "@phosphor-icons/react";
+import ScrollReveal from "../components/ScrollReveal";
 
 const STEPS = [
   {
@@ -137,33 +138,35 @@ export default function ComoComprar() {
           id="proceso"
           className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24 scroll-mt-24"
         >
-          <h2 className="text-2xl font-bold text-navy-950 tracking-tight">
-            El proceso, paso a paso
-          </h2>
+          <ScrollReveal>
+            <h2 className="text-2xl font-bold text-navy-950 tracking-tight">
+              El proceso, paso a paso
+            </h2>
 
-          <ol className="mt-10 border-b border-navy-900/10">
-            {STEPS.map((s) => (
-              <li
-                key={s.n}
-                className="grid grid-cols-[3rem_1fr] sm:grid-cols-[6rem_1fr] border-t border-navy-900/10 py-7"
-              >
-                <span className="text-lg font-bold tabular-nums text-orange-700 leading-snug">
-                  {s.n}
-                </span>
-                <div>
-                  <h3 className="text-lg font-semibold text-navy-950 leading-snug">
-                    {s.title}
-                  </h3>
-                  <p className="mt-2 text-gray-600 leading-relaxed max-w-2xl">{s.text}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
+            <ol className="mt-10 border-b border-navy-900/10">
+              {STEPS.map((s) => (
+                <li
+                  key={s.n}
+                  className="grid grid-cols-[3rem_1fr] sm:grid-cols-[6rem_1fr] border-t border-navy-900/10 py-7"
+                >
+                  <span className="text-lg font-bold tabular-nums text-orange-700 leading-snug">
+                    {s.n}
+                  </span>
+                  <div>
+                    <h3 className="text-lg font-semibold text-navy-950 leading-snug">
+                      {s.title}
+                    </h3>
+                    <p className="mt-2 text-gray-600 leading-relaxed max-w-2xl">{s.text}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </ScrollReveal>
         </section>
 
         {/* Antes de ofertar */}
         <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24 border-t border-navy-900/10">
-          <div className="grid gap-8 lg:grid-cols-[13rem_1fr] lg:gap-16">
+          <ScrollReveal as="div" className="grid gap-8 lg:grid-cols-[13rem_1fr] lg:gap-16">
             <h2 className="text-sm font-semibold text-navy-900">Antes de ofertar</h2>
             <div>
               <p className="text-xl text-navy-900 leading-relaxed max-w-2xl">
@@ -190,7 +193,7 @@ export default function ComoComprar() {
                 />
               </Link>
             </div>
-          </div>
+          </ScrollReveal>
         </section>
 
         {/* Formularios */}
@@ -198,42 +201,44 @@ export default function ComoComprar() {
           id="formularios"
           className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24 border-t border-navy-900/10 scroll-mt-24"
         >
-          <h2 className="text-2xl font-bold text-navy-950 tracking-tight">
-            Formularios y documentos
-          </h2>
-          <p className="mt-3 text-gray-600 leading-relaxed max-w-2xl">
-            Documentos oficiales requeridos en el proceso de comercialización de
-            inmuebles del fideicomiso.
-          </p>
+          <ScrollReveal>
+            <h2 className="text-2xl font-bold text-navy-950 tracking-tight">
+              Formularios y documentos
+            </h2>
+            <p className="mt-3 text-gray-600 leading-relaxed max-w-2xl">
+              Documentos oficiales requeridos en el proceso de comercialización de
+              inmuebles del fideicomiso.
+            </p>
 
-          <ul className="mt-10 border-b border-navy-900/10">
-            {DOCUMENTS.map((doc) => (
-              <li
-                key={doc.name}
-                className="grid grid-cols-1 gap-x-6 gap-y-3 border-t border-navy-900/10 py-6 sm:grid-cols-[4.5rem_1fr_auto] sm:items-start"
-              >
-                <span className="justify-self-start border border-navy-100 bg-navy-50 px-2.5 py-1 text-xs font-semibold tracking-wide text-navy-700">
-                  {doc.ext}
-                </span>
-                <div>
-                  <h3 className="font-semibold text-navy-950">{doc.name}</h3>
-                  <p className="mt-1.5 text-sm text-gray-600 leading-relaxed max-w-xl">
-                    {doc.desc}
-                  </p>
-                </div>
-                {doc.file && (
-                  <a
-                    href={doc.file}
-                    download
-                    className={`inline-flex items-center gap-2 self-center justify-self-start rounded-sm text-sm font-semibold text-navy-800 transition-colors duration-200 hover:text-navy-950 focus-visible:ring-offset-white ${FOCUS}`}
-                  >
-                    <DownloadSimple size={16} weight="bold" aria-hidden="true" />
-                    Descargar
-                  </a>
-                )}
-              </li>
-            ))}
-          </ul>
+            <ul className="mt-10 border-b border-navy-900/10">
+              {DOCUMENTS.map((doc) => (
+                <li
+                  key={doc.name}
+                  className="grid grid-cols-1 gap-x-6 gap-y-3 border-t border-navy-900/10 py-6 sm:grid-cols-[4.5rem_1fr_auto] sm:items-start"
+                >
+                  <span className="justify-self-start border border-navy-100 bg-navy-50 px-2.5 py-1 text-xs font-semibold tracking-wide text-navy-700">
+                    {doc.ext}
+                  </span>
+                  <div>
+                    <h3 className="font-semibold text-navy-950">{doc.name}</h3>
+                    <p className="mt-1.5 text-sm text-gray-600 leading-relaxed max-w-xl">
+                      {doc.desc}
+                    </p>
+                  </div>
+                  {doc.file && (
+                    <a
+                      href={doc.file}
+                      download
+                      className={`inline-flex items-center gap-2 self-center justify-self-start rounded-sm text-sm font-semibold text-navy-800 transition-colors duration-200 hover:text-navy-950 focus-visible:ring-offset-white ${FOCUS}`}
+                    >
+                      <DownloadSimple size={16} weight="bold" aria-hidden="true" />
+                      Descargar
+                    </a>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </ScrollReveal>
         </section>
 
         {/* Preguntas frecuentes */}
@@ -241,6 +246,7 @@ export default function ComoComprar() {
           id="faq"
           className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24 border-t border-navy-900/10 scroll-mt-24"
         >
+          <ScrollReveal>
           <h2 className="text-2xl font-bold text-navy-950 tracking-tight">
             Preguntas frecuentes
           </h2>
@@ -283,11 +289,12 @@ export default function ComoComprar() {
               );
             })}
           </dl>
+          </ScrollReveal>
         </section>
 
         {/* Cierre */}
         <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 sm:pb-24">
-          <div className="grid border border-navy-100 border-l-2 border-l-orange-400 bg-navy-50 lg:grid-cols-[1fr_22rem] lg:items-stretch">
+          <ScrollReveal as="div" className="grid border border-navy-100 border-l-2 border-l-orange-400 bg-navy-50 lg:grid-cols-[1fr_22rem] lg:items-stretch">
             <div className="p-8 sm:p-10 sm:grid sm:grid-cols-[13rem_1fr] sm:gap-8 sm:items-baseline">
               <h2 className="font-semibold text-navy-950">¿Tienes dudas del proceso?</h2>
               <p className="mt-2.5 text-sm text-gray-600 leading-relaxed sm:mt-0">
@@ -309,7 +316,7 @@ export default function ComoComprar() {
                 />
               </Link>
             </div>
-          </div>
+          </ScrollReveal>
         </section>
       </div>
     </div>
