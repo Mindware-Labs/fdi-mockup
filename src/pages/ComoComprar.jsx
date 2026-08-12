@@ -96,7 +96,7 @@ const JUMPS = [
 ];
 
 const FOCUS =
-  "outline-none focus-visible:ring-2 focus-visible:ring-orange-400 focus-visible:ring-offset-2";
+  "outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2";
 
 export default function ComoComprar() {
   const [openFaq, setOpenFaq] = useState(0);
@@ -106,7 +106,7 @@ export default function ComoComprar() {
       {/* Portada */}
       <section className="bg-navy-950">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-14 sm:pt-24 sm:pb-16">
-          <div className="h-px w-12 bg-orange-400" />
+          <div className="h-px w-12 bg-sky-400" />
           <h1 className="mt-6 text-4xl sm:text-5xl font-bold text-white tracking-tight leading-[1.1] max-w-3xl">
             ¿Cómo comprar un inmueble?
           </h1>
@@ -149,7 +149,7 @@ export default function ComoComprar() {
                   key={s.n}
                   className="grid grid-cols-[3rem_1fr] sm:grid-cols-[6rem_1fr] border-t border-navy-900/10 py-7"
                 >
-                  <span className="text-lg font-bold tabular-nums text-orange-700 leading-snug">
+                  <span className="text-lg font-bold tabular-nums text-sky-700 leading-snug">
                     {s.n}
                   </span>
                   <div>
@@ -305,7 +305,7 @@ export default function ComoComprar() {
             <div className="flex items-center border-t border-white/10 p-8 sm:p-10 lg:border-t-0 lg:border-l lg:border-white/10">
               <Link
                 to="/contacto"
-                className="group inline-flex items-center justify-center gap-2.5 bg-orange-400 px-6 py-3.5 text-sm font-semibold text-navy-950 shadow-[0_1px_3px_rgba(0,0,0,0.2)] whitespace-nowrap transition-[transform,box-shadow,background-color] duration-200 hover:-translate-y-0.5 hover:bg-orange-500 hover:shadow-[0_10px_24px_-6px_rgba(245,130,32,0.5)] active:translate-y-0 active:bg-orange-600 outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-navy-950"
+                className="group inline-flex items-center justify-center gap-2.5 bg-sky-400 px-6 py-3.5 text-sm font-semibold text-navy-950 shadow-[0_1px_3px_rgba(0,0,0,0.2)] whitespace-nowrap transition-[transform,box-shadow,background-color] duration-200 hover:-translate-y-0.5 hover:bg-sky-500 hover:shadow-[0_10px_24px_-6px_rgba(103,174,228,0.5)] active:translate-y-0 active:bg-sky-600 outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-navy-950"
               >
                 Contactar al FDI
                 <ArrowRight

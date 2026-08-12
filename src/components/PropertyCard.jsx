@@ -12,7 +12,7 @@ export default function PropertyCard({ property, view = "grid" }) {
   return (
     <Link
       to={`/inmuebles/${property.id}`}
-      className={`group bg-white border border-navy-900/10 hover:border-navy-900/30 transition-colors duration-200 outline-none focus-visible:ring-2 focus-visible:ring-orange-400 focus-visible:ring-offset-2 ${
+      className={`group bg-white border border-navy-900/10 hover:border-navy-900/30 transition-colors duration-200 outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 ${
         isList ? "flex flex-col sm:flex-row" : "flex flex-col"
       }`}
     >
@@ -30,7 +30,7 @@ export default function PropertyCard({ property, view = "grid" }) {
               {property.tipo}
             </span>
             {property.tourVirtual && (
-              <span className={`${TAG} border border-orange-200 bg-orange-50 text-orange-800`}>
+              <span className={`${TAG} border border-sky-200 bg-sky-50 text-sky-800`}>
                 Tour virtual
               </span>
             )}
@@ -67,7 +67,7 @@ export default function PropertyCard({ property, view = "grid" }) {
           </div>
           <div className="pl-4">
             <p className="text-xs text-gray-500">Precio</p>
-            <p className="mt-1 text-sm font-semibold text-orange-700">
+            <p className="mt-1 text-sm font-semibold text-sky-700">
               {formatPrice(property.precio)}
             </p>
           </div>

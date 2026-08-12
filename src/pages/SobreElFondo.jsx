@@ -61,7 +61,7 @@ export default function SobreElFondo() {
         <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,19,34,0.6)_0%,rgba(7,19,34,0.92)_100%)]" />
 
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16 sm:pt-28 sm:pb-20">
-          <div className="h-px w-12 bg-orange-400" />
+          <div className="h-px w-12 bg-sky-400" />
           <h1 className="mt-6 text-4xl sm:text-5xl lg:text-[3.25rem] font-bold text-white tracking-tight leading-[1.08] max-w-3xl">
             Fondo de Desarrollo de Infraestructuras
           </h1>
@@ -110,7 +110,7 @@ export default function SobreElFondo() {
                     key={item.title}
                     className={i === 0 ? "" : "border-t border-navy-900/10 mt-9 pt-9"}
                   >
-                    <p className="text-sm font-semibold text-orange-700">{item.origin}</p>
+                    <p className="text-sm font-semibold text-sky-700">{item.origin}</p>
                     <h3 className="mt-2.5 text-lg font-semibold text-navy-950">{item.title}</h3>
                     <p className="mt-2.5 text-gray-600 leading-relaxed max-w-2xl">{item.text}</p>
                   </li>
@@ -145,7 +145,7 @@ export default function SobreElFondo() {
 
               <Link
                 to="/como-comprar"
-                className="group mt-8 inline-flex items-center gap-2 text-sm font-semibold text-navy-800 hover:text-navy-950 rounded-sm outline-none transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-orange-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                className="group mt-8 inline-flex items-center gap-2 text-sm font-semibold text-navy-800 hover:text-navy-950 rounded-sm outline-none transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
               >
                 Ver requisitos y proceso de compra
                 <ArrowRight

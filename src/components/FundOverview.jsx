@@ -50,7 +50,7 @@ export default function FundOverview() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24">
         {/* Encabezado editorial: apilado, medida controlada */}
         <ScrollReveal className="max-w-3xl">
-          <div className="h-px w-12 bg-orange-400" />
+          <div className="h-px w-12 bg-sky-400" />
           <h2
             id="fondo-titulo"
             className="mt-5 text-3xl sm:text-4xl font-bold text-navy-950 tracking-tight leading-tight"
@@ -79,9 +79,9 @@ export default function FundOverview() {
               >
                 <span
                   aria-hidden="true"
-                  className="absolute -top-px left-0 h-0.5 w-10 bg-orange-400"
+                  className="absolute -top-px left-0 h-0.5 w-10 bg-sky-400"
                 />
-                <p className="text-sm font-semibold text-orange-700">{m.period}</p>
+                <p className="text-sm font-semibold text-sky-700">{m.period}</p>
                 <p className="mt-3 font-semibold text-navy-950">{m.title}</p>
                 <p className="mt-2 text-sm text-gray-600 leading-relaxed">{m.text}</p>
               </li>
@@ -126,7 +126,7 @@ export default function FundOverview() {
           <div className="flex items-center border-t border-white/10 p-8 sm:p-10 lg:border-t-0 lg:border-l lg:border-white/10">
             <Link
               to="/sobre-el-fondo"
-              className="group inline-flex items-center justify-center gap-2.5 bg-orange-400 shadow-[0_1px_3px_rgba(0,0,0,0.2)] hover:-translate-y-0.5 hover:bg-orange-500 hover:shadow-[0_10px_24px_-6px_rgba(245,130,32,0.5)] active:translate-y-0 active:bg-orange-600 text-navy-950 font-semibold text-sm px-6 py-3.5 whitespace-nowrap transition-[transform,box-shadow,background-color] duration-200 outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-navy-950"
+              className="group inline-flex items-center justify-center gap-2.5 bg-sky-400 shadow-[0_1px_3px_rgba(0,0,0,0.2)] hover:-translate-y-0.5 hover:bg-sky-500 hover:shadow-[0_10px_24px_-6px_rgba(103,174,228,0.5)] active:translate-y-0 active:bg-sky-600 text-navy-950 font-semibold text-sm px-6 py-3.5 whitespace-nowrap transition-[transform,box-shadow,background-color] duration-200 outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-navy-950"
             >
               Conoce más sobre el fondo
               <ArrowRight

@@ -3,44 +3,33 @@
 @theme {
   --font-sans: "Montserrat", "Segoe UI", system-ui, sans-serif;
 
-  /* Azul Marino institucional — Pantone 654 C / #003876 (navy-700) */
-  --color-navy-50: #ebf4ff;
-  --color-navy-100: #d1e7ff;
-  --color-navy-200: #99c9ff;
-  --color-navy-300: #52a4ff;
-  --color-navy-400: #0079ff;
-  --color-navy-500: #005cc2;
-  --color-navy-600: #004999;
-  --color-navy-700: #003876;
-  --color-navy-800: #002c5c;
-  --color-navy-900: #001d3d;
-  --color-navy-950: #001124;
+  /* Azul Marino institucional — Color Principal 1, Pantone 654 C / #143771 (navy-700) */
+  /* Azul Profundo institucional — Color Principal 2, Pantone 282 C / #0A2550 (navy-900) */
+  --color-navy-50: #eef2f8;
+  --color-navy-100: #d9e2f0;
+  --color-navy-200: #b3c6e2;
+  --color-navy-300: #82a1cc;
+  --color-navy-400: #4d76a8;
+  --color-navy-500: #2f5990;
+  --color-navy-600: #1d4482;
+  --color-navy-700: #143771;
+  --color-navy-800: #102e5f;
+  --color-navy-900: #0a2550;
+  --color-navy-950: #071a3a;
 
-  /* Naranja institucional — Pantone 158 C / #F58220 (orange-400) */
-  --color-orange-50: #fef7f0;
-  --color-orange-100: #fdecdd;
-  --color-orange-200: #fcd6b6;
-  --color-orange-300: #fabb85;
-  --color-orange-400: #f58220;
-  --color-orange-500: #f58423;
-  --color-orange-600: #e16d0a;
-  --color-orange-700: #b95a08;
-  --color-orange-800: #924707;
-  --color-orange-900: #753905;
-  --color-orange-950: #4e2604;
-
-  /* Celeste institucional — Pantone 299 C / #00A7E1 (sky-400) */
-  --color-sky-50: #f0fbff;
-  --color-sky-100: #d6f4ff;
-  --color-sky-200: #a8e9ff;
-  --color-sky-300: #70daff;
-  --color-sky-400: #00a7e1;
-  --color-sky-500: #009fd6;
-  --color-sky-600: #0081ad;
-  --color-sky-700: #006a8f;
-  --color-sky-800: #005370;
-  --color-sky-900: #00445c;
-  --color-sky-950: #002d3d;
+  /* Celeste institucional — Color Secundario 1, Pantone 284 C / #67AEE4 (sky-400).
+     Reemplaza el naranja anterior como color de acento y llamados a la acción. */
+  --color-sky-50: #eff7fd;
+  --color-sky-100: #dcecfa;
+  --color-sky-200: #b9d9f5;
+  --color-sky-300: #96c7ef;
+  --color-sky-400: #67aee4;
+  --color-sky-500: #4f96cd;
+  --color-sky-600: #3d7cb0;
+  --color-sky-700: #2f6392;
+  --color-sky-800: #234b73;
+  --color-sky-900: #1a3854;
+  --color-sky-950: #12293e;
 }
 
 html {
@@ -52,14 +41,14 @@ body {
 }
 
 ::selection {
-  background: #adc5e1;
-  color: #071322;
+  background: var(--color-navy-200);
+  color: var(--color-navy-950);
 }
 
 button,
 a,
 input {
-  -webkit-tap-highlight-color: rgb(32 74 124 / 0.14);
+  -webkit-tap-highlight-color: rgb(20 55 113 / 0.14);
 }
 
 /* Mapbox GL: contenedor y controles con la tipografía y paleta de marca */
@@ -69,22 +58,22 @@ input {
 
 .mapboxgl-ctrl-group {
   border-radius: 8px !important;
-  box-shadow: 0 4px 14px rgb(7 19 34 / 0.18) !important;
+  box-shadow: 0 4px 14px rgb(7 26 58 / 0.18) !important;
   overflow: hidden;
 }
 
 .mapboxgl-ctrl-group button + button {
-  border-top-color: rgb(7 19 34 / 0.08) !important;
+  border-top-color: rgb(7 26 58 / 0.08) !important;
 }
 
 .mapboxgl-popup-content {
   border-radius: 12px !important;
   padding: 16px !important;
-  box-shadow: 0 16px 44px rgb(11 29 51 / 0.18) !important;
+  box-shadow: 0 16px 44px rgb(10 37 80 / 0.18) !important;
 }
 
 .mapboxgl-popup-close-button {
-  color: #001d3d;
+  color: var(--color-navy-900);
   font-size: 18px;
   padding: 4px 8px;
 }

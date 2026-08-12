@@ -1,6 +1,6 @@
 export const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
 
-// Estilo claro y editorial: deja que los pines navy/naranja de la marca sean el foco.
+// Estilo claro y editorial: deja que los pines navy/celeste de la marca sean el foco.
 export const MAP_STYLE = "mapbox://styles/mapbox/light-v11";
 
 export const DEFAULT_CENTER = { longitude: -70.4, latitude: 18.9, zoom: 8 };

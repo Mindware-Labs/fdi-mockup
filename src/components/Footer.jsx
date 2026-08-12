@@ -3,10 +3,10 @@ import { ArrowUpRight } from "@phosphor-icons/react";
 import Logo from "./Logo";
 
 const FOCUS =
-  "rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-orange-400 focus-visible:ring-offset-2 focus-visible:ring-offset-navy-950";
+  "rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 focus-visible:ring-offset-navy-950";
 // `py-1` ensancha el área táctil de 19 a 27 px sin cambiar el ritmo vertical.
 const LINK = `inline-flex items-center py-1 text-navy-200 transition-colors duration-200 hover:text-white ${FOCUS}`;
-const CONTACT_LINK = `inline-flex items-center py-1 font-semibold text-white transition-colors duration-200 hover:text-orange-300 ${FOCUS}`;
+const CONTACT_LINK = `inline-flex items-center py-1 font-semibold text-white transition-colors duration-200 hover:text-sky-300 ${FOCUS}`;
 // Filete vertical entre columnas en desktop: mismo lenguaje que FundOverview (sm:odd:border-r).
 const DIVIDER = "lg:border-r lg:border-white/10 lg:pr-10";
 
@@ -73,7 +73,7 @@ export default function Footer() {
   return (
     <footer className="bg-navy-950 text-navy-200">
       {/* Remate de marca: la misma curva de crecimiento del isotipo, en un filete. */}
-      <div className="h-0.5 bg-gradient-to-r from-orange-400 via-orange-500/60 to-transparent" />
+      <div className="h-0.5 bg-gradient-to-r from-sky-400 via-sky-500/60 to-transparent" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-[1.7fr_1fr_0.9fr_1.4fr] lg:gap-y-0">
         <div className={DIVIDER}>
@@ -86,7 +86,7 @@ export default function Footer() {
             href="https://www.fiduciariareservas.com"
             target="_blank"
             rel="noreferrer"
-            className={`mt-4 inline-flex items-center gap-1.5 text-xs text-navy-400 transition-colors duration-200 hover:text-orange-300 ${FOCUS}`}
+            className={`mt-4 inline-flex items-center gap-1.5 text-xs text-navy-400 transition-colors duration-200 hover:text-sky-300 ${FOCUS}`}
           >
             Administrado en fideicomiso junto a Fiduciaria Reservas
             <ArrowUpRight size={12} weight="bold" aria-hidden="true" className="shrink-0" />
