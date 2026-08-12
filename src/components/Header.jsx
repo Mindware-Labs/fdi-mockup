@@ -1,6 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import Logo from "./Logo";
+
+// Rutas cuyo primer bloque es una banda oscura a sangre: ahí el header flota
+// encima, sin fondo, y solo se vuelve sólido al pasar de largo.
+const RUTAS_CON_HERO_OSCURO = new Set(["/"]);
 
 const NAV = [
   { to: "/", label: "Inicio", end: true },
@@ -29,6 +33,8 @@ function PhoneLink({ className = "", ringOffsetClass = "focus-visible:ring-offse
 }
 
 export default function Header() {
+  const { pathname } = useLocation();
+  const sobreHero = RUTAS_CON_HERO_OSCURO.has(pathname);
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const sentinelRef = useRef(null);
@@ -44,7 +50,7 @@ export default function Header() {
     });
     observer.observe(sentinel);
     return () => observer.disconnect();
-  }, []);
+  }, [sobreHero]);
 
   useEffect(() => {
     if (!open) return;
@@ -80,17 +86,33 @@ export default function Header() {
     };
   }, [open]);
 
+  // Modo "flotante": solo mientras el hero oscuro sigue detrás del header.
+  const flotante = sobreHero && !scrolled;
+  const ringOffset = flotante
+    ? "focus-visible:ring-offset-navy-950"
+    : "focus-visible:ring-offset-white";
+
   return (
     <>
-      <div ref={sentinelRef} className="h-px" aria-hidden="true" />
+      {/* Testigo fuera de flujo: marca hasta dónde el header puede seguir flotando.
+          En el resto de las rutas basta 1 px, que es cuando aparece la sombra. */}
+      <div
+        ref={sentinelRef}
+        aria-hidden="true"
+        className={`absolute top-0 left-0 w-px ${sobreHero ? "h-[260px]" : "h-px"}`}
+      />
       <header
-        className={`sticky top-0 z-50 bg-white border-b border-navy-900/10 transition-shadow duration-200 ${
+        className={`sticky top-0 z-50 border-b transition-[background-color,border-color,box-shadow] duration-300 ease-brand ${
+          flotante
+            ? "bg-transparent border-transparent"
+            : "bg-white border-navy-900/10"
+        } ${
           scrolled ? "shadow-[0_1px_3px_rgba(7,19,34,0.06),0_6px_16px_-8px_rgba(7,19,34,0.12)]" : ""
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <Logo />
+            <Logo variant={flotante ? "light" : "dark"} />
 
             <nav className="hidden lg:flex items-center gap-8">
               {NAV.map((item) => (
@@ -99,10 +121,16 @@ export default function Header() {
                   to={item.to}
                   end={item.end}
                   className={({ isActive }) =>
-                    `relative inline-block py-2 text-sm rounded-sm transition-colors duration-200 after:absolute after:left-0 after:right-0 after:-bottom-1 after:h-0.5 after:bg-sky-400 after:origin-center after:transition-transform after:duration-200 ${FOCUS_RING} focus-visible:ring-offset-white ${
-                      isActive
-                        ? "text-navy-900 font-semibold after:scale-x-100"
-                        : "text-navy-600 font-medium after:scale-x-0 hover:text-navy-900 hover:after:scale-x-100"
+                    `relative inline-block py-2 text-sm rounded-sm transition-colors duration-200 after:absolute after:left-0 after:right-0 after:-bottom-1 after:h-0.5 after:bg-sky-400 after:origin-center after:transition-transform after:duration-200 ${FOCUS_RING} ${ringOffset} ${
+                      isActive ? "font-semibold after:scale-x-100" : "font-medium after:scale-x-0 hover:after:scale-x-100"
+                    } ${
+                      flotante
+                        ? isActive
+                          ? "text-white"
+                          : "text-white/75 hover:text-white"
+                        : isActive
+                          ? "text-navy-900"
+                          : "text-navy-600 hover:text-navy-900"
                     }`
                   }
                 >
@@ -114,7 +142,11 @@ export default function Header() {
             <div className="hidden md:flex items-center gap-3">
               <NavLink
                 to="/inmuebles"
-                className={`inline-flex items-center gap-2 rounded-md bg-navy-800 hover:-translate-y-0.5 hover:bg-navy-900 active:translate-y-0 active:bg-navy-950 text-white font-semibold text-sm tracking-[0.01em] px-5 py-2.5 shadow-[0_1px_3px_rgba(0,23,51,0.12)] hover:shadow-[0_10px_24px_-6px_rgba(0,23,51,0.4)] active:shadow-[0_2px_6px_rgba(0,23,51,0.2)] transition-[transform,background-color,box-shadow] duration-200 ${FOCUS_RING} focus-visible:ring-offset-white`}
+                className={`inline-flex items-center gap-2 rounded-md border font-semibold text-sm tracking-[0.01em] px-5 py-2.5 transition-[transform,background-color,box-shadow,border-color] duration-200 ease-brand motion-safe:hover:-translate-y-0.5 motion-safe:active:translate-y-0 ${FOCUS_RING} ${ringOffset} ${
+                  flotante
+                    ? "border-white/30 text-white hover:border-white/50 hover:bg-white/12 active:bg-white/5"
+                    : "border-transparent bg-navy-800 text-white shadow-[0_1px_3px_rgba(0,23,51,0.12)] hover:bg-navy-900 hover:shadow-[0_10px_24px_-6px_rgba(0,23,51,0.4)] active:bg-navy-950 active:shadow-[0_2px_6px_rgba(0,23,51,0.2)]"
+                }`}
               >
                 Buscar Inmuebles
               </NavLink>
@@ -123,7 +155,11 @@ export default function Header() {
             <button
               ref={hamburgerRef}
               onClick={() => setOpen(true)}
-              className={`lg:hidden p-2 -mr-2 rounded-md text-navy-800 hover:bg-navy-50 hover:text-navy-900 transition-colors duration-150 ${FOCUS_RING} focus-visible:ring-offset-white`}
+              className={`lg:hidden p-2 -mr-2 rounded-md transition-colors duration-150 ${FOCUS_RING} ${ringOffset} ${
+                flotante
+                  ? "text-white hover:bg-white/12"
+                  : "text-navy-800 hover:bg-navy-50 hover:text-navy-900"
+              }`}
               aria-label="Abrir menú"
               aria-expanded={open}
               aria-controls="mobile-menu"

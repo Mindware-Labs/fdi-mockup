@@ -1,10 +1,14 @@
 import PropertyIcon from "./PropertyIcon";
 
+// Placeholder decorativo, no codificación de dato: el tipo va siempre rotulado en
+// la ficha. Por eso los cuatro degradados salen solo de la paleta del brandbook
+// (Azul Marino, Azul Profundo, Celeste y Gris Institucional) y no de colores
+// ajenos a la marca; basta con que se distingan entre sí.
 const PALETTES = {
-  Terreno: "from-emerald-700 to-emerald-900",
-  Apartamento: "from-navy-600 to-navy-900",
-  Comercial: "from-sky-600 to-sky-900",
-  Industrial: "from-slate-600 to-slate-900",
+  Terreno: "from-navy-500 to-navy-800",
+  Apartamento: "from-sky-600 to-sky-900",
+  Comercial: "from-navy-800 to-navy-950",
+  Industrial: "from-mist-500 to-mist-800",
 };
 
 export default function PropertyMedia({ tipo, className = "", iconClassName = "w-12 h-12" }) {

@@ -52,8 +52,11 @@ export default function CoverageMap() {
     <div className="border border-navy-900/10 bg-white">
       <div className="grid gap-6 p-6 sm:p-8 lg:grid-cols-[1fr_auto] lg:items-end">
         <div className="max-w-2xl">
-          <div className="h-px w-12 bg-sky-400" />
-          <h2 className="mt-4 text-2xl font-bold tracking-tight text-navy-950 sm:text-3xl">
+          <span aria-hidden="true" className="block h-px w-12 bg-sky-400" />
+          <h2
+            id="cobertura-titulo"
+            className="mt-5 text-2xl font-bold tracking-[-0.02em] text-navy-950 sm:text-3xl"
+          >
             Explora las propiedades en el mapa
           </h2>
           <p className="mt-3 leading-relaxed text-gray-600">
@@ -65,10 +68,10 @@ export default function CoverageMap() {
         </div>
         <Link
           to="/mapa"
-          className="group inline-flex items-center justify-center gap-2.5 self-start whitespace-nowrap bg-navy-800 px-6 py-3.5 text-sm font-semibold text-white shadow-[0_1px_3px_rgba(0,23,51,0.12)] outline-none transition-[transform,box-shadow,background-color] duration-200 hover:-translate-y-0.5 hover:bg-navy-900 hover:shadow-[0_10px_24px_-6px_rgba(0,23,51,0.4)] active:translate-y-0 active:bg-navy-950 active:shadow-[0_2px_6px_rgba(0,23,51,0.2)] focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 lg:self-end"
+          className="group inline-flex items-center justify-center gap-2.5 self-start whitespace-nowrap bg-navy-800 px-6 py-3.5 text-sm font-semibold text-white shadow-[0_1px_3px_rgba(0,23,51,0.12)] outline-none transition-[transform,box-shadow,background-color] duration-200 ease-brand hover:bg-navy-900 hover:shadow-[0_10px_24px_-6px_rgba(0,23,51,0.4)] active:bg-navy-950 active:shadow-[0_2px_6px_rgba(0,23,51,0.2)] motion-safe:hover:-translate-y-0.5 motion-safe:active:translate-y-0 focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 lg:self-end"
         >
           Ver mapa completo
-          <svg viewBox="0 0 24 24" className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
+          <svg viewBox="0 0 24 24" className="h-4 w-4 transition-transform duration-200 ease-brand motion-safe:group-hover:translate-x-1" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
             <path d="M5 12h14M13 5l7 7-7 7" />
           </svg>
         </Link>

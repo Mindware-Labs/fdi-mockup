@@ -14,8 +14,20 @@ export default function Layout() {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <ScrollToTop />
+      {/* Saltar la navegación: seis enlaces y un CTA separan el teclado del
+          contenido en cada página (WCAG 2.4.1). */}
+      {/* Se esconde desplazándolo fuera de pantalla, no con `sr-only`: así una sola
+          utilidad controla la posición y no compite con `not-sr-only` al enfocar. */}
+      <a
+        href="#contenido"
+        className="fixed left-4 top-4 z-[70] -translate-y-24 bg-navy-900 px-5 py-3 text-sm font-semibold text-white shadow-[0_10px_30px_-10px_rgba(7,26,58,0.6)] outline-none transition-transform duration-200 ease-brand focus:translate-y-0 focus:ring-2 focus:ring-sky-400 focus:ring-offset-2"
+      >
+        Saltar al contenido
+      </a>
       <Header />
-      <main className="flex-1">
+      {/* `tabIndex={-1}` deja que el foco aterrice aquí tras el salto; el contorno
+          se retira porque encuadrar toda la página no informa de nada. */}
+      <main id="contenido" tabIndex={-1} className="flex-1 outline-none">
         <AnimatePresence mode="wait">
           <motion.div
             key={pathname}

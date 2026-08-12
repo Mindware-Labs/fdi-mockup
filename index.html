@@ -1,19 +1,42 @@
 <!doctype html>
-<html lang="en">
+<html lang="es-DO">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/favicon-32.png" sizes="32x32" />
     <link rel="icon" type="image/png" href="/favicon-192.png" sizes="192x192" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0a2550" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
+    <!-- La imagen del hero vive dentro de un componente React: sin este preload el
+         navegador la descubre tarde y el LCP se retrasa. -->
+    <link
+      rel="preload"
+      as="image"
+      type="image/webp"
+      href="/aerea-1983.webp"
+      imagesrcset="/aerea-1100.webp 1100w, /aerea-1983.webp 1983w"
+      imagesizes="100vw"
+      fetchpriority="high"
+    />
     <meta name="description" content="FDI - Fondo de Desarrollo de Infraestructuras. Portal de comercialización de inmuebles del fideicomiso constituido mediante el Decreto 581-23." />
     <title>FDI · Fondo de Desarrollo de Infraestructuras</title>
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="FDI · Fondo de Desarrollo de Infraestructuras" />
+    <meta property="og:locale" content="es_DO" />
+    <meta property="og:title" content="FDI · Fondo de Desarrollo de Infraestructuras" />
+    <meta property="og:description" content="Fideicomiso público constituido mediante el Decreto 581-23. Comercializa terrenos, apartamentos y locales comerciales a nivel nacional para financiar obras de infraestructura del Estado dominicano." />
+    <meta property="og:image" content="/og-cover.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Vista aérea de terrenos del inventario del FDI con el logotipo del fondo." />
+    <meta name="twitter:card" content="summary_large_image" />
   </head>
   <body>
     <div id="root"></div>

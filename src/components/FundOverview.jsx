@@ -43,17 +43,18 @@ const FACTS = [
   },
 ];
 
-// Arranca a ras del hero: el canto navy contra blanco es la separación.
+// Arranca a ras de la banda navy de "Respaldo institucional": el canto oscuro
+// contra el blanco es toda la separación que necesita.
 export default function FundOverview() {
   return (
     <section aria-labelledby="fondo-titulo" className="bg-white border-b border-navy-900/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24">
         {/* Encabezado editorial: apilado, medida controlada */}
         <ScrollReveal className="max-w-3xl">
-          <div className="h-px w-12 bg-sky-400" />
+          <span aria-hidden="true" className="block h-px w-12 bg-sky-400" />
           <h2
             id="fondo-titulo"
-            className="mt-5 text-3xl sm:text-4xl font-bold text-navy-950 tracking-tight leading-tight"
+            className="mt-6 text-3xl sm:text-4xl font-bold text-navy-950 tracking-[-0.02em] leading-[1.15]"
           >
             Fondo de Desarrollo de Infraestructuras
           </h2>
@@ -126,14 +127,14 @@ export default function FundOverview() {
           <div className="flex items-center border-t border-white/10 p-8 sm:p-10 lg:border-t-0 lg:border-l lg:border-white/10">
             <Link
               to="/sobre-el-fondo"
-              className="group inline-flex items-center justify-center gap-2.5 bg-sky-400 shadow-[0_1px_3px_rgba(0,0,0,0.2)] hover:-translate-y-0.5 hover:bg-sky-500 hover:shadow-[0_10px_24px_-6px_rgba(103,174,228,0.5)] active:translate-y-0 active:bg-sky-600 text-navy-950 font-semibold text-sm px-6 py-3.5 whitespace-nowrap transition-[transform,box-shadow,background-color] duration-200 outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-navy-950"
+              className="group inline-flex items-center justify-center gap-2.5 bg-sky-400 shadow-[0_1px_3px_rgba(0,0,0,0.2)] hover:bg-sky-500 hover:shadow-[0_10px_24px_-6px_rgba(103,174,228,0.5)] active:bg-sky-600 motion-safe:hover:-translate-y-0.5 motion-safe:active:translate-y-0 text-navy-950 font-semibold text-sm px-6 py-3.5 whitespace-nowrap transition-[transform,box-shadow,background-color] duration-200 ease-brand outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-navy-950"
             >
               Conoce más sobre el fondo
               <ArrowRight
                 size={16}
                 weight="bold"
                 aria-hidden="true"
-                className="transition-transform duration-200 group-hover:translate-x-0.5"
+                className="transition-transform duration-200 ease-brand motion-safe:group-hover:translate-x-1"
               />
             </Link>
           </div>
