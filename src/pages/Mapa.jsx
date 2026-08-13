@@ -3,18 +3,18 @@ import { Link, useSearchParams } from "react-router-dom";
 import Map, { Marker, NavigationControl, Popup } from "react-map-gl/mapbox";
 import {
   ArrowRight,
-  Buildings,
   Info,
   MagnifyingGlass,
   MapPin,
   SlidersHorizontal,
+  StackSimple,
   X,
 } from "@phosphor-icons/react";
 import "mapbox-gl/dist/mapbox-gl.css";
 import PropertyMapMarker, { TYPE_COLORS } from "../components/PropertyMapMarker";
 import MapTokenNotice from "../components/MapTokenNotice";
 import Button from "../components/Button";
-import LayerControl, { LayerLegend } from "../components/LayerControl";
+import LayerPanel, { LayerLegend } from "../components/LayerControl";
 import ThematicLayers from "../components/ThematicLayers";
 import useThematicLayers from "../components/useThematicLayers";
 import { MAPBOX_TOKEN, MAP_STYLE, DEFAULT_CENTER, boundsFromPoints } from "../components/mapConfig";
@@ -22,6 +22,12 @@ import { MAP_LAYERS } from "../data/mapLayers";
 import { PROPERTIES, STATUS, TYPES, formatArea } from "../data/properties";
 
 const LAYER_IDS = MAP_LAYERS.map((layer) => layer.id);
+const FOCUS =
+  "outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2";
+const PESTANAS = [
+  { id: "inmuebles", label: "Inmuebles" },
+  { id: "capas", label: "Capas" },
+];
 
 /** Centra/ajusta el mapa cuando cambia la selección, el filtro o se pide "ver todas". */
 function useMapViewport(mapRef, mapReady, { properties, selectedProperty, fitRequest }) {
@@ -44,7 +50,7 @@ function useMapViewport(mapRef, mapReady, { properties, selectedProperty, fitReq
       return;
     }
 
-    map.fitBounds(boundsFromPoints(properties), { padding: 48, maxZoom: 10, duration: 700 });
+    map.fitBounds(boundsFromPoints(properties), { padding: 64, maxZoom: 10, duration: 700 });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mapReady, fitRequest, properties, selectedProperty]);
 }
@@ -52,54 +58,69 @@ function useMapViewport(mapRef, mapReady, { properties, selectedProperty, fitReq
 function ResultItem({ property, selected, onSelect }) {
   return (
     <article
-      className={`group rounded-xl border bg-white transition-[border-color,box-shadow,transform] duration-200 ${
+      className={`group relative overflow-hidden rounded-lg border bg-white transition-[border-color,box-shadow] duration-500 ease-brand ${
         selected
-          ? "border-navy-500 shadow-[0_10px_30px_rgba(11,29,51,0.12)]"
-          : "border-gray-200 hover:border-navy-200 hover:shadow-[0_8px_24px_rgba(11,29,51,0.08)]"
+          ? "border-navy-900/[0.04] shadow-[0_2px_4px_-2px_rgba(7,26,58,0.12),0_18px_38px_-24px_rgba(7,26,58,0.55)]"
+          : "border-navy-900/10 hover:border-navy-900/[0.04] hover:shadow-[0_2px_4px_-2px_rgba(7,26,58,0.12),0_18px_38px_-24px_rgba(7,26,58,0.55)]"
       }`}
     >
+      {/* Marca de selección: filete navy a la izquierda. Es la única señal que no
+          comparte con el hover, para que "seleccionado" y "bajo el cursor" nunca
+          se confundan. */}
+      <span
+        aria-hidden="true"
+        className={`absolute inset-y-0 left-0 w-1 bg-navy-700 transition-opacity duration-300 ${
+          selected ? "opacity-100" : "opacity-0"
+        }`}
+      />
       <button
         type="button"
         onClick={onSelect}
         aria-pressed={selected}
-        className="w-full touch-manipulation rounded-xl p-4 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-500 focus-visible:ring-offset-2 active:scale-[0.99]"
+        className={`w-full touch-manipulation p-4 text-left ${FOCUS} focus-visible:ring-inset`}
       >
-        <div className="flex min-w-0 items-start justify-between gap-3">
-          <div className="min-w-0">
-            <div className="mb-2 flex items-center gap-2 text-xs font-semibold text-gray-600">
-              <span
-                aria-hidden="true"
-                className="h-2.5 w-2.5 shrink-0 rounded-full"
-                style={{ backgroundColor: TYPE_COLORS[property.tipo] }}
-              />
-              <span>{property.tipo}</span>
-              <span aria-hidden="true" className="h-3 w-px bg-gray-200" />
-              <span>{STATUS[property.estado]?.label}</span>
-            </div>
-            <h2 className="text-pretty font-semibold leading-snug text-navy-950">
-              {property.titulo}
-            </h2>
-          </div>
-          <MapPin
+        <div className="flex items-center gap-2 text-xs font-semibold text-gray-600">
+          <span
             aria-hidden="true"
-            weight={selected ? "fill" : "regular"}
-            className={`mt-0.5 h-5 w-5 shrink-0 ${selected ? "text-navy-600" : "text-gray-400"}`}
+            className="h-2.5 w-2.5 shrink-0 rounded-full"
+            style={{ backgroundColor: TYPE_COLORS[property.tipo] }}
           />
+          <span>{property.tipo}</span>
+          <span aria-hidden="true" className="h-3 w-px bg-navy-900/15" />
+          <span>{STATUS[property.estado]?.label}</span>
         </div>
-        <p className="mt-2 line-clamp-1 text-sm text-gray-600">
+
+        <h3 className="mt-2.5 text-pretty font-semibold leading-snug text-navy-950">
+          {property.titulo}
+        </h3>
+
+        <p className="mt-1.5 flex items-center gap-1.5 text-sm text-gray-600">
+          <MapPin size={14} weight="fill" aria-hidden="true" className="shrink-0 text-navy-400" />
           {property.ciudad}, {property.provincia}
         </p>
-        <p className="mt-1 text-sm font-semibold tabular-nums text-navy-800">
-          {formatArea(property.tamano)}
-        </p>
+
+        <div className="mt-3 flex items-baseline justify-between gap-3 border-t border-navy-900/10 pt-3">
+          <p className="font-mono text-xs text-gray-500">
+            Parcela {property.parcela} · DC {property.dc}
+          </p>
+          <p className="text-sm font-semibold tabular-nums text-navy-900">
+            {formatArea(property.tamano)}
+          </p>
+        </div>
       </button>
-      <div className="mx-4 border-t border-gray-100 py-3">
+
+      <div className="border-t border-navy-900/10 px-4 py-2.5">
         <Link
           to={`/inmuebles/${property.id}`}
-          className="inline-flex touch-manipulation items-center gap-1.5 rounded-md text-sm font-semibold text-navy-700 underline-offset-4 hover:text-navy-950 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-500 focus-visible:ring-offset-2"
+          className={`group/link inline-flex items-center gap-1.5 rounded-sm text-sm font-semibold text-navy-800 transition-colors hover:text-navy-950 ${FOCUS}`}
         >
           Ver detalles
-          <ArrowRight aria-hidden="true" className="h-4 w-4" />
+          <ArrowRight
+            size={14}
+            weight="bold"
+            aria-hidden="true"
+            className="transition-transform duration-300 ease-brand motion-safe:group-hover/link:translate-x-1"
+          />
         </Link>
       </div>
     </article>
@@ -110,27 +131,29 @@ export default function Mapa() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [fitRequest, setFitRequest] = useState(0);
   const [mapReady, setMapReady] = useState(false);
-  const [panelCapas, setPanelCapas] = useState(false);
+  const [pestana, setPestana] = useState("inmuebles");
   const mapRef = useRef(null);
+  const panelRef = useRef(null);
+  const tablistRef = useRef(null);
   const layerSources = useThematicLayers();
 
   const query = searchParams.get("q") ?? "";
   const selectedId = searchParams.get("seleccion");
   const typeParam = searchParams.get("tipos");
 
+  const activeTypes = useMemo(() => {
+    if (!typeParam) return new Set(TYPES);
+    if (typeParam === "ninguno") return new Set();
+    return new Set(typeParam.split(",").filter((type) => TYPES.includes(type)));
+  }, [typeParam]);
+
   // Las capas encendidas viajan en la URL: compartir el enlace comparte la vista.
-  // Sin parámetro no se enciende ninguna, para que el mapa abra limpio.
   const layerParam = searchParams.get("capas");
   const activeLayers = useMemo(() => {
     if (!layerParam) return new Set();
     if (layerParam === "todas") return new Set(LAYER_IDS);
     return new Set(layerParam.split(",").filter((id) => LAYER_IDS.includes(id)));
   }, [layerParam]);
-  const activeTypes = useMemo(() => {
-    if (!typeParam) return new Set(TYPES);
-    if (typeParam === "ninguno") return new Set();
-    return new Set(typeParam.split(",").filter((type) => TYPES.includes(type)));
-  }, [typeParam]);
 
   const visible = useMemo(() => {
     const normalizedQuery = query.trim().toLocaleLowerCase("es-DO");
@@ -144,18 +167,22 @@ export default function Mapa() {
   }, [activeTypes, query]);
 
   const selectedProperty = visible.find((property) => property.id === selectedId) ?? null;
+  const filtrosActivos = query !== "" || activeTypes.size !== TYPES.length;
 
   useMapViewport(mapRef, mapReady, { properties: visible, selectedProperty, fitRequest });
 
   function updateParams(changes) {
-    setSearchParams((current) => {
-      const next = new URLSearchParams(current);
-      Object.entries(changes).forEach(([key, value]) => {
-        if (value) next.set(key, value);
-        else next.delete(key);
-      });
-      return next;
-    }, { replace: true });
+    setSearchParams(
+      (current) => {
+        const next = new URLSearchParams(current);
+        Object.entries(changes).forEach(([key, value]) => {
+          if (value) next.set(key, value);
+          else next.delete(key);
+        });
+        return next;
+      },
+      { replace: true },
+    );
   }
 
   function toggleType(type) {
@@ -163,13 +190,20 @@ export default function Mapa() {
     if (next.has(type)) next.delete(type);
     else next.add(type);
 
-    const nextValue = next.size === TYPES.length
-      ? null
-      : next.size === 0
-        ? "ninguno"
-        : TYPES.filter((item) => next.has(item)).join(",");
+    const nextValue =
+      next.size === TYPES.length
+        ? null
+        : next.size === 0
+          ? "ninguno"
+          : TYPES.filter((item) => next.has(item)).join(",");
 
     updateParams({ tipos: nextValue, seleccion: null });
+  }
+
+  function serializeLayers(set) {
+    if (set.size === 0) return null;
+    if (set.size === LAYER_IDS.length) return "todas";
+    return LAYER_IDS.filter((id) => set.has(id)).join(",");
   }
 
   function toggleLayer(id) {
@@ -183,14 +217,7 @@ export default function Mapa() {
     updateParams({ capas: modo === "todas" ? "todas" : null });
   }
 
-  function serializeLayers(set) {
-    if (set.size === 0) return null;
-    if (set.size === LAYER_IDS.length) return "todas";
-    return LAYER_IDS.filter((id) => set.has(id)).join(",");
-  }
-
-  // Limpia el filtrado del inventario, no las capas: son dos controles distintos
-  // y apagar el mapa temático al buscar otra provincia sería una sorpresa.
+  // Limpia el filtrado del inventario, no las capas: son dos controles distintos.
   function clearFilters() {
     setSearchParams(layerParam ? { capas: layerParam } : {}, { replace: true });
     setFitRequest((request) => request + 1);
@@ -201,130 +228,42 @@ export default function Mapa() {
     setFitRequest((request) => request + 1);
   }
 
+  /** Flechas para moverse entre pestañas, como espera un `tablist`. */
+  function onTablistKeyDown(event) {
+    if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
+    event.preventDefault();
+    const siguiente = pestana === "inmuebles" ? "capas" : "inmuebles";
+    setPestana(siguiente);
+    tablistRef.current?.querySelector(`#pestana-${siguiente}`)?.focus();
+  }
+
+  /**
+   * En móvil el panel queda debajo del mapa: hay que llevarlo a la vista. En
+   * escritorio ya está al lado, así que desplazar la página sería un salto
+   * gratuito que además metería el mapa bajo la cabecera fija.
+   */
+  function abrirCapas() {
+    setPestana("capas");
+    const enEscritorio = window.matchMedia("(min-width: 1024px)").matches;
+    requestAnimationFrame(() => {
+      if (!enEscritorio) panelRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      tablistRef.current?.querySelector("#pestana-capas")?.focus();
+    });
+  }
+
   return (
-    <div className="bg-gray-50">
-      <section className="mx-auto max-w-[1440px] px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
-        <header className="mb-7 max-w-3xl">
-          <h1 className="text-pretty text-3xl font-bold tracking-[-0.025em] text-navy-950 sm:text-4xl">
-            Explora las propiedades en el mapa
-          </h1>
-          <p className="mt-3 max-w-[65ch] text-pretty leading-relaxed text-gray-600">
-            Consulta la ubicación referencial de los inmuebles del fideicomiso y filtra el inventario por tipo o localidad.
-          </p>
-        </header>
-
-        <div className="mb-5 flex flex-col gap-4 rounded-2xl border border-gray-200 bg-white p-4 shadow-[0_8px_30px_rgba(11,29,51,0.05)] lg:flex-row lg:items-center">
-          <label className="group relative block min-w-0 flex-1">
-            <span className="sr-only">Buscar por propiedad, localidad o parcela</span>
-            <MagnifyingGlass
-              aria-hidden="true"
-              className="pointer-events-none absolute left-3.5 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400 group-focus-within:text-navy-600"
-            />
-            <input
-              type="search"
-              name="map-search"
-              value={query}
-              onChange={(event) => updateParams({ q: event.target.value || null, seleccion: null })}
-              autoComplete="off"
-              placeholder="Ej.: Santiago, apartamento o parcela 215…"
-              className="h-12 w-full rounded-lg border border-navy-900/12 bg-white pl-12 pr-12 text-sm text-navy-950 placeholder:text-gray-400 focus:border-navy-500 focus:outline-none focus:ring-2 focus:ring-sky-400/30"
-            />
-            {query && (
-              <button
-                type="button"
-                onClick={() => updateParams({ q: null, seleccion: null })}
-                aria-label="Limpiar búsqueda"
-                className="absolute right-2 top-1/2 flex h-9 w-9 -translate-y-1/2 touch-manipulation items-center justify-center rounded-lg text-gray-500 hover:bg-gray-100 hover:text-navy-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-500"
-              >
-                <X aria-hidden="true" className="h-4 w-4" />
-              </button>
-            )}
-          </label>
-
-          <div className="flex flex-wrap items-center gap-2" aria-label="Filtrar por tipo de inmueble">
-            {TYPES.map((type) => {
-              const active = activeTypes.has(type);
-              return (
-                <button
-                  key={type}
-                  type="button"
-                  onClick={() => toggleType(type)}
-                  aria-pressed={active}
-                  className={`inline-flex h-12 touch-manipulation items-center justify-center gap-2 rounded-lg border px-6 text-sm font-semibold whitespace-nowrap transition-[background-color,border-color,color,transform] ease-brand duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 ${
-                    active
-                      ? "border-navy-200 bg-navy-50 text-navy-900 hover:border-navy-300"
-                      : "border-gray-200 bg-gray-50 text-gray-500 hover:border-gray-300 hover:text-gray-800"
-                  }`}
-                >
-                  <span
-                    aria-hidden="true"
-                    className={`h-2.5 w-2.5 rounded-full ${active ? "opacity-100" : "opacity-40"}`}
-                    style={{ backgroundColor: TYPE_COLORS[type] }}
-                  />
-                  {type}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        <div className="grid overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-[0_18px_50px_rgba(11,29,51,0.08)] lg:grid-cols-[390px_minmax(0,1fr)]">
-          <aside className="order-2 flex min-h-0 flex-col border-t border-gray-200 bg-gray-50/70 lg:order-1 lg:h-[680px] lg:border-r lg:border-t-0" aria-label="Resultados del mapa">
-            <div className="flex items-center justify-between gap-3 border-b border-gray-200 bg-white px-4 py-3.5 sm:px-5">
-              <div className="flex min-w-0 items-center gap-2.5">
-                <Buildings aria-hidden="true" className="h-5 w-5 shrink-0 text-navy-600" />
-                <p className="truncate text-sm font-semibold text-navy-950" aria-live="polite">
-                  {visible.length} {visible.length === 1 ? "propiedad encontrada" : "propiedades encontradas"}
-                </p>
-              </div>
-              {(query || activeTypes.size !== TYPES.length) && (
-                <button
-                  type="button"
-                  onClick={clearFilters}
-                  className="shrink-0 rounded-md text-sm font-semibold text-navy-700 underline-offset-4 hover:text-navy-950 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-500 focus-visible:ring-offset-2"
-                >
-                  Limpiar filtros
-                </button>
-              )}
-            </div>
-
-            {visible.length > 0 ? (
-              <div
-                className="grid max-h-[520px] gap-3 overflow-y-auto p-3 sm:p-4 lg:max-h-none lg:flex-1"
-                role="region"
-                aria-label="Listado de propiedades encontradas"
-                tabIndex="0"
-              >
-                {visible.map((property) => (
-                  <ResultItem
-                    key={property.id}
-                    property={property}
-                    selected={selectedProperty?.id === property.id}
-                    onSelect={() => updateParams({ seleccion: property.id })}
-                  />
-                ))}
-              </div>
-            ) : (
-              <div className="flex flex-1 flex-col items-center justify-center px-6 py-14 text-center">
-                <SlidersHorizontal aria-hidden="true" className="h-10 w-10 text-navy-300" />
-                <h2 className="mt-4 font-semibold text-navy-950">No hay propiedades con esos filtros</h2>
-                <p className="mt-2 max-w-xs text-sm leading-relaxed text-gray-600">
-                  Prueba otra localidad o activa más tipos de inmueble.
-                </p>
-                <Button onClick={clearFilters} variant="secondary" className="mt-5">
-                  Mostrar todas
-                </Button>
-              </div>
-            )}
-          </aside>
-
-          <div
-            className="relative order-1 h-[58dvh] min-h-[440px] bg-navy-50 lg:order-2 lg:h-[680px]"
-            role="application"
-            aria-label="Mapa de propiedades del fideicomiso"
-          >
-            {!MAPBOX_TOKEN && <MapTokenNotice className="absolute inset-0" />}
-            {MAPBOX_TOKEN && (
+    // Debajo de la cabecera (h-16) el mapa ocupa todo lo que queda de ventana.
+    // En móvil el alto es libre: mapa arriba, panel debajo, y la página desplaza.
+    <div className="flex flex-col bg-mist-100 lg:h-[calc(100dvh-4rem)] lg:overflow-hidden">
+      <div className="flex min-h-0 flex-1 flex-col lg:flex-row">
+        {/* MAPA — primero en móvil para que sea lo primero que se ve */}
+        <div
+          className="relative order-1 h-[52dvh] min-h-[340px] bg-navy-50 lg:order-2 lg:h-auto lg:min-h-0 lg:flex-1"
+          role="application"
+          aria-label="Mapa de propiedades del fideicomiso"
+        >
+          {!MAPBOX_TOKEN && <MapTokenNotice className="absolute inset-0" />}
+          {MAPBOX_TOKEN && (
             <Map
               ref={mapRef}
               mapboxAccessToken={MAPBOX_TOKEN}
@@ -362,62 +301,253 @@ export default function Mapa() {
                   className="fdi-map-popup"
                 >
                   <div className="min-w-0 text-sm">
-                    <p className="text-pretty font-semibold leading-snug text-navy-950">{selectedProperty.titulo}</p>
-                    <p className="mt-1 text-gray-600">{selectedProperty.ciudad}, {selectedProperty.provincia}</p>
-                    <p className="mt-1 font-semibold tabular-nums text-navy-800">{formatArea(selectedProperty.tamano)}</p>
+                    <p className="text-pretty font-semibold leading-snug text-navy-950">
+                      {selectedProperty.titulo}
+                    </p>
+                    <p className="mt-1 text-gray-600">
+                      {selectedProperty.ciudad}, {selectedProperty.provincia}
+                    </p>
+                    <p className="mt-1 font-semibold tabular-nums text-navy-800">
+                      {formatArea(selectedProperty.tamano)}
+                    </p>
                     <Link
                       to={`/inmuebles/${selectedProperty.id}`}
                       className="mt-3 inline-flex items-center gap-1.5 font-semibold text-navy-700 hover:text-navy-950 hover:underline"
                     >
-                      Ver detalles <ArrowRight aria-hidden="true" className="h-4 w-4" />
+                      Ver detalles <ArrowRight size={14} weight="bold" aria-hidden="true" />
                     </Link>
                   </div>
                 </Popup>
               )}
             </Map>
-            )}
+          )}
 
-            {/* Acotado a la altura del mapa: el panel de capas crece hacia abajo
-                y sin este tope se salía del contenedor. */}
-            <div className="absolute right-3 top-3 bottom-3 z-[400] flex flex-col items-end gap-2 pointer-events-none [&>*]:pointer-events-auto">
-              <Button
-                onClick={fitVisibleProperties}
-                disabled={visible.length === 0}
-                variant="quiet"
-                className="touch-manipulation shadow-[0_8px_24px_rgba(11,29,51,0.16)]"
-              >
-                <MapPin aria-hidden="true" className="h-4 w-4 shrink-0" />
-                Ver todas
-              </Button>
+          <div className="pointer-events-none absolute right-3 top-3 z-[400] flex flex-col items-end gap-2 [&>*]:pointer-events-auto">
+            <Button
+              onClick={fitVisibleProperties}
+              disabled={visible.length === 0}
+              variant="quiet"
+              size="sm"
+              className="touch-manipulation shadow-[0_8px_24px_rgba(11,29,51,0.16)]"
+            >
+              <MapPin aria-hidden="true" className="h-4 w-4 shrink-0" />
+              Ver todas
+            </Button>
 
-              <div className="flex min-h-0 flex-1 flex-col items-end [&>*]:pointer-events-auto">
-                <LayerControl
-                  abierto={panelCapas}
-                  onAbrir={setPanelCapas}
-                  activas={activeLayers}
-                  onToggle={toggleLayer}
-                  onTodas={setAllLayers}
-                  sources={layerSources}
+            {/* Solo en móvil: en escritorio las capas ya están a un clic en el panel */}
+            <Button
+              onClick={abrirCapas}
+              variant="quiet"
+              size="sm"
+              className="touch-manipulation shadow-[0_8px_24px_rgba(11,29,51,0.16)] lg:hidden"
+            >
+              <StackSimple aria-hidden="true" className="h-4 w-4 shrink-0" />
+              Capas
+              {activeLayers.size > 0 && (
+                <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-navy-800 px-1.5 text-xs font-bold tabular-nums text-white">
+                  {activeLayers.size}
+                </span>
+              )}
+            </Button>
+          </div>
+
+          {/* Abajo a la derecha: con el panel a la izquierda, la isla se dibuja hacia
+              el centro y ese vértice cae sobre mar abierto. A la izquierda tapaba
+              Barahona y Pedernales, que es donde hay inventario. `bottom-8` deja
+              libre la atribución obligatoria de Mapbox. */}
+          <LayerLegend activas={activeLayers} className="absolute bottom-8 right-3 z-[390]" />
+        </div>
+
+        {/* PANEL LATERAL */}
+        <aside
+          ref={panelRef}
+          className="order-2 flex w-full flex-col border-t border-navy-900/10 bg-white lg:order-1 lg:min-h-0 lg:w-[400px] lg:shrink-0 lg:border-r lg:border-t-0 xl:w-[440px]"
+          aria-label="Controles y resultados del mapa"
+        >
+          <div className="shrink-0 border-b border-navy-900/10 px-4 py-4 sm:px-5">
+            <h1 className="text-xl font-bold tracking-[-0.02em] text-navy-950">
+              Propiedades a nivel nacional
+            </h1>
+            <p className="mt-1.5 text-sm leading-relaxed text-gray-600">
+              Ubicación referencial del inventario del fideicomiso, con las capas de
+              infraestructura que condicionan cada parcela.
+            </p>
+          </div>
+
+          <div
+            ref={tablistRef}
+            role="tablist"
+            aria-label="Secciones del panel"
+            onKeyDown={onTablistKeyDown}
+            className="flex shrink-0 border-b border-navy-900/10"
+          >
+            {PESTANAS.map(({ id, label }) => {
+              const activa = pestana === id;
+              const cuenta = id === "inmuebles" ? visible.length : activeLayers.size;
+              return (
+                <button
+                  key={id}
+                  id={`pestana-${id}`}
+                  role="tab"
+                  type="button"
+                  aria-selected={activa}
+                  aria-controls={`seccion-${id}`}
+                  tabIndex={activa ? 0 : -1}
+                  onClick={() => setPestana(id)}
+                  className={`relative flex flex-1 items-center justify-center gap-2 px-4 py-3.5 text-sm font-semibold transition-colors duration-200 ease-brand ${FOCUS} focus-visible:ring-inset ${
+                    activa ? "text-navy-950" : "text-gray-500 hover:text-navy-900"
+                  }`}
+                >
+                  {label}
+                  <span
+                    className={`inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-xs font-bold tabular-nums transition-colors duration-200 ${
+                      activa ? "bg-navy-800 text-white" : "bg-mist-200 text-gray-600"
+                    }`}
+                  >
+                    {cuenta}
+                  </span>
+                  <span
+                    aria-hidden="true"
+                    className={`absolute inset-x-0 -bottom-px h-0.5 bg-sky-400 transition-transform duration-300 ease-brand ${
+                      activa ? "scale-x-100" : "scale-x-0"
+                    }`}
+                  />
+                </button>
+              );
+            })}
+          </div>
+
+          {/* SECCIÓN INMUEBLES */}
+          <div
+            id="seccion-inmuebles"
+            role="tabpanel"
+            aria-labelledby="pestana-inmuebles"
+            hidden={pestana !== "inmuebles"}
+            className="flex min-h-0 flex-1 flex-col"
+          >
+            <div className="shrink-0 space-y-3 border-b border-navy-900/10 p-4 sm:p-5">
+              <label className="group relative block">
+                <span className="sr-only">Buscar por propiedad, localidad o parcela</span>
+                <MagnifyingGlass
+                  aria-hidden="true"
+                  className="pointer-events-none absolute left-3.5 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400 group-focus-within:text-navy-600"
                 />
+                <input
+                  type="search"
+                  name="map-search"
+                  value={query}
+                  onChange={(event) =>
+                    updateParams({ q: event.target.value || null, seleccion: null })
+                  }
+                  autoComplete="off"
+                  placeholder="Santiago, apartamento, parcela 215…"
+                  className="h-12 w-full rounded-lg border border-navy-900/12 bg-white pl-11 pr-11 text-sm text-navy-950 placeholder:text-gray-400 focus:border-navy-500 focus:outline-none focus:ring-2 focus:ring-sky-400/30"
+                />
+                {query && (
+                  <button
+                    type="button"
+                    onClick={() => updateParams({ q: null, seleccion: null })}
+                    aria-label="Limpiar búsqueda"
+                    className={`absolute right-1.5 top-1/2 flex h-9 w-9 -translate-y-1/2 touch-manipulation items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-mist-100 hover:text-navy-900 ${FOCUS}`}
+                  >
+                    <X aria-hidden="true" className="h-4 w-4" />
+                  </button>
+                )}
+              </label>
+
+              <div className="flex flex-wrap gap-2" aria-label="Filtrar por tipo de inmueble">
+                {TYPES.map((type) => {
+                  const active = activeTypes.has(type);
+                  return (
+                    <button
+                      key={type}
+                      type="button"
+                      onClick={() => toggleType(type)}
+                      aria-pressed={active}
+                      // Activo en tinte, no en placa llena: por defecto los cuatro
+                      // tipos están encendidos y cuatro bloques navy seguidos
+                      // ensombrecían el panel sin comunicar nada.
+                      className={`inline-flex h-11 touch-manipulation items-center gap-2 rounded-lg border px-4 text-sm font-semibold transition-colors duration-200 ease-brand ${FOCUS} ${
+                        active
+                          ? "border-navy-300 bg-navy-50 text-navy-900 hover:border-navy-400"
+                          : "border-navy-900/12 bg-white text-gray-500 hover:border-navy-900/25 hover:text-navy-900"
+                      }`}
+                    >
+                      <span
+                        aria-hidden="true"
+                        className="h-2.5 w-2.5 shrink-0 rounded-full"
+                        style={{
+                          backgroundColor: TYPE_COLORS[type],
+                          opacity: active ? 1 : 0.45,
+                        }}
+                      />
+                      {type}
+                    </button>
+                  );
+                })}
               </div>
+
+              {filtrosActivos && (
+                <button
+                  type="button"
+                  onClick={clearFilters}
+                  className={`rounded-sm text-sm font-semibold text-navy-700 underline-offset-4 transition-colors hover:text-navy-950 hover:underline ${FOCUS}`}
+                >
+                  Limpiar filtros
+                </button>
+              )}
             </div>
 
-            {/* `bottom-8` deja libre el logotipo obligatorio de Mapbox */}
-            <LayerLegend
-              activas={activeLayers}
-              sources={layerSources}
-              className="absolute bottom-8 left-3 z-[390]"
-            />
+            {visible.length > 0 ? (
+              <div
+                className="min-h-0 flex-1 space-y-3 p-4 sm:p-5 lg:overflow-y-auto"
+                aria-live="polite"
+              >
+                {visible.map((property) => (
+                  <ResultItem
+                    key={property.id}
+                    property={property}
+                    selected={selectedProperty?.id === property.id}
+                    onSelect={() => updateParams({ seleccion: property.id })}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="flex flex-1 flex-col items-center justify-center px-6 py-16 text-center">
+                <SlidersHorizontal aria-hidden="true" className="h-9 w-9 text-navy-300" />
+                <h2 className="mt-4 font-semibold text-navy-950">
+                  No hay propiedades con esos filtros
+                </h2>
+                <p className="mt-2 max-w-xs text-sm leading-relaxed text-gray-600">
+                  Prueba otra localidad o activa más tipos de inmueble.
+                </p>
+                <Button onClick={clearFilters} variant="secondary" size="sm" className="mt-5">
+                  Mostrar todas
+                </Button>
+              </div>
+            )}
           </div>
-        </div>
 
-        <div className="mt-5 flex items-start gap-3 rounded-2xl border border-navy-100 bg-navy-50 p-4 sm:p-5">
-          <Info aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-navy-600" />
-          <p className="max-w-[75ch] text-sm leading-relaxed text-navy-800">
-            El mapa muestra ubicaciones aproximadas con fines de consulta. Las coordenadas y delimitaciones definitivas dependen de los procesos catastrales y registrales correspondientes.
+          {/* SECCIÓN CAPAS */}
+          <div
+            id="seccion-capas"
+            role="tabpanel"
+            aria-labelledby="pestana-capas"
+            hidden={pestana !== "capas"}
+            className="flex min-h-0 flex-1 flex-col"
+          >
+            <LayerPanel activas={activeLayers} onToggle={toggleLayer} onTodas={setAllLayers} />
+          </div>
+
+          <p className="flex shrink-0 gap-2.5 border-t border-navy-900/10 bg-mist-50 px-4 py-3 text-xs leading-relaxed text-gray-600 sm:px-5">
+            <Info aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-navy-500" />
+            <span>
+              Ubicaciones aproximadas con fines de consulta. Las delimitaciones definitivas
+              dependen de los procesos catastrales y registrales correspondientes.
+            </span>
           </p>
-        </div>
-      </section>
+        </aside>
+      </div>
     </div>
   );
 }
