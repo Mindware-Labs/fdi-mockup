@@ -53,6 +53,10 @@ const ENERGIA = {
   RSU: "#e9a45f",
 };
 
+// `organismo`: quién publica la capa. No se muestra en la interfaz; sirve para
+// saber a quién reclamar cada archivo (ver public/capas/README.md). Se llama así
+// y no `fuente` porque en la capa de energía `fuente` ya es la propiedad de cada
+// entidad —Eólica, Solar…— de la que sale su color.
 export const MAP_LAYERS = [
   {
     id: "areas-protegidas",
@@ -60,7 +64,7 @@ export const MAP_LAYERS = [
     label: "Áreas protegidas y especiales",
     descripcion:
       "Parques nacionales, reservas y demás áreas con régimen especial que condicionan el uso del suelo.",
-    fuente: "Ministerio de Medio Ambiente y Recursos Naturales",
+    organismo: "Ministerio de Medio Ambiente y Recursos Naturales",
     tipo: "fill",
     color: "#3f9a5c",
     leyenda: [{ label: "Área protegida o especial", color: "#3f9a5c" }],
@@ -78,7 +82,7 @@ export const MAP_LAYERS = [
     label: "Líneas de transmisión eléctrica",
     descripcion:
       "Trazado del sistema de transmisión por nivel de tensión. Determina la cercanía de un inmueble a la red.",
-    fuente: "ETED · Empresa de Transmisión Eléctrica Dominicana",
+    organismo: "ETED · Empresa de Transmisión Eléctrica Dominicana",
     tipo: "line",
     color: "#7b6ce0",
     claveColor: "kv",
@@ -133,7 +137,7 @@ export const MAP_LAYERS = [
     label: "Concesiones de explotación minera",
     descripcion:
       "Polígonos con derechos mineros vigentes. Un inmueble dentro de una concesión tiene el subsuelo comprometido.",
-    fuente: "Ministerio de Energía y Minas · Dirección General de Minería",
+    organismo: "Ministerio de Energía y Minas · Dirección General de Minería",
     tipo: "fill",
     color: "#c07a2a",
     leyenda: [{ label: "Concesión minera vigente", color: "#c07a2a" }],
@@ -150,7 +154,7 @@ export const MAP_LAYERS = [
     label: "Gasoductos y oleoductos",
     descripcion:
       "Trazado de ductos de gas natural y derivados, con sus servidumbres de paso asociadas.",
-    fuente: "Ministerio de Energía y Minas",
+    organismo: "Ministerio de Energía y Minas",
     tipo: "line",
     // Magenta, no violeta: el trazado costero corre pegado al de 230 kV y con dos
     // púrpuras vecinos no se distinguía cuál era cuál.
@@ -175,7 +179,7 @@ export const MAP_LAYERS = [
     label: "Concesiones energéticas definitivas",
     descripcion:
       "Concesiones definitivas de generación por fuente. Señalan zonas con proyectos energéticos ya adjudicados.",
-    fuente: "Comisión Nacional de Energía",
+    organismo: "Comisión Nacional de Energía",
     tipo: "fill",
     color: "#4aa3dd",
     claveColor: "fuente",

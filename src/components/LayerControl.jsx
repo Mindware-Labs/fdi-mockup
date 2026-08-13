@@ -78,9 +78,6 @@ export default function LayerPanel({ activas, onToggle, onTodas }) {
                   <span className="mt-1.5 block text-xs leading-relaxed text-gray-600">
                     {layer.descripcion}
                   </span>
-                  <span className="mt-1.5 block text-xs text-gray-500">
-                    Fuente: {layer.fuente}
-                  </span>
 
                   {/* La sub-leyenda solo aparece cuando la capa está encendida:
                       informa de lo que se está viendo, no de lo que podría verse. */}
