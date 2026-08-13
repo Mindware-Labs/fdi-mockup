@@ -2,12 +2,17 @@ import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from "@headless
 import { CaretDown, Check } from "@phosphor-icons/react";
 
 /** Select propio (sin cromo del navegador), mismo lenguaje visual que ProvinceCombobox. */
-export default function SelectField({ options, value, onChange, placeholder }) {
+export default function SelectField({ id, options, value, onChange, placeholder }) {
   const selected = options.find((o) => o.value === value);
 
   return (
     <Listbox value={value} onChange={onChange}>
-      <ListboxButton className="group flex w-full items-center justify-between gap-2 rounded-lg border border-gray-200 bg-white py-2 px-3 text-left text-sm outline-none transition-colors focus:border-navy-400 focus:ring-2 focus:ring-navy-400/20 data-[open]:border-navy-400 data-[open]:ring-2 data-[open]:ring-navy-400/20">
+      {/* `id` en el botón: es un elemento etiquetable, así que un `<label for>`
+          externo lo nombra igual que a un select nativo. */}
+      <ListboxButton
+        id={id}
+        className="group flex h-11 w-full items-center justify-between gap-2 rounded-lg border border-navy-900/12 bg-white px-3.5 text-left text-sm outline-none transition-colors hover:border-navy-900/25 focus:border-navy-500 focus:ring-2 focus:ring-sky-400/30 data-[open]:border-navy-500 data-[open]:ring-2 data-[open]:ring-sky-400/30"
+      >
         <span className={selected ? "text-navy-950" : "text-gray-400"}>
           {selected ? selected.label : placeholder}
         </span>

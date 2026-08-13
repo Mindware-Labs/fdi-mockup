@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowUpRight } from "@phosphor-icons/react";
 import Logo from "./Logo";
+import { CORREO, HORARIO, OFICINA_LINEAS, TELEFONO, WHATSAPP } from "../data/contacto";
 
 const FOCUS =
   "rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 focus-visible:ring-offset-navy-950";
@@ -135,8 +136,8 @@ export default function Footer() {
                 </ContactIcon>
               }
             >
-              <a href="tel:8099604580" className={CONTACT_LINK}>
-                (809) 960-4580
+              <a href={TELEFONO.href} className={CONTACT_LINK}>
+                {TELEFONO.texto}
               </a>
             </ContactRow>
 
@@ -148,8 +149,8 @@ export default function Footer() {
                 </ContactIcon>
               }
             >
-              <a href="https://wa.me/18099604580" target="_blank" rel="noreferrer" className={CONTACT_LINK}>
-                (809) 960-4580
+              <a href={WHATSAPP.href} target="_blank" rel="noreferrer" className={CONTACT_LINK}>
+                {WHATSAPP.texto}
                 <span className="sr-only">, escribir por WhatsApp (abre en una ventana nueva)</span>
               </a>
             </ContactRow>
@@ -162,8 +163,8 @@ export default function Footer() {
                 </ContactIcon>
               }
             >
-              <a href="mailto:info@fdi.com.do" className={CONTACT_LINK}>
-                info@fdi.com.do
+              <a href={CORREO.href} className={CONTACT_LINK}>
+                {CORREO.texto}
               </a>
             </ContactRow>
 
@@ -176,7 +177,13 @@ export default function Footer() {
                 </ContactIcon>
               }
             >
-              <span className="text-white">Santo Domingo, República Dominicana</span>
+              <span className="block leading-relaxed text-white">
+                {OFICINA_LINEAS.map((linea) => (
+                  <span key={linea} className="block">
+                    {linea}
+                  </span>
+                ))}
+              </span>
             </ContactRow>
 
             <ContactRow
@@ -188,7 +195,7 @@ export default function Footer() {
                 </ContactIcon>
               }
             >
-              <span className="text-white">Lunes a viernes, 8:00am – 5:00pm</span>
+              <span className="text-white">{HORARIO}</span>
             </ContactRow>
           </dl>
         </div>

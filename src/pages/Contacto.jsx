@@ -11,7 +11,9 @@ import {
   WhatsappLogo,
 } from "@phosphor-icons/react";
 import Button from "../components/Button";
+import OfficeMap from "../components/OfficeMap";
 import ScrollReveal from "../components/ScrollReveal";
+import { CORREO, HORARIO, OFICINA_LINEAS, TELEFONO, WHATSAPP } from "../data/contacto";
 
 const FOCUS =
   "outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2";
@@ -23,16 +25,16 @@ const CANALES = [
     id: "telefono",
     icon: Phone,
     label: "Teléfono",
-    valor: "(809) 960-4580",
-    href: "tel:8099604580",
-    nota: "Lunes a viernes, 8:00am – 5:00pm",
+    valor: TELEFONO.texto,
+    href: TELEFONO.href,
+    nota: HORARIO,
   },
   {
     id: "whatsapp",
     icon: WhatsappLogo,
     label: "WhatsApp",
-    valor: "(809) 960-4580",
-    href: "https://wa.me/18099604580",
+    valor: WHATSAPP.texto,
+    href: WHATSAPP.href,
     externo: true,
     nota: "Para consultas rápidas sobre un inmueble",
   },
@@ -40,8 +42,8 @@ const CANALES = [
     id: "correo",
     icon: EnvelopeSimple,
     label: "Correo",
-    valor: "info@fdi.com.do",
-    href: "mailto:info@fdi.com.do",
+    valor: CORREO.texto,
+    href: CORREO.href,
     nota: "Para envíos de documentación",
   },
 ];
@@ -210,12 +212,12 @@ export default function Contacto() {
                       Este formulario es una demostración
                     </strong>{" "}
                     y todavía no está conectado a un buzón. Para una consulta real, llama al{" "}
-                    <a href="tel:8099604580" className={`font-semibold text-navy-800 underline underline-offset-4 ${FOCUS}`}>
-                      (809) 960-4580
+                    <a href={TELEFONO.href} className={`font-semibold text-navy-800 underline underline-offset-4 ${FOCUS}`}>
+                      {TELEFONO.texto}
                     </a>{" "}
                     o escribe a{" "}
-                    <a href="mailto:info@fdi.com.do" className={`font-semibold text-navy-800 underline underline-offset-4 ${FOCUS}`}>
-                      info@fdi.com.do
+                    <a href={CORREO.href} className={`font-semibold text-navy-800 underline underline-offset-4 ${FOCUS}`}>
+                      {CORREO.texto}
                     </a>
                     .
                   </p>
@@ -342,8 +344,12 @@ export default function Contacto() {
                     />
                     <div>
                       <dt className="text-sm text-gray-500">Oficina</dt>
-                      <dd className="mt-1 font-medium text-navy-950">
-                        Santo Domingo, República Dominicana
+                      <dd className="mt-1 font-medium leading-relaxed text-navy-950">
+                        {OFICINA_LINEAS.map((linea) => (
+                          <span key={linea} className="block">
+                            {linea}
+                          </span>
+                        ))}
                       </dd>
                     </div>
                   </div>
@@ -356,9 +362,7 @@ export default function Contacto() {
                     />
                     <div>
                       <dt className="text-sm text-gray-500">Horario de atención</dt>
-                      <dd className="mt-1 font-medium text-navy-950">
-                        Lunes a viernes, 8:00am – 5:00pm
-                      </dd>
+                      <dd className="mt-1 font-medium text-navy-950">{HORARIO}</dd>
                     </div>
                   </div>
                   <div className="flex gap-3.5 border-b border-navy-900/10 py-5">
@@ -374,6 +378,10 @@ export default function Contacto() {
                     </div>
                   </div>
                 </dl>
+
+                <div className="mt-6">
+                  <OfficeMap />
+                </div>
               </ScrollReveal>
             </section>
 

@@ -9,7 +9,7 @@ import {
 import { CaretDown, Check, MagnifyingGlass, X } from "@phosphor-icons/react";
 
 /** Select buscable: cerrado se ve como un select normal; al hacer clic se despliega el buscador. */
-export default function ProvinceCombobox({ provinces, value, onChange, placeholder = "Todas las provincias" }) {
+export default function ProvinceCombobox({ id, provinces, value, onChange, placeholder = "Todas las provincias" }) {
   const [query, setQuery] = useState("");
 
   const filtered =
@@ -34,8 +34,9 @@ export default function ProvinceCombobox({ provinces, value, onChange, placehold
                 className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400"
               />
               <ComboboxInput
+                id={id}
                 autoFocus
-                className="w-full rounded-lg border border-navy-400 bg-white py-2 pl-9 pr-8 text-sm text-navy-950 outline-none ring-2 ring-navy-400/20 placeholder:text-gray-400"
+                className="h-11 w-full rounded-lg border border-navy-500 bg-white pl-9 pr-8 text-sm text-navy-950 outline-none ring-2 ring-sky-400/30 placeholder:text-gray-400"
                 displayValue={(p) => p ?? ""}
                 onChange={(event) => setQuery(event.target.value)}
                 placeholder="Buscar provincia..."
@@ -44,7 +45,10 @@ export default function ProvinceCombobox({ provinces, value, onChange, placehold
             </>
           ) : (
             <>
-              <ComboboxButton className="flex w-full items-center rounded-lg border border-gray-200 bg-white py-2 pl-3 pr-8 text-left text-sm outline-none transition-colors hover:border-gray-300 focus:border-navy-400 focus:ring-2 focus:ring-navy-400/20">
+              <ComboboxButton
+                id={id}
+                className="flex h-11 w-full items-center rounded-lg border border-navy-900/12 bg-white pl-3.5 pr-8 text-left text-sm outline-none transition-colors hover:border-navy-900/25 focus:border-navy-500 focus:ring-2 focus:ring-sky-400/30"
+              >
                 <span className={`truncate ${value ? "text-navy-950" : "text-gray-400"}`}>
                   {value || placeholder}
                 </span>

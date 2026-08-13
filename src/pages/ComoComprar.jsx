@@ -10,6 +10,7 @@ import {
 import Button from "../components/Button";
 import ScrollReveal from "../components/ScrollReveal";
 import { ANCLA, PageIndexBar, PageIndexRail, usePageIndex } from "../components/PageIndex";
+import { TELEFONO } from "../data/contacto";
 
 const SECCIONES = [
   { id: "proceso", label: "El proceso" },
@@ -210,11 +211,11 @@ export default function ComoComprar() {
         <PageIndexRail secciones={SECCIONES} activa={activa}>
           <p className="text-sm font-semibold text-navy-950">¿Dudas del proceso?</p>
           <a
-            href="tel:8099604580"
+            href={TELEFONO.href}
             className={`mt-2.5 inline-flex items-center gap-2 rounded-sm text-sm font-semibold text-navy-800 transition-colors hover:text-navy-950 ${FOCUS}`}
           >
             <Phone size={15} weight="fill" aria-hidden="true" className="text-navy-500" />
-            (809) 960-4580
+            {TELEFONO.texto}
           </a>
           <Link
             to="/contacto"

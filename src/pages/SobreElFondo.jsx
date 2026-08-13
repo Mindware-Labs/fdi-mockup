@@ -3,6 +3,7 @@ import { ArrowRight, Phone } from "@phosphor-icons/react";
 import Button from "../components/Button";
 import ScrollReveal from "../components/ScrollReveal";
 import { ANCLA, PageIndexBar, PageIndexRail, usePageIndex } from "../components/PageIndex";
+import { TELEFONO } from "../data/contacto";
 
 const SECCIONES = [
   { id: "proposito", label: "Propósito" },
@@ -100,11 +101,11 @@ export default function SobreElFondo() {
             Ver el catálogo
           </Link>
           <a
-            href="tel:8099604580"
+            href={TELEFONO.href}
             className={`mt-2 inline-flex items-center gap-2 rounded-sm text-sm text-gray-600 transition-colors hover:text-navy-900 ${FOCUS}`}
           >
             <Phone size={14} weight="fill" aria-hidden="true" className="text-navy-500" />
-            (809) 960-4580
+            {TELEFONO.texto}
           </a>
         </PageIndexRail>
 

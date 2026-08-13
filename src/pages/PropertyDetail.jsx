@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { WhatsappLogo } from "@phosphor-icons/react";
 import Button from "../components/Button";
 import PropertyMedia from "../components/PropertyMedia";
+import { TELEFONO, WHATSAPP } from "../data/contacto";
 import PropertyCard from "../components/PropertyCard";
 import StatusBadge from "../components/StatusBadge";
 import { PROPERTIES, formatArea, formatPrice } from "../data/properties";
@@ -123,7 +124,9 @@ export default function PropertyDetail() {
               </Button>
               <Button
                 as="a"
-                href={`https://wa.me/18099604580?text=${encodeURIComponent(`Hola, estoy interesado en el inmueble ${property.titulo} (Parcela ${property.parcela}).`)}`}
+                href={WHATSAPP.conMensaje(
+                  `Hola, estoy interesado en el inmueble ${property.titulo} (Parcela ${property.parcela}).`,
+                )}
                 target="_blank"
                 rel="noreferrer"
                 variant="quiet"
@@ -136,8 +139,8 @@ export default function PropertyDetail() {
 
             <div className="mt-6 pt-6 border-t border-gray-100 text-sm text-gray-500">
               <p>¿Prefieres hablar con alguien?</p>
-              <a href="tel:8099604580" className="text-navy-800 font-semibold text-base">
-                (809) 960-4580
+              <a href={TELEFONO.href} className="text-navy-800 font-semibold text-base">
+                {TELEFONO.texto}
               </a>
             </div>
           </div>

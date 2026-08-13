@@ -1,8 +1,10 @@
+import { TELEFONO, WHATSAPP } from "../data/contacto";
+
 export default function FloatingContact() {
   return (
     <div className="fixed bottom-5 right-5 z-40 flex flex-col items-end gap-3">
       <a
-        href="https://wa.me/18099604580"
+        href={WHATSAPP.href}
         target="_blank"
         rel="noreferrer"
         aria-label="Escribir por WhatsApp"
@@ -13,7 +15,7 @@ export default function FloatingContact() {
         </svg>
       </a>
       <a
-        href="tel:8099604580"
+        href={TELEFONO.href}
         aria-label="Llamar al FDI"
         className="w-12 h-12 rounded-full bg-navy-800 hover:bg-navy-900 hover:scale-110 active:scale-100 text-white flex items-center justify-center shadow-lg hover:shadow-xl transition-[transform,box-shadow,background-color] duration-200"
       >
