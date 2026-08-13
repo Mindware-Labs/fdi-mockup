@@ -68,31 +68,30 @@ export default function Benefits() {
         >
           {BENEFICIOS.map(({ icon: Icon, title, text, action, to }) => (
             <motion.li key={title} variants={CARD_VARIANTS} className="flex">
+              {/* El hover no añade nada a la tarjeta: la despega del papel. El filete
+                  se disuelve mientras entra la sombra, así que la ficha pasa de estar
+                  dibujada sobre la hoja a flotar sobre ella. Una sola idea, sin barras
+                  de color ni elementos que aparezcan de la nada. */}
               <Link
                 to={to}
-                className="group relative flex flex-1 flex-col border border-navy-900/10 bg-white p-7 outline-none transition-[transform,box-shadow,border-color] duration-300 ease-brand hover:border-navy-900/25 hover:shadow-[0_18px_40px_-24px_rgba(7,26,58,0.5)] focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 motion-safe:hover:-translate-y-1"
+                className="group relative flex flex-1 flex-col border border-navy-900/10 bg-white p-7 outline-none transition-[transform,box-shadow,border-color] duration-500 ease-brand hover:border-navy-900/[0.04] hover:shadow-[0_2px_4px_-2px_rgba(7,26,58,0.12),0_22px_46px_-26px_rgba(7,26,58,0.6)] focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 motion-safe:hover:-translate-y-0.5"
               >
-                {/* Filete celeste que se despliega desde la izquierda al pasar el cursor */}
-                <span
-                  aria-hidden="true"
-                  className="absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 bg-sky-400 transition-transform duration-500 ease-brand group-hover:scale-x-100 group-focus-visible:scale-x-100"
-                />
                 <Icon
                   size={26}
                   weight="duotone"
                   aria-hidden="true"
-                  className="text-navy-600 transition-colors duration-300 group-hover:text-sky-600"
+                  className="text-navy-600 transition-colors duration-500 ease-brand group-hover:text-sky-600"
                 />
                 <h3 className="mt-6 font-semibold text-navy-950">{title}</h3>
                 <p className="mt-2.5 flex-1 text-sm leading-relaxed text-gray-600">{text}</p>
 
-                <span className="mt-7 inline-flex items-center gap-2 text-sm font-semibold text-navy-800 transition-colors duration-200 group-hover:text-navy-950">
+                <span className="mt-7 inline-flex items-center gap-2 text-sm font-semibold text-navy-800 transition-colors duration-500 ease-brand group-hover:text-navy-950">
                   {action}
                   <ArrowRight
                     size={14}
                     weight="bold"
                     aria-hidden="true"
-                    className="transition-transform duration-200 ease-brand motion-safe:group-hover:translate-x-1"
+                    className="transition-transform duration-300 ease-brand motion-safe:group-hover:translate-x-1"
                   />
                 </span>
               </Link>

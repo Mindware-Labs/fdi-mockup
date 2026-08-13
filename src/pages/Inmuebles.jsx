@@ -125,8 +125,10 @@ export default function Inmuebles() {
         <div>
           <div className="flex items-center justify-between mb-5">
             <button
+              type="button"
               onClick={() => setFiltersOpen((v) => !v)}
-              className="lg:hidden inline-flex items-center gap-2 text-sm font-medium text-navy-800 border border-gray-200 rounded-lg px-3 py-2"
+              aria-expanded={filtersOpen}
+              className="lg:hidden inline-flex h-11 items-center gap-2 rounded-lg border border-navy-900/12 bg-white px-5 text-sm font-semibold text-navy-800 transition-colors duration-200 ease-brand outline-none hover:border-navy-900/25 focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2"
             >
               <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M4 6h16M6 12h12M9 18h6" />
@@ -134,10 +136,12 @@ export default function Inmuebles() {
               Filtros {activeFilterCount > 0 && `(${activeFilterCount})`}
             </button>
 
-            <div className="ml-auto inline-flex border border-gray-200 rounded-lg overflow-hidden">
+            <div className="ml-auto inline-flex overflow-hidden rounded-lg border border-navy-900/12">
               <button
+                type="button"
                 onClick={() => setView("grid")}
-                className={`px-3 py-2 text-sm ${view === "grid" ? "bg-navy-800 text-white" : "bg-white text-gray-500"}`}
+                aria-pressed={view === "grid"}
+                className={`inline-flex h-11 items-center px-4 text-sm transition-colors duration-200 ease-brand outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-inset ${view === "grid" ? "bg-navy-800 text-white" : "bg-white text-gray-500 hover:text-navy-900"}`}
                 aria-label="Vista de cuadrícula"
               >
                 <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2">
@@ -146,8 +150,10 @@ export default function Inmuebles() {
                 </svg>
               </button>
               <button
+                type="button"
                 onClick={() => setView("list")}
-                className={`px-3 py-2 text-sm border-l border-gray-200 ${view === "list" ? "bg-navy-800 text-white" : "bg-white text-gray-500"}`}
+                aria-pressed={view === "list"}
+                className={`inline-flex h-11 items-center border-l border-navy-900/12 px-4 text-sm transition-colors duration-200 ease-brand outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-inset ${view === "list" ? "bg-navy-800 text-white" : "bg-white text-gray-500 hover:text-navy-900"}`}
                 aria-label="Vista de lista"
               >
                 <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2">
@@ -179,8 +185,12 @@ export default function Inmuebles() {
                 <button
                   key={n}
                   onClick={() => setPage(n)}
-                  className={`w-9 h-9 rounded-lg text-sm font-medium ${
-                    n === page ? "bg-navy-800 text-white" : "bg-white border border-gray-200 text-gray-600 hover:bg-navy-50"
+                  type="button"
+                  aria-current={n === page ? "page" : undefined}
+                  className={`h-11 w-11 rounded-lg text-sm font-semibold tabular-nums transition-colors duration-200 ease-brand outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 ${
+                    n === page
+                      ? "bg-navy-800 text-white"
+                      : "bg-white border border-navy-900/12 text-gray-600 hover:border-navy-900/25 hover:text-navy-900"
                   }`}
                 >
                   {n}
@@ -194,14 +204,19 @@ export default function Inmuebles() {
   );
 }
 
+// Filtro de tipo: mismo radio y misma altura táctil que el resto del sistema.
+// Es un conmutador, no un llamado a la acción, así que conserva su estado activo
+// en placa navy en lugar de pasar por el componente Button.
 function TypeTab({ active, onClick, children }) {
   return (
     <button
+      type="button"
       onClick={onClick}
-      className={`px-4 py-2 rounded-full text-sm font-medium border transition-colors ${
+      aria-pressed={active}
+      className={`inline-flex h-11 items-center rounded-lg border px-5 text-sm font-semibold transition-colors duration-200 ease-brand outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 ${
         active
           ? "bg-navy-800 border-navy-800 text-white"
-          : "bg-white border-gray-200 text-gray-600 hover:border-navy-300"
+          : "bg-white border-navy-900/12 text-gray-600 hover:border-navy-900/25 hover:text-navy-900"
       }`}
     >
       {children}

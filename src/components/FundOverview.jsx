@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Bank, MapTrifold, Scales, SealCheck } from "@phosphor-icons/react";
+import Button from "./Button";
 import ScrollReveal from "./ScrollReveal";
 
 const MILESTONES = [
@@ -125,18 +126,9 @@ export default function FundOverview() {
           </div>
 
           <div className="flex items-center border-t border-white/10 p-8 sm:p-10 lg:border-t-0 lg:border-l lg:border-white/10">
-            <Link
-              to="/sobre-el-fondo"
-              className="group inline-flex items-center justify-center gap-2.5 bg-sky-400 shadow-[0_1px_3px_rgba(0,0,0,0.2)] hover:bg-sky-500 hover:shadow-[0_10px_24px_-6px_rgba(103,174,228,0.5)] active:bg-sky-600 motion-safe:hover:-translate-y-0.5 motion-safe:active:translate-y-0 text-navy-950 font-semibold text-sm px-6 py-3.5 whitespace-nowrap transition-[transform,box-shadow,background-color] duration-200 ease-brand outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-navy-950"
-            >
+            <Button as={Link} to="/sobre-el-fondo" variant="primary" onDark icon={ArrowRight}>
               Conoce más sobre el fondo
-              <ArrowRight
-                size={16}
-                weight="bold"
-                aria-hidden="true"
-                className="transition-transform duration-200 ease-brand motion-safe:group-hover:translate-x-1"
-              />
-            </Link>
+            </Button>
           </div>
         </ScrollReveal>
       </div>

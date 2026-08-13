@@ -1,6 +1,7 @@
 import { motion, useReducedMotion } from "motion/react";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "@phosphor-icons/react";
+import Button from "./Button";
 
 const EASE = [0.21, 0.47, 0.32, 0.98];
 
@@ -9,11 +10,6 @@ const STAGGER = {
   hidden: {},
   visible: { transition: { staggerChildren: 0.08, delayChildren: 0.05 } },
 };
-
-// `border` en ambos botones (transparente en el sólido) para que midan igual:
-// sin él, el fantasma queda 2 px más alto que el celeste.
-const CTA_BASE =
-  "group inline-flex items-center justify-center gap-2.5 border px-7 py-4 text-sm font-semibold tracking-[0.01em] outline-none transition-[transform,box-shadow,background-color,border-color] duration-200 ease-brand focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-navy-950";
 
 export default function Hero() {
   const prefersReducedMotion = useReducedMotion();
@@ -82,25 +78,13 @@ export default function Hero() {
           </motion.p>
 
           <motion.div variants={item} className="mt-11 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
-            <Link
-              to="/inmuebles"
-              className={`${CTA_BASE} border-transparent bg-sky-400 text-navy-950 shadow-[0_1px_3px_rgba(0,0,0,0.25)] hover:bg-sky-500 hover:shadow-[0_14px_30px_-8px_rgba(103,174,228,0.55)] active:bg-sky-600 active:shadow-[0_2px_6px_rgba(0,0,0,0.3)] focus-visible:ring-white motion-safe:hover:-translate-y-0.5 motion-safe:active:translate-y-0`}
-            >
+            <Button as={Link} to="/inmuebles" variant="primary" size="lg" onDark icon={ArrowRight}>
               Explorar inmuebles
-              <ArrowRight
-                size={16}
-                weight="bold"
-                aria-hidden="true"
-                className="transition-transform duration-200 ease-brand motion-safe:group-hover:translate-x-1"
-              />
-            </Link>
+            </Button>
 
-            <Link
-              to="/como-comprar"
-              className={`${CTA_BASE} border-white/25 text-white hover:border-white/45 hover:bg-white/10 active:bg-white/5 focus-visible:ring-sky-400 motion-safe:hover:-translate-y-0.5 motion-safe:active:translate-y-0`}
-            >
+            <Button as={Link} to="/como-comprar" variant="secondary" size="lg" onDark>
               ¿Cómo comprar?
-            </Link>
+            </Button>
           </motion.div>
 
           {/* Credenciales del fondo: dato, no rótulo. Cierra el bloque con la base

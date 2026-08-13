@@ -1,5 +1,7 @@
 import { lazy, Suspense } from "react";
 import { Link, useParams } from "react-router-dom";
+import { WhatsappLogo } from "@phosphor-icons/react";
+import Button from "../components/Button";
 import PropertyMedia from "../components/PropertyMedia";
 import PropertyCard from "../components/PropertyCard";
 import StatusBadge from "../components/StatusBadge";
@@ -109,27 +111,27 @@ export default function PropertyDetail() {
             <p className="text-sm text-gray-500 mb-1">Precio</p>
             <p className="text-2xl font-bold text-navy-950 mb-6">{formatPrice(property.precio)}</p>
 
+            {/* El botón de WhatsApp iba en verde esmeralda, fuera de la paleta del
+                brandbook. Entra al sistema como acción discreta y deja que el
+                icono cargue con el reconocimiento del canal. */}
             <div className="space-y-3">
-              <a
-                href="/como-comprar#formularios"
-                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-sky-400 shadow-[0_1px_3px_rgba(0,23,51,0.12)] hover:-translate-y-0.5 hover:bg-sky-500 hover:shadow-[0_10px_24px_-6px_rgba(103,174,228,0.5)] active:translate-y-0 active:shadow-[0_2px_6px_rgba(0,23,51,0.15)] text-navy-950 font-semibold text-sm px-5 py-3 transition-[transform,box-shadow,background-color] duration-200"
-              >
+              <Button as="a" href="/como-comprar#formularios" variant="primary" fullWidth>
                 Hacer una oferta
-              </a>
-              <Link
-                to="/contacto"
-                className="w-full inline-flex items-center justify-center gap-2 rounded-lg border border-navy-800 text-navy-800 hover:bg-navy-50 font-semibold text-sm px-5 py-3 transition-colors"
-              >
+              </Button>
+              <Button as={Link} to="/contacto" variant="quiet" fullWidth>
                 Solicitar información
-              </Link>
-              <a
+              </Button>
+              <Button
+                as="a"
                 href={`https://wa.me/18099604580?text=${encodeURIComponent(`Hola, estoy interesado en el inmueble ${property.titulo} (Parcela ${property.parcela}).`)}`}
                 target="_blank"
                 rel="noreferrer"
-                className="w-full inline-flex items-center justify-center gap-2 rounded-lg border border-emerald-500 text-emerald-600 hover:bg-emerald-50 font-semibold text-sm px-5 py-3 transition-colors"
+                variant="quiet"
+                fullWidth
               >
+                <WhatsappLogo size={17} weight="fill" aria-hidden="true" className="shrink-0" />
                 Consultar por WhatsApp
-              </a>
+              </Button>
             </div>
 
             <div className="mt-6 pt-6 border-t border-gray-100 text-sm text-gray-500">

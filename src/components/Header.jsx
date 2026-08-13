@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
+import Button from "./Button";
 import Logo from "./Logo";
 
 // Rutas cuyo primer bloque es una banda oscura a sangre: ahí el header flota
@@ -140,16 +141,15 @@ export default function Header() {
             </nav>
 
             <div className="hidden md:flex items-center gap-3">
-              <NavLink
+              <Button
+                as={NavLink}
                 to="/inmuebles"
-                className={`inline-flex items-center gap-2 rounded-md border font-semibold text-sm tracking-[0.01em] px-5 py-2.5 transition-[transform,background-color,box-shadow,border-color] duration-200 ease-brand motion-safe:hover:-translate-y-0.5 motion-safe:active:translate-y-0 ${FOCUS_RING} ${ringOffset} ${
-                  flotante
-                    ? "border-white/30 text-white hover:border-white/50 hover:bg-white/12 active:bg-white/5"
-                    : "border-transparent bg-navy-800 text-white shadow-[0_1px_3px_rgba(0,23,51,0.12)] hover:bg-navy-900 hover:shadow-[0_10px_24px_-6px_rgba(0,23,51,0.4)] active:bg-navy-950 active:shadow-[0_2px_6px_rgba(0,23,51,0.2)]"
-                }`}
+                size="sm"
+                onDark={flotante}
+                variant={flotante ? "quiet" : "secondary"}
               >
                 Buscar Inmuebles
-              </NavLink>
+              </Button>
             </div>
 
             <button

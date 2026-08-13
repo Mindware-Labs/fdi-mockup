@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Button from "../components/Button";
 
 export default function Contacto() {
   const [sent, setSent] = useState(false);
@@ -58,12 +59,9 @@ export default function Contacto() {
                   className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-navy-400 resize-none"
                 />
               </div>
-              <button
-                type="submit"
-                className="inline-flex items-center gap-2 rounded-lg bg-navy-800 shadow-[0_1px_3px_rgba(0,23,51,0.12)] hover:-translate-y-0.5 hover:bg-navy-900 hover:shadow-[0_10px_24px_-6px_rgba(0,23,51,0.4)] active:translate-y-0 active:shadow-[0_2px_6px_rgba(0,23,51,0.2)] text-white font-semibold text-sm px-6 py-3 transition-[transform,box-shadow,background-color] duration-200"
-              >
+              <Button type="submit" variant="primary">
                 Enviar mensaje
-              </button>
+              </Button>
             </form>
           )}
         </div>

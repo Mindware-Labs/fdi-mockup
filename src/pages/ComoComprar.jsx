@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, CaretDown, DownloadSimple } from "@phosphor-icons/react";
+import Button from "../components/Button";
 import ScrollReveal from "../components/ScrollReveal";
 
 const STEPS = [
@@ -303,18 +304,9 @@ export default function ComoComprar() {
               </p>
             </div>
             <div className="flex items-center border-t border-white/10 p-8 sm:p-10 lg:border-t-0 lg:border-l lg:border-white/10">
-              <Link
-                to="/contacto"
-                className="group inline-flex items-center justify-center gap-2.5 bg-sky-400 px-6 py-3.5 text-sm font-semibold text-navy-950 shadow-[0_1px_3px_rgba(0,0,0,0.2)] whitespace-nowrap transition-[transform,box-shadow,background-color] duration-200 hover:-translate-y-0.5 hover:bg-sky-500 hover:shadow-[0_10px_24px_-6px_rgba(103,174,228,0.5)] active:translate-y-0 active:bg-sky-600 outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-navy-950"
-              >
+              <Button as={Link} to="/contacto" variant="primary" onDark icon={ArrowRight}>
                 Contactar al FDI
-                <ArrowRight
-                  size={16}
-                  weight="bold"
-                  aria-hidden="true"
-                  className="transition-transform duration-200 group-hover:translate-x-0.5"
-                />
-              </Link>
+              </Button>
             </div>
           </ScrollReveal>
         </section>

@@ -13,8 +13,15 @@ import {
 import "mapbox-gl/dist/mapbox-gl.css";
 import PropertyMapMarker, { TYPE_COLORS } from "../components/PropertyMapMarker";
 import MapTokenNotice from "../components/MapTokenNotice";
+import Button from "../components/Button";
+import LayerControl, { LayerLegend } from "../components/LayerControl";
+import ThematicLayers from "../components/ThematicLayers";
+import useThematicLayers from "../components/useThematicLayers";
 import { MAPBOX_TOKEN, MAP_STYLE, DEFAULT_CENTER, boundsFromPoints } from "../components/mapConfig";
+import { MAP_LAYERS } from "../data/mapLayers";
 import { PROPERTIES, STATUS, TYPES, formatArea } from "../data/properties";
+
+const LAYER_IDS = MAP_LAYERS.map((layer) => layer.id);
 
 /** Centra/ajusta el mapa cuando cambia la selección, el filtro o se pide "ver todas". */
 function useMapViewport(mapRef, mapReady, { properties, selectedProperty, fitRequest }) {
@@ -103,11 +110,22 @@ export default function Mapa() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [fitRequest, setFitRequest] = useState(0);
   const [mapReady, setMapReady] = useState(false);
+  const [panelCapas, setPanelCapas] = useState(false);
   const mapRef = useRef(null);
+  const layerSources = useThematicLayers();
 
   const query = searchParams.get("q") ?? "";
   const selectedId = searchParams.get("seleccion");
   const typeParam = searchParams.get("tipos");
+
+  // Las capas encendidas viajan en la URL: compartir el enlace comparte la vista.
+  // Sin parámetro no se enciende ninguna, para que el mapa abra limpio.
+  const layerParam = searchParams.get("capas");
+  const activeLayers = useMemo(() => {
+    if (!layerParam) return new Set();
+    if (layerParam === "todas") return new Set(LAYER_IDS);
+    return new Set(layerParam.split(",").filter((id) => LAYER_IDS.includes(id)));
+  }, [layerParam]);
   const activeTypes = useMemo(() => {
     if (!typeParam) return new Set(TYPES);
     if (typeParam === "ninguno") return new Set();
@@ -154,8 +172,27 @@ export default function Mapa() {
     updateParams({ tipos: nextValue, seleccion: null });
   }
 
+  function toggleLayer(id) {
+    const next = new Set(activeLayers);
+    if (next.has(id)) next.delete(id);
+    else next.add(id);
+    updateParams({ capas: serializeLayers(next) });
+  }
+
+  function setAllLayers(modo) {
+    updateParams({ capas: modo === "todas" ? "todas" : null });
+  }
+
+  function serializeLayers(set) {
+    if (set.size === 0) return null;
+    if (set.size === LAYER_IDS.length) return "todas";
+    return LAYER_IDS.filter((id) => set.has(id)).join(",");
+  }
+
+  // Limpia el filtrado del inventario, no las capas: son dos controles distintos
+  // y apagar el mapa temático al buscar otra provincia sería una sorpresa.
   function clearFilters() {
-    setSearchParams({}, { replace: true });
+    setSearchParams(layerParam ? { capas: layerParam } : {}, { replace: true });
     setFitRequest((request) => request + 1);
   }
 
@@ -190,7 +227,7 @@ export default function Mapa() {
               onChange={(event) => updateParams({ q: event.target.value || null, seleccion: null })}
               autoComplete="off"
               placeholder="Ej.: Santiago, apartamento o parcela 215…"
-              className="h-[60px] w-full rounded-md border border-gray-300 bg-white pl-12 pr-12 text-base text-navy-950 placeholder:text-gray-400 focus:border-navy-500 focus:outline-none focus:ring-2 focus:ring-navy-500/20"
+              className="h-12 w-full rounded-lg border border-navy-900/12 bg-white pl-12 pr-12 text-sm text-navy-950 placeholder:text-gray-400 focus:border-navy-500 focus:outline-none focus:ring-2 focus:ring-sky-400/30"
             />
             {query && (
               <button
@@ -213,7 +250,7 @@ export default function Mapa() {
                   type="button"
                   onClick={() => toggleType(type)}
                   aria-pressed={active}
-                  className={`inline-flex h-[60px] touch-manipulation items-center justify-center gap-2 rounded-md border px-6 text-base font-semibold whitespace-nowrap transition-[background-color,border-color,color,transform] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-500 focus-visible:ring-offset-2 ${
+                  className={`inline-flex h-12 touch-manipulation items-center justify-center gap-2 rounded-lg border px-6 text-sm font-semibold whitespace-nowrap transition-[background-color,border-color,color,transform] ease-brand duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 ${
                     active
                       ? "border-navy-200 bg-navy-50 text-navy-900 hover:border-navy-300"
                       : "border-gray-200 bg-gray-50 text-gray-500 hover:border-gray-300 hover:text-gray-800"
@@ -274,13 +311,9 @@ export default function Mapa() {
                 <p className="mt-2 max-w-xs text-sm leading-relaxed text-gray-600">
                   Prueba otra localidad o activa más tipos de inmueble.
                 </p>
-                <button
-                  type="button"
-                  onClick={clearFilters}
-                  className="mt-5 inline-flex h-[60px] items-center justify-center rounded-md bg-navy-800 px-7 text-base font-semibold whitespace-nowrap text-white shadow-[0_1px_3px_rgba(0,23,51,0.12)] transition-[transform,box-shadow,background-color] duration-200 hover:-translate-y-0.5 hover:bg-navy-950 hover:shadow-[0_10px_24px_-6px_rgba(0,23,51,0.4)] active:translate-y-0 active:scale-[0.98] active:shadow-[0_2px_6px_rgba(0,23,51,0.2)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-500 focus-visible:ring-offset-2"
-                >
+                <Button onClick={clearFilters} variant="secondary" className="mt-5">
                   Mostrar todas
-                </button>
+                </Button>
               </div>
             )}
           </aside>
@@ -301,6 +334,7 @@ export default function Mapa() {
               style={{ height: "100%", width: "100%" }}
             >
               <NavigationControl position="top-left" showCompass={false} />
+              <ThematicLayers activas={activeLayers} sources={layerSources} />
               {visible.map((property) => (
                 <Marker
                   key={property.id}
@@ -343,15 +377,37 @@ export default function Mapa() {
             </Map>
             )}
 
-            <button
-              type="button"
-              onClick={fitVisibleProperties}
-              disabled={visible.length === 0}
-              className="absolute right-3 top-3 z-[400] inline-flex h-[60px] touch-manipulation items-center justify-center gap-2 rounded-md border border-gray-200 bg-white px-7 text-base font-semibold whitespace-nowrap text-navy-900 shadow-[0_8px_24px_rgba(11,29,51,0.16)] hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy-500 focus-visible:ring-offset-2 active:scale-[0.98]"
-            >
-              <MapPin aria-hidden="true" className="h-4 w-4" />
-              Ver todas
-            </button>
+            {/* Acotado a la altura del mapa: el panel de capas crece hacia abajo
+                y sin este tope se salía del contenedor. */}
+            <div className="absolute right-3 top-3 bottom-3 z-[400] flex flex-col items-end gap-2 pointer-events-none [&>*]:pointer-events-auto">
+              <Button
+                onClick={fitVisibleProperties}
+                disabled={visible.length === 0}
+                variant="quiet"
+                className="touch-manipulation shadow-[0_8px_24px_rgba(11,29,51,0.16)]"
+              >
+                <MapPin aria-hidden="true" className="h-4 w-4 shrink-0" />
+                Ver todas
+              </Button>
+
+              <div className="flex min-h-0 flex-1 flex-col items-end [&>*]:pointer-events-auto">
+                <LayerControl
+                  abierto={panelCapas}
+                  onAbrir={setPanelCapas}
+                  activas={activeLayers}
+                  onToggle={toggleLayer}
+                  onTodas={setAllLayers}
+                  sources={layerSources}
+                />
+              </div>
+            </div>
+
+            {/* `bottom-8` deja libre el logotipo obligatorio de Mapbox */}
+            <LayerLegend
+              activas={activeLayers}
+              sources={layerSources}
+              className="absolute bottom-8 left-3 z-[390]"
+            />
           </div>
         </div>
 

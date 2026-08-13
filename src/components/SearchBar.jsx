@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { MagnifyingGlass } from "@phosphor-icons/react";
+import Button from "./Button";
 import { PROVINCES } from "../data/provinces";
 import { TYPES } from "../data/properties";
 
@@ -59,16 +61,10 @@ export default function SearchBar({ className = "" }) {
         ))}
       </select>
 
-      <button
-        type="submit"
-        className="inline-flex items-center justify-center gap-2 rounded-lg bg-navy-800 shadow-[0_1px_3px_rgba(0,23,51,0.12)] hover:-translate-y-0.5 hover:bg-navy-900 hover:shadow-[0_10px_24px_-6px_rgba(0,23,51,0.4)] active:translate-y-0 active:shadow-[0_2px_6px_rgba(0,23,51,0.2)] text-white font-semibold text-sm px-6 py-2.5 transition-[transform,box-shadow,background-color] duration-200"
-      >
-        <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2">
-          <circle cx="11" cy="11" r="7" />
-          <path d="m21 21-4.3-4.3" />
-        </svg>
+      <Button type="submit" variant="secondary">
+        <MagnifyingGlass size={15} weight="bold" aria-hidden="true" className="shrink-0" />
         Buscar
-      </button>
+      </Button>
     </form>
   );
 }

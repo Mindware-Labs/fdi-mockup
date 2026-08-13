@@ -1,0 +1,11 @@
+{
+  "_lea": "Ver README.md en esta misma carpeta. Añade aquí el id de cada capa cuyo archivo oficial ya esté depositado; las que no figuren se dibujan con la geometría de muestra.",
+  "_ids": [
+    "areas-protegidas",
+    "transmision",
+    "mineria",
+    "hidrocarburos",
+    "energia"
+  ],
+  "oficiales": []
+}

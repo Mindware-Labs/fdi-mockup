@@ -10,9 +10,12 @@ export default function PropertyCard({ property, view = "grid" }) {
   const isList = view === "list";
 
   return (
+    // Mismo gesto que las tarjetas de beneficios: al pasar el cursor la ficha se
+    // despega del papel —el filete se disuelve y entra la sombra— en vez de
+    // marcarse con un borde más oscuro.
     <Link
       to={`/inmuebles/${property.id}`}
-      className={`group bg-white border border-navy-900/10 hover:border-navy-900/30 transition-colors duration-200 outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 ${
+      className={`group bg-white border border-navy-900/10 outline-none transition-[transform,box-shadow,border-color] duration-500 ease-brand hover:border-navy-900/[0.04] hover:shadow-[0_2px_4px_-2px_rgba(7,26,58,0.12),0_22px_46px_-26px_rgba(7,26,58,0.6)] focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 motion-safe:hover:-translate-y-0.5 ${
         isList ? "flex flex-col sm:flex-row" : "flex flex-col"
       }`}
     >
@@ -37,7 +40,10 @@ export default function PropertyCard({ property, view = "grid" }) {
             <StatusBadge estado={property.estado} className="ml-auto" />
           </div>
 
-          <h3 className="mt-4 font-semibold text-navy-950 leading-snug transition-colors group-hover:text-navy-600">
+          {/* Sin cambio de color al pasar el cursor: el título ya es el tono más
+              oscuro de la ficha y aclararlo lo restaba en vez de destacarlo. La
+              elevación es la única señal de que la tarjeta es un enlace. */}
+          <h3 className="mt-4 font-semibold text-navy-950 leading-snug">
             {property.titulo}
           </h3>
 

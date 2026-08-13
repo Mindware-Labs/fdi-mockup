@@ -1,5 +1,7 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { ArrowRight } from "@phosphor-icons/react";
+import Button from "./Button";
 import { TYPE_COLORS } from "./PropertyMapMarker";
 import { boundsFromPoints } from "./mapConfig";
 import { PROPERTIES, TYPES } from "../data/properties";
@@ -66,15 +68,15 @@ export default function CoverageMap() {
             provincias del país.
           </p>
         </div>
-        <Link
+        <Button
+          as={Link}
           to="/mapa"
-          className="group inline-flex items-center justify-center gap-2.5 self-start whitespace-nowrap bg-navy-800 px-6 py-3.5 text-sm font-semibold text-white shadow-[0_1px_3px_rgba(0,23,51,0.12)] outline-none transition-[transform,box-shadow,background-color] duration-200 ease-brand hover:bg-navy-900 hover:shadow-[0_10px_24px_-6px_rgba(0,23,51,0.4)] active:bg-navy-950 active:shadow-[0_2px_6px_rgba(0,23,51,0.2)] motion-safe:hover:-translate-y-0.5 motion-safe:active:translate-y-0 focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 lg:self-end"
+          variant="secondary"
+          icon={ArrowRight}
+          className="self-start lg:self-end"
         >
           Ver mapa completo
-          <svg viewBox="0 0 24 24" className="h-4 w-4 transition-transform duration-200 ease-brand motion-safe:group-hover:translate-x-1" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
-            <path d="M5 12h14M13 5l7 7-7 7" />
-          </svg>
-        </Link>
+        </Button>
       </div>
 
       {/* Altura fija y compacta: el montaje diferido no desplaza el layout, y el mapa
