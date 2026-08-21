@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   ArrowRight,
+  ArrowSquareOut,
   CaretDown,
   DownloadSimple,
   FileText,
@@ -11,6 +12,10 @@ import Button from "../components/Button";
 import ScrollReveal from "../components/ScrollReveal";
 import { ANCLA, PageIndexBar, PageIndexRail, usePageIndex } from "../components/PageIndex";
 import { TELEFONO } from "../data/contacto";
+import { DOCUMENTS, GRUPOS, SALA_CONSULTAS_URL, STEPS } from "../data/proceso-compra";
+
+const ENLACE_EXTERNO =
+  "font-semibold text-navy-800 underline underline-offset-2 transition-colors hover:text-navy-950";
 
 const SECCIONES = [
   { id: "proceso", label: "El proceso" },
@@ -20,109 +25,6 @@ const SECCIONES = [
 ];
 const IDS = SECCIONES.map((s) => s.id);
 
-// `docs`: identificadores de los formularios que se presentan en ese paso. Enlazan
-// con la ficha correspondiente más abajo, para no obligar a buscarla a mano.
-const STEPS = [
-  {
-    n: "01",
-    title: "Selección del inmueble",
-    text: "Explora el catálogo o el mapa nacional y elige el inmueble de tu interés. Cada ficha publica su parcela y distrito catastral.",
-    docs: [],
-  },
-  {
-    n: "02",
-    title: "Verificación KYC",
-    text: "Completa el checklist de documentos y el formulario de tercero que corresponda a tu figura: persona física o persona jurídica.",
-    docs: ["kyc", "fr-002", "fr-003"],
-  },
-  {
-    n: "03",
-    title: "Formulario de oferta de compra",
-    text: "Presenta el formulario oficial de oferta sobre el inmueble seleccionado ante el fideicomiso.",
-    docs: ["oferta"],
-  },
-  {
-    n: "04",
-    title: "Evaluación del fideicomiso",
-    text: "El FDI evalúa la oferta recibida, verificando la documentación presentada y las condiciones de la propuesta.",
-    docs: [],
-  },
-  {
-    n: "05",
-    title: "Firma y formalización",
-    text: "Aprobada la oferta, se procede a la firma de los documentos y a la formalización de la venta.",
-    docs: [],
-  },
-];
-
-// `file`: ruta pública del documento. Mientras sea null la ficha se marca como
-// pendiente en vez de ofrecer un enlace que no resuelve.
-const DOCUMENTS = [
-  {
-    id: "kyc",
-    grupo: "todos",
-    corto: "Checklist KYC",
-    name: "Checklist documentos KYC ofertas FDI",
-    ext: "XLSX",
-    file: null,
-    desc: "Lista de verificación de los documentos requeridos para el proceso de conocimiento del cliente.",
-  },
-  {
-    id: "oferta",
-    grupo: "todos",
-    corto: "Oferta de compra",
-    name: "Formulario Oferta Compra Inmueble FDI",
-    ext: "PDF",
-    file: null,
-    desc: "Formulario oficial para formalizar una oferta de compra sobre un inmueble del fideicomiso.",
-  },
-  {
-    id: "fr-002",
-    grupo: "oferente",
-    corto: "FR-002",
-    name: "FR-002 Tercero Persona Física",
-    ext: "XLS",
-    file: null,
-    desc: "Registro del oferente cuando participa a título personal.",
-  },
-  {
-    id: "fr-003",
-    grupo: "oferente",
-    corto: "FR-003",
-    name: "FR-003 Tercero Persona Jurídica",
-    ext: "XLS",
-    file: null,
-    desc: "Registro del oferente cuando participa una empresa o entidad.",
-  },
-  {
-    id: "intermediario",
-    grupo: "intermediarios",
-    corto: "Registro de intermediario",
-    name: "Formulario Registro Intermediario Inmobiliario FDI",
-    ext: "PDF",
-    file: null,
-    desc: "Registro previo del agente que representa a un comprador ante el fideicomiso.",
-  },
-];
-
-const GRUPOS = [
-  {
-    id: "todos",
-    title: "En toda oferta",
-    desc: "Se presentan siempre, sea quien sea el oferente.",
-  },
-  {
-    id: "oferente",
-    title: "Según quién oferta",
-    desc: "Solo el que corresponda a tu figura; no ambos.",
-  },
-  {
-    id: "intermediarios",
-    title: "Si participa un intermediario",
-    desc: "Únicamente cuando un agente inmobiliario representa al comprador.",
-  },
-];
-
 const FAQS = [
   {
     q: "¿Quién puede ofertar por un inmueble del FDI?",
@@ -130,7 +32,16 @@ const FAQS = [
   },
   {
     q: "¿Dónde puedo consultar información registral de los inmuebles?",
-    a: "En la Sala de Consultas de la Jurisdicción Inmobiliaria, de acceso público y gratuito. Cada ficha del catálogo publica la parcela y el distrito catastral necesarios para la consulta.",
+    a: (
+      <>
+        En la{" "}
+        <a href={SALA_CONSULTAS_URL} target="_blank" rel="noreferrer" className={ENLACE_EXTERNO}>
+          Sala de Consultas de la Jurisdicción Inmobiliaria
+        </a>
+        , de acceso público y gratuito. Cada ficha del catálogo publica la parcela y el
+        distrito catastral necesarios para la consulta.
+      </>
+    ),
   },
   {
     q: "¿Se respetan derechos adquiridos previamente por terceros?",
@@ -138,11 +49,15 @@ const FAQS = [
   },
   {
     q: "¿Cuánto tiempo toma el proceso de evaluación de una oferta?",
-    a: "Varía según la complejidad del inmueble y la documentación presentada. El equipo del FDI da seguimiento a cada oferta y se pone en contacto con el oferente.",
+    a: "Varía según la complejidad del inmueble y la documentación presentada. El FDI evalúa factibilidad y realiza debida diligencia antes de someter la oferta al Consejo Técnico del Fideicomiso, que toma la decisión definitiva, y da seguimiento directo a cada oferente.",
   },
   {
     q: "¿Puedo usar un intermediario inmobiliario?",
     a: "Sí, siempre que esté debidamente registrado mediante el Formulario de Registro de Intermediario Inmobiliario del FDI.",
+  },
+  {
+    q: "¿La oferta se presenta en línea o de forma física?",
+    a: "De forma física. Todos los formularios y documentos se entregan en las oficinas de Fiduciaria Reservas: Av. Roberto Pastoriza No. 358, piso 8, Piantini, Distrito Nacional. El proceso no admite presentación digital.",
   },
 ];
 
@@ -198,9 +113,9 @@ export default function ComoComprar() {
             ¿Cómo comprar un inmueble?
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-navy-200">
-            Cinco pasos, cinco formularios y una regla igual para todos. El proceso de
-            comercialización del FDI es público y documentado, desde la selección del
-            inmueble hasta la firma.
+            {STEPS.length} pasos y una regla igual para todos: la oferta se prepara con
+            estos formularios y se entrega en formato físico en las oficinas de
+            Fiduciaria Reservas, desde la selección del inmueble hasta la firma.
           </p>
         </div>
       </section>
@@ -259,7 +174,7 @@ export default function ComoComprar() {
                       </h3>
                       <p className="mt-2 max-w-2xl leading-relaxed text-gray-600">{s.text}</p>
 
-                      {s.docs.length > 0 && (
+                      {(s.docs.length > 0 || s.enlace) && (
                         <p className="mt-4 flex flex-wrap items-center gap-2">
                           {s.docs.map((id) => (
                             <a
@@ -271,6 +186,18 @@ export default function ComoComprar() {
                               {docPorId[id].corto}
                             </a>
                           ))}
+                          {s.enlace && (
+                            <a
+                              href={s.enlace.href}
+                              target="_blank"
+                              rel="noreferrer"
+                              className={`inline-flex items-center gap-1.5 rounded-md border border-navy-900/12 bg-white px-2.5 py-1.5 text-xs font-semibold text-navy-800 transition-[border-color,background-color] duration-200 ease-brand hover:border-navy-900/25 hover:bg-mist-50 ${FOCUS}`}
+                            >
+                              <ArrowSquareOut size={13} weight="bold" aria-hidden="true" />
+                              {s.enlace.label}
+                              <span className="sr-only">(abre en una ventana nueva)</span>
+                            </a>
+                          )}
                         </p>
                       )}
                     </div>
@@ -302,6 +229,16 @@ export default function ComoComprar() {
                     Jurisdicción Inmobiliaria, de acceso público y gratuito. Necesitarás la
                     parcela y el distrito catastral, que publica cada ficha del catálogo.
                   </p>
+                  <a
+                    href={SALA_CONSULTAS_URL}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={`mt-3 inline-flex items-center gap-1.5 rounded-sm text-sm font-semibold text-navy-800 transition-colors duration-200 hover:text-navy-950 ${FOCUS}`}
+                  >
+                    Ir a ri.gob.do
+                    <ArrowSquareOut size={14} weight="bold" aria-hidden="true" />
+                    <span className="sr-only">(abre en una ventana nueva)</span>
+                  </a>
                 </div>
                 <div className="border-t border-navy-900/15 pt-5">
                   <h3 className="font-semibold text-navy-950">Derechos de terceros</h3>

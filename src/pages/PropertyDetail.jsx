@@ -1,7 +1,8 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { WhatsappLogo } from "@phosphor-icons/react";
 import Button from "../components/Button";
+import OfferRequirements from "../components/OfferRequirements";
 import PropertyMedia from "../components/PropertyMedia";
 import { TELEFONO, WHATSAPP } from "../data/contacto";
 import PropertyCard from "../components/PropertyCard";
@@ -21,6 +22,14 @@ const DOCS = [
 export default function PropertyDetail() {
   const { id } = useParams();
   const property = PROPERTIES.find((p) => p.id === id);
+  const [ofertando, setOfertando] = useState(false);
+
+  // React Router reutiliza el componente al pasar de una ficha a otra (mismo
+  // patrón de ruta): sin esto, abrir "similares" con el panel abierto lo dejaría
+  // abierto también en el inmueble nuevo, tapando su precio.
+  useEffect(() => {
+    setOfertando(false);
+  }, [id]);
 
   if (!property) return <NotFound />;
 
@@ -106,43 +115,50 @@ export default function PropertyDetail() {
           </div>
         </div>
 
-        {/* Sidebar */}
+        {/* Sidebar: alterna entre precio/CTA y los requisitos de oferta en la misma
+            tarjeta, para no navegar fuera de la ficha ni duplicar el espacio. */}
         <div className="space-y-6">
           <div className="bg-white border border-gray-200 rounded-2xl p-6 sticky top-28">
-            <p className="text-sm text-gray-500 mb-1">Precio</p>
-            <p className="text-2xl font-bold text-navy-950 mb-6">{formatPrice(property.precio)}</p>
+            {ofertando ? (
+              <OfferRequirements onVolver={() => setOfertando(false)} />
+            ) : (
+              <>
+                <p className="text-sm text-gray-500 mb-1">Precio</p>
+                <p className="text-2xl font-bold text-navy-950 mb-6">{formatPrice(property.precio)}</p>
 
-            {/* El botón de WhatsApp iba en verde esmeralda, fuera de la paleta del
-                brandbook. Entra al sistema como acción discreta y deja que el
-                icono cargue con el reconocimiento del canal. */}
-            <div className="space-y-3">
-              <Button as="a" href="/como-comprar#formularios" variant="primary" fullWidth>
-                Hacer una oferta
-              </Button>
-              <Button as={Link} to="/contacto" variant="quiet" fullWidth>
-                Solicitar información
-              </Button>
-              <Button
-                as="a"
-                href={WHATSAPP.conMensaje(
-                  `Hola, estoy interesado en el inmueble ${property.titulo} (Parcela ${property.parcela}).`,
-                )}
-                target="_blank"
-                rel="noreferrer"
-                variant="quiet"
-                fullWidth
-              >
-                <WhatsappLogo size={17} weight="fill" aria-hidden="true" className="shrink-0" />
-                Consultar por WhatsApp
-              </Button>
-            </div>
+                {/* El botón de WhatsApp iba en verde esmeralda, fuera de la paleta del
+                    brandbook. Entra al sistema como acción discreta y deja que el
+                    icono cargue con el reconocimiento del canal. */}
+                <div className="space-y-3">
+                  <Button onClick={() => setOfertando(true)} variant="primary" fullWidth>
+                    Hacer una oferta
+                  </Button>
+                  <Button as={Link} to="/contacto" variant="quiet" fullWidth>
+                    Solicitar información
+                  </Button>
+                  <Button
+                    as="a"
+                    href={WHATSAPP.conMensaje(
+                      `Hola, estoy interesado en el inmueble ${property.titulo} (Parcela ${property.parcela}).`,
+                    )}
+                    target="_blank"
+                    rel="noreferrer"
+                    variant="quiet"
+                    fullWidth
+                  >
+                    <WhatsappLogo size={17} weight="fill" aria-hidden="true" className="shrink-0" />
+                    Consultar por WhatsApp
+                  </Button>
+                </div>
 
-            <div className="mt-6 pt-6 border-t border-gray-100 text-sm text-gray-500">
-              <p>¿Prefieres hablar con alguien?</p>
-              <a href={TELEFONO.href} className="text-navy-800 font-semibold text-base">
-                {TELEFONO.texto}
-              </a>
-            </div>
+                <div className="mt-6 pt-6 border-t border-gray-100 text-sm text-gray-500">
+                  <p>¿Prefieres hablar con alguien?</p>
+                  <a href={TELEFONO.href} className="text-navy-800 font-semibold text-base">
+                    {TELEFONO.texto}
+                  </a>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
