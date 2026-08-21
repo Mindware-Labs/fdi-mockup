@@ -35,7 +35,7 @@ const BENEFICIOS = [
   {
     icon: Headset,
     title: "Atención directa",
-    text: "Un solo canal institucional para consultas y ofertas: teléfono, WhatsApp y correo del fondo.",
+    text: "Un solo canal institucional para consultas y ofertas: teléfono y correo del fondo.",
     action: "Escribir al fondo",
     to: "/contacto",
   },

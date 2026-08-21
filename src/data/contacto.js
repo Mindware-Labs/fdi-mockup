@@ -6,26 +6,17 @@
  * institucionales—: diecisiete literales que había que cambiar uno a uno y de
  * los que era cuestión de tiempo que alguno se quedara viejo.
  *
- * El número se declara una vez en crudo; el texto que se ve y los enlaces
- * `tel:` y de WhatsApp se derivan de él.
+ * El número se declara una vez en crudo; el texto que se ve y el enlace `tel:`
+ * se derivan de él.
  */
 
 const TELEFONO_NACIONAL = "8099604580";
-const TELEFONO_E164 = `1${TELEFONO_NACIONAL}`; // República Dominicana: +1
 
 const formatearRD = (n) => `(${n.slice(0, 3)}) ${n.slice(3, 6)}-${n.slice(6)}`;
 
 export const TELEFONO = {
   texto: formatearRD(TELEFONO_NACIONAL),
   href: `tel:${TELEFONO_NACIONAL}`,
-};
-
-export const WHATSAPP = {
-  texto: formatearRD(TELEFONO_NACIONAL),
-  href: `https://wa.me/${TELEFONO_E164}`,
-  /** Mismo chat, con el mensaje ya escrito. */
-  conMensaje: (mensaje) =>
-    `https://wa.me/${TELEFONO_E164}?text=${encodeURIComponent(mensaje)}`,
 };
 
 export const CORREO = {

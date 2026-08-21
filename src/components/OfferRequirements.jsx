@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { ArrowLeft, ArrowRight, ArrowSquareOut, FileText } from "@phosphor-icons/react";
+import { ArrowRight, ArrowSquareOut, FileText } from "@phosphor-icons/react";
+import BackButton from "./BackButton";
 import { DOCUMENTS, REQUISITOS_OFERTA } from "../data/proceso-compra";
 
 const FOCUS =
@@ -13,19 +14,7 @@ const docPorId = Object.fromEntries(DOCUMENTS.map((doc) => [doc.id, doc]));
 export default function OfferRequirements({ onVolver }) {
   return (
     <div>
-      <button
-        type="button"
-        onClick={onVolver}
-        className={`group -ml-2.5 inline-flex items-center gap-1.5 rounded-md border border-transparent py-1 pl-2.5 pr-3 text-sm font-semibold text-navy-600 transition-[color,background-color,border-color] duration-200 ease-brand hover:border-navy-900/12 hover:bg-mist-50 hover:text-navy-950 ${FOCUS}`}
-      >
-        <ArrowLeft
-          size={15}
-          weight="bold"
-          aria-hidden="true"
-          className="shrink-0 transition-transform duration-300 ease-brand motion-safe:group-hover:-translate-x-1"
-        />
-        Volver
-      </button>
+      <BackButton onClick={onVolver} />
 
       <h2 className="mt-4 text-lg font-semibold text-navy-950">Requisitos para ofertar</h2>
       <p className="mt-1.5 text-sm leading-relaxed text-gray-600">
