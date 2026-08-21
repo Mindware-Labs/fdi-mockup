@@ -22,8 +22,10 @@ export default function Hero() {
 
   return (
     // `-mt-16` mete el hero por debajo del header transparente (h-16) sin sacarlo
-    // del flujo; `pt-16` devuelve ese espacio al contenido.
-    <section className="relative isolate -mt-16 overflow-hidden bg-navy-950">
+    // del flujo; `pt-16` devuelve ese espacio al contenido. `min-h-dvh` fija el
+    // hero a la altura real de la pantalla (con su barra de header incluida) para
+    // que siempre se vea completo al cargar, sin importar el alto del viewport.
+    <section className="relative isolate -mt-16 flex min-h-dvh flex-col overflow-hidden bg-navy-950">
       {/* El PNG original pesaba 2.1 MB y es el elemento LCP: se sirve en WebP con
           JPEG de respaldo y en dos anchos, con el preload declarado en index.html. */}
       <picture>
@@ -57,11 +59,12 @@ export default function Hero() {
         variants={STAGGER}
         initial="hidden"
         animate="visible"
-        className="relative mx-auto max-w-7xl px-4 pt-16 sm:px-6 lg:px-8"
+        className="relative mx-auto flex w-full max-w-7xl flex-1 items-center px-4 pt-16 sm:px-6 lg:px-8"
       >
         {/* El aire se recorta en pantallas bajas (móvil apaisado) para que los
-            botones no queden a dos pantallas de distancia del titular. */}
-        <div className="pt-16 pb-20 sm:pt-28 sm:pb-28 lg:pt-32 lg:pb-36 [@media(max-height:640px)]:pt-10 [@media(max-height:640px)]:pb-14">
+            botones no queden a dos pantallas de distancia del titular. El bloque
+            se centra verticalmente en el espacio disponible bajo el header. */}
+        <div className="py-16 sm:py-20 lg:py-24 [@media(max-height:640px)]:py-10">
           <motion.h1
             variants={item}
             className="max-w-4xl text-[2.6rem] font-bold leading-[1.05] tracking-[-0.025em] text-balance text-white sm:text-6xl lg:text-[4.15rem]"
