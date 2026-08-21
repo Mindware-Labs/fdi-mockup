@@ -7,8 +7,10 @@ import { boundsFromPoints } from "./mapConfig";
 import { PROPERTIES, TYPES } from "../data/properties";
 import { PROVINCES } from "../data/provinces";
 
-// Mapbox GL pesa ~500 kB gzip: se descarga solo cuando esta sección entra en viewport.
-const CoverageMapCanvas = lazy(() => import("./CoverageMapCanvas"));
+// Mapbox GL pesa ~500 kB gzip: el bundle se precarga en tiempo de inactividad
+// (abajo) pero solo se monta —y solo entonces pide teselas— al entrar en viewport.
+const importCanvas = () => import("./CoverageMapCanvas");
+const CoverageMapCanvas = lazy(importCanvas);
 
 const LOCATED = PROPERTIES.filter((p) => p.lat && p.lng);
 
@@ -40,8 +42,24 @@ function useInView() {
   return [ref, inView];
 }
 
+/** Adelanta la descarga del bundle de Mapbox en tiempo de inactividad del navegador,
+    para que ya esté en caché cuando el usuario llegue a esta sección y no tenga que
+    esperar la descarga completa. No se dispara con ahorro de datos activado. */
+function usePrefetchMapCanvas() {
+  useEffect(() => {
+    const connection = navigator.connection;
+    if (connection?.saveData || /2g/.test(connection?.effectiveType ?? "")) return;
+
+    const schedule = window.requestIdleCallback ?? ((cb) => setTimeout(cb, 1500));
+    const cancel = window.cancelIdleCallback ?? clearTimeout;
+    const id = schedule(() => importCanvas());
+    return () => cancel(id);
+  }, []);
+}
+
 export default function CoverageMap() {
   const [ref, inView] = useInView();
+  usePrefetchMapCanvas();
 
   const bounds = useMemo(() => boundsFromPoints(LOCATED), []);
   const tiposPresentes = useMemo(
@@ -83,7 +101,11 @@ export default function CoverageMap() {
           ya es interactivo (clic en un pin abre su ficha), así que no hace falta que sea grande. */}
       <div ref={ref} className="relative h-[260px] border-t border-navy-900/10 bg-navy-50 sm:h-[340px]">
         {inView && (
-          <Suspense fallback={null}>
+          <Suspense
+            fallback={
+              <div className="absolute inset-0 animate-pulse bg-navy-100/70" aria-hidden="true" />
+            }
+          >
             <CoverageMapCanvas properties={LOCATED} bounds={bounds} />
           </Suspense>
         )}

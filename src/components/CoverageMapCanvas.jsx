@@ -21,7 +21,7 @@ export default function CoverageMapCanvas({ properties, bounds }) {
       mapboxAccessToken={MAPBOX_TOKEN}
       mapStyle={MAP_STYLE}
       initialViewState={DEFAULT_CENTER}
-      onLoad={() => mapRef.current?.fitBounds(bounds, { padding: 36, duration: 0 })}
+      onLoad={() => mapRef.current?.fitBounds(bounds, { padding: 36, maxZoom: 11, duration: 0 })}
       scrollZoom={false}
       dragPan={false}
       dragRotate={false}

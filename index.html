@@ -24,6 +24,9 @@
       imagesizes="100vw"
       fetchpriority="high"
     />
+    <!-- Mapbox GL se descarga bajo demanda, pero el handshake DNS/TLS con su API
+         puede adelantarse: cuando el mapa arranca ya no paga ese round-trip. -->
+    <link rel="preconnect" href="https://api.mapbox.com" crossorigin />
     <meta name="description" content="FDI - Fondo de Desarrollo de Infraestructuras. Portal de comercialización de inmuebles del fideicomiso constituido mediante el Decreto 581-23." />
     <title>FDI · Fondo de Desarrollo de Infraestructuras</title>
 

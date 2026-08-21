@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   ArrowRight,
@@ -11,9 +11,12 @@ import {
   WhatsappLogo,
 } from "@phosphor-icons/react";
 import Button from "../components/Button";
-import OfficeMap from "../components/OfficeMap";
 import ScrollReveal from "../components/ScrollReveal";
 import { CORREO, HORARIO, OFICINA_LINEAS, TELEFONO, WHATSAPP } from "../data/contacto";
+
+// Mapbox GL pesa ~500 kB gzip: se descarga solo al abrir esta página, no en cada
+// carga del sitio (esta era la única página que lo importaba de forma estática).
+const OfficeMap = lazy(() => import("../components/OfficeMap"));
 
 const FOCUS =
   "outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2";
@@ -380,7 +383,16 @@ export default function Contacto() {
                 </dl>
 
                 <div className="mt-6">
-                  <OfficeMap />
+                  <Suspense
+                    fallback={
+                      <div
+                        className="h-[260px] animate-pulse border border-navy-900/10 bg-navy-50"
+                        aria-hidden="true"
+                      />
+                    }
+                  >
+                    <OfficeMap />
+                  </Suspense>
                 </div>
               </ScrollReveal>
             </section>
