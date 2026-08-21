@@ -90,113 +90,114 @@ export default function Contacto() {
         </div>
       </section>
 
+      {/* Antes iban en dos columnas: el mapa hacía esa mitad mucho más alta que la
+          otra y dejaba un vacío evidente junto a los atajos. En filas a todo el
+          ancho, cada bloque ocupa solo el alto que su propio contenido necesita. */}
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
-        <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
-          <section aria-labelledby="oficina-titulo">
-            <ScrollReveal>
-              <h2
-                id="oficina-titulo"
-                className="text-sm font-semibold uppercase tracking-[0.12em] text-navy-900"
-              >
-                Oficina y horario
-              </h2>
-              <dl className="mt-5 border-t border-navy-900/10">
-                <div className="flex gap-3.5 border-b border-navy-900/10 py-5">
-                  <MapPin
-                    size={18}
-                    weight="fill"
-                    aria-hidden="true"
-                    className="mt-0.5 shrink-0 text-navy-500"
-                  />
-                  <div>
-                    <dt className="text-sm text-gray-500">Oficina</dt>
-                    <dd className="mt-1 font-medium leading-relaxed text-navy-950">
-                      {OFICINA_LINEAS.map((linea) => (
-                        <span key={linea} className="block">
-                          {linea}
-                        </span>
-                      ))}
-                    </dd>
-                  </div>
+        <section aria-labelledby="oficina-titulo">
+          <ScrollReveal>
+            <h2
+              id="oficina-titulo"
+              className="text-sm font-semibold uppercase tracking-[0.12em] text-navy-900"
+            >
+              Oficina y horario
+            </h2>
+            <dl className="mt-5 grid gap-x-6 gap-y-6 border-t border-navy-900/10 pt-6 sm:grid-cols-3">
+              <div className="flex gap-3.5">
+                <MapPin
+                  size={18}
+                  weight="fill"
+                  aria-hidden="true"
+                  className="mt-0.5 shrink-0 text-navy-500"
+                />
+                <div>
+                  <dt className="text-sm text-gray-500">Oficina</dt>
+                  <dd className="mt-1 font-medium leading-relaxed text-navy-950">
+                    {OFICINA_LINEAS.map((linea) => (
+                      <span key={linea} className="block">
+                        {linea}
+                      </span>
+                    ))}
+                  </dd>
                 </div>
-                <div className="flex gap-3.5 border-b border-navy-900/10 py-5">
-                  <Clock
-                    size={18}
-                    weight="fill"
-                    aria-hidden="true"
-                    className="mt-0.5 shrink-0 text-navy-500"
-                  />
-                  <div>
-                    <dt className="text-sm text-gray-500">Horario de atención</dt>
-                    <dd className="mt-1 font-medium text-navy-950">{HORARIO}</dd>
-                  </div>
-                </div>
-                <div className="flex gap-3.5 border-b border-navy-900/10 py-5">
-                  <Buildings
-                    size={18}
-                    weight="fill"
-                    aria-hidden="true"
-                    className="mt-0.5 shrink-0 text-navy-500"
-                  />
-                  <div>
-                    <dt className="text-sm text-gray-500">Administración fiduciaria</dt>
-                    <dd className="mt-1 font-medium text-navy-950">Fiduciaria Reservas</dd>
-                  </div>
-                </div>
-              </dl>
-
-              <div className="mt-6">
-                <Suspense
-                  fallback={
-                    <div
-                      className="h-[260px] animate-pulse border border-navy-900/10 bg-navy-50"
-                      aria-hidden="true"
-                    />
-                  }
-                >
-                  <OfficeMap />
-                </Suspense>
               </div>
-            </ScrollReveal>
-          </section>
+              <div className="flex gap-3.5">
+                <Clock
+                  size={18}
+                  weight="fill"
+                  aria-hidden="true"
+                  className="mt-0.5 shrink-0 text-navy-500"
+                />
+                <div>
+                  <dt className="text-sm text-gray-500">Horario de atención</dt>
+                  <dd className="mt-1 font-medium text-navy-950">{HORARIO}</dd>
+                </div>
+              </div>
+              <div className="flex gap-3.5">
+                <Buildings
+                  size={18}
+                  weight="fill"
+                  aria-hidden="true"
+                  className="mt-0.5 shrink-0 text-navy-500"
+                />
+                <div>
+                  <dt className="text-sm text-gray-500">Administración fiduciaria</dt>
+                  <dd className="mt-1 font-medium text-navy-950">Fiduciaria Reservas</dd>
+                </div>
+              </div>
+            </dl>
 
-          <section aria-labelledby="atajos-titulo">
-            <ScrollReveal>
-              <h2
-                id="atajos-titulo"
-                className="text-sm font-semibold uppercase tracking-[0.12em] text-navy-900"
+            <div className="mt-8">
+              <Suspense
+                fallback={
+                  <div
+                    className="h-[320px] animate-pulse border border-navy-900/10 bg-navy-50"
+                    aria-hidden="true"
+                  />
+                }
               >
-                Antes de escribir
-              </h2>
-              <p className="mt-2 text-sm leading-relaxed text-gray-600">
-                Buena parte de las consultas ya están respondidas en el portal.
-              </p>
-              <ul className="mt-5 space-y-3">
-                {ATAJOS.map((atajo) => (
-                  <li key={atajo.to}>
-                    <Link
-                      to={atajo.to}
-                      className={`group flex flex-col border border-navy-900/10 bg-white p-5 transition-[transform,box-shadow,border-color] duration-500 ease-brand hover:border-navy-900/[0.04] hover:shadow-[0_2px_4px_-2px_rgba(7,26,58,0.12),0_18px_38px_-24px_rgba(7,26,58,0.55)] motion-safe:hover:-translate-y-0.5 ${FOCUS}`}
-                    >
-                      <span className="flex items-center justify-between gap-3 font-semibold text-navy-950">
-                        {atajo.titulo}
-                        <ArrowRight
-                          size={15}
-                          weight="bold"
-                          aria-hidden="true"
-                          className="shrink-0 text-navy-500 transition-transform duration-300 ease-brand motion-safe:group-hover:translate-x-1"
-                        />
-                      </span>
-                      <span className="mt-1.5 text-sm leading-relaxed text-gray-600">
-                        {atajo.texto}
-                      </span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </ScrollReveal>
-          </section>
-        </div>
+                <OfficeMap height="320px" />
+              </Suspense>
+            </div>
+          </ScrollReveal>
+        </section>
+
+        <section aria-labelledby="atajos-titulo" className="mt-16 border-t border-navy-900/10 pt-16">
+          <ScrollReveal>
+            <h2
+              id="atajos-titulo"
+              className="text-sm font-semibold uppercase tracking-[0.12em] text-navy-900"
+            >
+              Antes de escribir
+            </h2>
+            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-gray-600">
+              Buena parte de las consultas ya están respondidas en el portal.
+            </p>
+            <ul className="mt-6 grid gap-4 sm:grid-cols-3">
+              {ATAJOS.map((atajo) => (
+                <li key={atajo.to}>
+                  <Link
+                    to={atajo.to}
+                    className={`group flex h-full flex-col border border-navy-900/10 bg-white p-5 transition-[transform,box-shadow,border-color] duration-500 ease-brand hover:border-navy-900/[0.04] hover:shadow-[0_2px_4px_-2px_rgba(7,26,58,0.12),0_18px_38px_-24px_rgba(7,26,58,0.55)] motion-safe:hover:-translate-y-0.5 ${FOCUS}`}
+                  >
+                    <span className="flex items-center justify-between gap-3 font-semibold text-navy-950">
+                      {atajo.titulo}
+                      <ArrowRight
+                        size={15}
+                        weight="bold"
+                        aria-hidden="true"
+                        className="shrink-0 text-navy-500 transition-transform duration-300 ease-brand motion-safe:group-hover:translate-x-1"
+                      />
+                    </span>
+                    <span className="mt-1.5 text-sm leading-relaxed text-gray-600">
+                      {atajo.texto}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </ScrollReveal>
+        </section>
       </div>
     </div>
   );
