@@ -19,7 +19,6 @@ const ENLACE_EXTERNO =
 
 const SECCIONES = [
   { id: "proceso", label: "El proceso" },
-  { id: "verificacion", label: "Antes de ofertar" },
   { id: "formularios", label: "Formularios" },
   { id: "faq", label: "Preguntas frecuentes" },
 ];
@@ -50,14 +49,6 @@ const FAQS = [
   {
     q: "¿Cuánto tiempo toma el proceso de evaluación de una oferta?",
     a: "Varía según la complejidad del inmueble y la documentación presentada. El FDI evalúa factibilidad y realiza debida diligencia antes de someter la oferta al Consejo Técnico del Fideicomiso, que toma la decisión definitiva, y da seguimiento directo a cada oferente.",
-  },
-  {
-    q: "¿Puedo usar un intermediario inmobiliario?",
-    a: "Sí, siempre que esté debidamente registrado mediante el Formulario de Registro de Intermediario Inmobiliario del FDI.",
-  },
-  {
-    q: "¿La oferta se presenta en línea o de forma física?",
-    a: "De forma física. Todos los formularios y documentos se entregan en las oficinas de Fiduciaria Reservas: Av. Roberto Pastoriza No. 358, piso 8, Piantini, Distrito Nacional. El proceso no admite presentación digital.",
   },
 ];
 
@@ -148,8 +139,7 @@ export default function ComoComprar() {
                 El proceso, paso a paso
               </h2>
               <p className="mt-3 max-w-2xl leading-relaxed text-gray-600">
-                Cada paso indica qué formulario se presenta. Los enlaces llevan a la ficha
-                del documento, más abajo en esta misma página.
+                Cada paso indica su formulario, con enlace directo a la ficha.
               </p>
 
               <ol className="mt-12">
@@ -207,64 +197,6 @@ export default function ComoComprar() {
             </ScrollReveal>
           </section>
 
-          {/* ANTES DE OFERTAR */}
-          <section
-            id="verificacion"
-            className={`border-t border-navy-900/10 py-16 sm:py-20 ${ANCLA}`}
-          >
-            <ScrollReveal>
-              <h2 className="text-2xl font-bold tracking-[-0.02em] text-navy-950 sm:text-3xl">
-                Antes de ofertar
-              </h2>
-              <p className="mt-5 max-w-2xl text-xl leading-relaxed text-navy-900">
-                Puedes verificar la situación registral de cualquier inmueble antes de
-                presentar una oferta.
-              </p>
-
-              <div className="mt-10 grid gap-6 sm:grid-cols-2">
-                <div className="border-t border-sky-400 pt-5">
-                  <h3 className="font-semibold text-navy-950">Consulta registral pública</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-gray-600">
-                    La información detallada está disponible en la Sala de Consultas de la
-                    Jurisdicción Inmobiliaria, de acceso público y gratuito. Necesitarás la
-                    parcela y el distrito catastral, que publica cada ficha del catálogo.
-                  </p>
-                  <a
-                    href={SALA_CONSULTAS_URL}
-                    target="_blank"
-                    rel="noreferrer"
-                    className={`mt-3 inline-flex items-center gap-1.5 rounded-sm text-sm font-semibold text-navy-800 transition-colors duration-200 hover:text-navy-950 ${FOCUS}`}
-                  >
-                    Ir a ri.gob.do
-                    <ArrowSquareOut size={14} weight="bold" aria-hidden="true" />
-                    <span className="sr-only">(abre en una ventana nueva)</span>
-                  </a>
-                </div>
-                <div className="border-t border-navy-900/15 pt-5">
-                  <h3 className="font-semibold text-navy-950">Derechos de terceros</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-gray-600">
-                    En todos los casos se respetan los derechos legítimos de terceros
-                    adquiridos conforme a la ley con anterioridad a la constitución del
-                    fideicomiso.
-                  </p>
-                </div>
-              </div>
-
-              <Link
-                to="/sobre-el-fondo"
-                className={`group mt-8 inline-flex items-center gap-2 rounded-sm text-sm font-semibold text-navy-800 transition-colors duration-200 hover:text-navy-950 ${FOCUS}`}
-              >
-                Ver el marco legal del fideicomiso
-                <ArrowRight
-                  size={15}
-                  weight="bold"
-                  aria-hidden="true"
-                  className="transition-transform duration-300 ease-brand motion-safe:group-hover:translate-x-1"
-                />
-              </Link>
-            </ScrollReveal>
-          </section>
-
           {/* FORMULARIOS */}
           <section
             id="formularios"
@@ -275,17 +207,10 @@ export default function ComoComprar() {
                 Formularios y documentos
               </h2>
               <p className="mt-3 max-w-2xl leading-relaxed text-gray-600">
-                Agrupados por a quién le toca presentarlos, para que no haya que leer los
-                cinco antes de saber cuáles son los tuyos.
+                Agrupados según quién debe presentarlos.
               </p>
 
-              <p className="mt-6 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-relaxed text-amber-900">
-                Los archivos oficiales se enlazan aquí en cuanto el FDI los provee.
-                Entretanto, cada ficha describe para qué sirve el documento y en qué paso se
-                presenta.
-              </p>
-
-              <div className="mt-12 space-y-12">
+              <div className="mt-10 space-y-12">
                 {GRUPOS.map((grupo) => (
                   <div key={grupo.id}>
                     <h3 className="text-sm font-semibold uppercase tracking-[0.12em] text-navy-900">

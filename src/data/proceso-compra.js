@@ -100,7 +100,7 @@ export const DOCUMENTS = [
     corto: "Checklist KYC",
     name: "Checklist documentos KYC ofertas FDI",
     ext: "XLSX",
-    file: null,
+    file: "/documentos/checklist-kyc.xlsx",
     desc: "Lista de verificación de los documentos requeridos para el proceso de conocimiento del cliente.",
   },
   {
@@ -109,7 +109,7 @@ export const DOCUMENTS = [
     corto: "Oferta de compra",
     name: "Formulario Oferta Compra Inmueble FDI",
     ext: "PDF",
-    file: null,
+    file: "/documentos/oferta-compra.pdf",
     desc: "Formulario oficial para formalizar una oferta de compra sobre un inmueble del fideicomiso.",
   },
   {
@@ -118,7 +118,7 @@ export const DOCUMENTS = [
     corto: "FR-002",
     name: "FR-002 Tercero Persona Física",
     ext: "XLS",
-    file: null,
+    file: "/documentos/fr-002-persona-fisica.xls",
     desc: "Registro del oferente cuando participa a título personal.",
   },
   {
@@ -127,7 +127,7 @@ export const DOCUMENTS = [
     corto: "FR-003",
     name: "FR-003 Tercero Persona Jurídica",
     ext: "XLS",
-    file: null,
+    file: "/documentos/fr-003-persona-juridica.xls",
     desc: "Registro del oferente cuando participa una empresa o entidad.",
   },
   {
@@ -136,7 +136,7 @@ export const DOCUMENTS = [
     corto: "Registro de intermediario",
     name: "Formulario Registro Intermediario Inmobiliario FDI",
     ext: "PDF",
-    file: null,
+    file: "/documentos/registro-intermediario.pdf",
     desc: "Registro previo del agente que representa a un comprador ante el fideicomiso.",
   },
 ];

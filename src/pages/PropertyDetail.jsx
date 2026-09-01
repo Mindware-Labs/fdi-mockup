@@ -13,12 +13,6 @@ import NotFound from "./NotFound";
 // Mapbox GL pesa ~500 kB gzip: se descarga solo al abrir la ficha de un inmueble.
 const MiniMap = lazy(() => import("../components/MiniMap"));
 
-const DOCS = [
-  "Certificado de Título (referencial)",
-  "Ficha Técnica del Inmueble (PDF)",
-  "Plano Catastral (PDF)",
-];
-
 export default function PropertyDetail() {
   const { id } = useParams();
   const property = PROPERTIES.find((p) => p.id === id);
@@ -95,25 +89,6 @@ export default function PropertyDetail() {
             <Suspense fallback={<div className="h-[320px] rounded-xl bg-navy-50 border border-navy-100" />}>
               <MiniMap property={property} />
             </Suspense>
-          </div>
-
-          <div>
-            <h2 className="text-xl font-semibold text-navy-950 mb-4">Documentos relacionados</h2>
-            <ul className="space-y-2">
-              {DOCS.map((doc) => (
-                <li
-                  key={doc}
-                  className="flex items-center gap-3 bg-white border border-gray-200 rounded-lg px-4 py-3 text-sm text-gray-700"
-                >
-                  <svg viewBox="0 0 24 24" className="w-5 h-5 text-navy-400 shrink-0" fill="none" stroke="currentColor" strokeWidth="1.6">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z" />
-                    <path d="M14 2v6h6" />
-                  </svg>
-                  {doc}
-                  <span className="ml-auto text-xs text-gray-400">Disponible en detalle final</span>
-                </li>
-              ))}
-            </ul>
           </div>
         </div>
 

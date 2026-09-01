@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import Map, { Marker, NavigationControl, Popup } from "react-map-gl/mapbox";
+import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import {
   ArrowRight,
   Info,
@@ -24,10 +25,6 @@ import { PROPERTIES, STATUS, TYPES, formatArea } from "../data/properties";
 const LAYER_IDS = MAP_LAYERS.map((layer) => layer.id);
 const FOCUS =
   "outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2";
-const PESTANAS = [
-  { id: "inmuebles", label: "Inmuebles" },
-  { id: "capas", label: "Capas" },
-];
 
 /** Centra/ajusta el mapa cuando cambia la selección, el filtro o se pide "ver todas". */
 function useMapViewport(mapRef, mapReady, { properties, selectedProperty, fitRequest }) {
@@ -131,10 +128,7 @@ export default function Mapa() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [fitRequest, setFitRequest] = useState(0);
   const [mapReady, setMapReady] = useState(false);
-  const [pestana, setPestana] = useState("inmuebles");
   const mapRef = useRef(null);
-  const panelRef = useRef(null);
-  const tablistRef = useRef(null);
   const layerSources = useThematicLayers();
 
   const query = searchParams.get("q") ?? "";
@@ -228,29 +222,6 @@ export default function Mapa() {
     setFitRequest((request) => request + 1);
   }
 
-  /** Flechas para moverse entre pestañas, como espera un `tablist`. */
-  function onTablistKeyDown(event) {
-    if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
-    event.preventDefault();
-    const siguiente = pestana === "inmuebles" ? "capas" : "inmuebles";
-    setPestana(siguiente);
-    tablistRef.current?.querySelector(`#pestana-${siguiente}`)?.focus();
-  }
-
-  /**
-   * En móvil el panel queda debajo del mapa: hay que llevarlo a la vista. En
-   * escritorio ya está al lado, así que desplazar la página sería un salto
-   * gratuito que además metería el mapa bajo la cabecera fija.
-   */
-  function abrirCapas() {
-    setPestana("capas");
-    const enEscritorio = window.matchMedia("(min-width: 1024px)").matches;
-    requestAnimationFrame(() => {
-      if (!enEscritorio) panelRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-      tablistRef.current?.querySelector("#pestana-capas")?.focus();
-    });
-  }
-
   return (
     // Debajo de la cabecera (h-16) el mapa ocupa todo lo que queda de ventana.
     // En móvil el alto es libre: mapa arriba, panel debajo, y la página desplaza.
@@ -334,21 +305,28 @@ export default function Mapa() {
               Ver todas
             </Button>
 
-            {/* Solo en móvil: en escritorio las capas ya están a un clic en el panel */}
-            <Button
-              onClick={abrirCapas}
-              variant="quiet"
-              size="sm"
-              className="touch-manipulation shadow-[0_8px_24px_rgba(11,29,51,0.16)] lg:hidden"
-            >
-              <StackSimple aria-hidden="true" className="h-4 w-4 shrink-0" />
-              Capas
-              {activeLayers.size > 0 && (
-                <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-navy-800 px-1.5 text-xs font-bold tabular-nums text-white">
-                  {activeLayers.size}
-                </span>
-              )}
-            </Button>
+            <Popover>
+              <PopoverButton
+                as={Button}
+                variant="quiet"
+                size="sm"
+                className="touch-manipulation shadow-[0_8px_24px_rgba(11,29,51,0.16)]"
+              >
+                <StackSimple aria-hidden="true" className="h-4 w-4 shrink-0" />
+                Capas
+                {activeLayers.size > 0 && (
+                  <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-navy-800 px-1.5 text-xs font-bold tabular-nums text-white">
+                    {activeLayers.size}
+                  </span>
+                )}
+              </PopoverButton>
+              <PopoverPanel
+                anchor={{ to: "bottom end", gap: 8, padding: 12 }}
+                className="z-[400] flex max-h-[min(30rem,70dvh)] w-[min(22rem,calc(100vw-1.5rem))] flex-col overflow-hidden rounded-lg border border-navy-900/10 bg-white shadow-[0_20px_50px_rgba(11,29,51,0.28)]"
+              >
+                <LayerPanel activas={activeLayers} onToggle={toggleLayer} onTodas={setAllLayers} />
+              </PopoverPanel>
+            </Popover>
           </div>
 
           {/* Abajo a la derecha: con el panel a la izquierda, la isla se dibuja hacia
@@ -360,7 +338,6 @@ export default function Mapa() {
 
         {/* PANEL LATERAL */}
         <aside
-          ref={panelRef}
           className="order-2 flex w-full flex-col border-t border-navy-900/10 bg-white lg:order-1 lg:min-h-0 lg:w-[400px] lg:shrink-0 lg:border-r lg:border-t-0 xl:w-[440px]"
           aria-label="Controles y resultados del mapa"
         >
@@ -374,57 +351,7 @@ export default function Mapa() {
             </p>
           </div>
 
-          <div
-            ref={tablistRef}
-            role="tablist"
-            aria-label="Secciones del panel"
-            onKeyDown={onTablistKeyDown}
-            className="flex shrink-0 border-b border-navy-900/10"
-          >
-            {PESTANAS.map(({ id, label }) => {
-              const activa = pestana === id;
-              const cuenta = id === "inmuebles" ? visible.length : activeLayers.size;
-              return (
-                <button
-                  key={id}
-                  id={`pestana-${id}`}
-                  role="tab"
-                  type="button"
-                  aria-selected={activa}
-                  aria-controls={`seccion-${id}`}
-                  tabIndex={activa ? 0 : -1}
-                  onClick={() => setPestana(id)}
-                  className={`relative flex flex-1 items-center justify-center gap-2 px-4 py-3.5 text-sm font-semibold transition-colors duration-200 ease-brand ${FOCUS} focus-visible:ring-inset ${
-                    activa ? "text-navy-950" : "text-gray-500 hover:text-navy-900"
-                  }`}
-                >
-                  {label}
-                  <span
-                    className={`inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-xs font-bold tabular-nums transition-colors duration-200 ${
-                      activa ? "bg-navy-800 text-white" : "bg-mist-200 text-gray-600"
-                    }`}
-                  >
-                    {cuenta}
-                  </span>
-                  <span
-                    aria-hidden="true"
-                    className={`absolute inset-x-0 -bottom-px h-0.5 bg-sky-400 transition-transform duration-300 ease-brand ${
-                      activa ? "scale-x-100" : "scale-x-0"
-                    }`}
-                  />
-                </button>
-              );
-            })}
-          </div>
-
-          {/* SECCIÓN INMUEBLES */}
-          <div
-            id="seccion-inmuebles"
-            role="tabpanel"
-            aria-labelledby="pestana-inmuebles"
-            hidden={pestana !== "inmuebles"}
-            className="flex min-h-0 flex-1 flex-col"
-          >
+          <div className="flex min-h-0 flex-1 flex-col">
             <div className="shrink-0 space-y-3 border-b border-navy-900/10 p-4 sm:p-5">
               <label className="group relative block">
                 <span className="sr-only">Buscar por propiedad, localidad o parcela</span>
@@ -526,17 +453,6 @@ export default function Mapa() {
                 </Button>
               </div>
             )}
-          </div>
-
-          {/* SECCIÓN CAPAS */}
-          <div
-            id="seccion-capas"
-            role="tabpanel"
-            aria-labelledby="pestana-capas"
-            hidden={pestana !== "capas"}
-            className="flex min-h-0 flex-1 flex-col"
-          >
-            <LayerPanel activas={activeLayers} onToggle={toggleLayer} onTodas={setAllLayers} />
           </div>
 
           <p className="flex shrink-0 gap-2.5 border-t border-navy-900/10 bg-mist-50 px-4 py-3 text-xs leading-relaxed text-gray-600 sm:px-5">

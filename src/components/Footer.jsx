@@ -8,7 +8,7 @@ const FOCUS =
 // `py-1` ensancha el área táctil de 19 a 27 px sin cambiar el ritmo vertical.
 const LINK = `inline-flex items-center py-1 text-navy-200 transition-colors duration-200 hover:text-white ${FOCUS}`;
 const CONTACT_LINK = `inline-flex items-center py-1 font-semibold text-white transition-colors duration-200 hover:text-sky-300 ${FOCUS}`;
-// Filete vertical entre columnas en desktop: mismo lenguaje que FundOverview (sm:odd:border-r).
+// Filete vertical entre columnas en desktop (sm:odd:border-r).
 const DIVIDER = "lg:border-r lg:border-white/10 lg:pr-10";
 
 const NAV = [

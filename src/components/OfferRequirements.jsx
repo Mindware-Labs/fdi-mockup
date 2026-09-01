@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, ArrowSquareOut, FileText } from "@phosphor-icons/react";
+import { ArrowRight, ArrowSquareOut, DownloadSimple } from "@phosphor-icons/react";
 import BackButton from "./BackButton";
 import { DOCUMENTS, REQUISITOS_OFERTA } from "../data/proceso-compra";
 
@@ -33,16 +33,26 @@ export default function OfferRequirements({ onVolver }) {
 
               {(s.docs.length > 0 || s.enlace) && (
                 <p className="mt-2.5 flex flex-wrap items-center gap-1.5">
-                  {s.docs.map((id) => (
-                    <Link
-                      key={id}
-                      to={`/como-comprar#doc-${id}`}
-                      className={`inline-flex items-center gap-1.5 rounded-md border border-navy-900/12 bg-white px-2 py-1 text-xs font-semibold text-navy-800 transition-[border-color,background-color] duration-200 ease-brand hover:border-navy-900/25 hover:bg-mist-50 ${FOCUS}`}
-                    >
-                      <FileText size={12} weight="bold" aria-hidden="true" />
-                      {docPorId[id].corto}
-                    </Link>
-                  ))}
+                  {s.docs.map((id) =>
+                    docPorId[id].file ? (
+                      <a
+                        key={id}
+                        href={docPorId[id].file}
+                        download
+                        className={`inline-flex items-center gap-1.5 rounded-md border border-navy-900/12 bg-white px-2 py-1 text-xs font-semibold text-navy-800 transition-[border-color,background-color] duration-200 ease-brand hover:border-navy-900/25 hover:bg-mist-50 ${FOCUS}`}
+                      >
+                        <DownloadSimple size={12} weight="bold" aria-hidden="true" />
+                        {docPorId[id].corto}
+                      </a>
+                    ) : (
+                      <span
+                        key={id}
+                        className="inline-flex items-center gap-1.5 rounded-md bg-mist-100 px-2 py-1 text-xs font-semibold text-gray-600"
+                      >
+                        {docPorId[id].corto} · por publicar
+                      </span>
+                    ),
+                  )}
                   {s.enlace && (
                     <a
                       href={s.enlace.href}

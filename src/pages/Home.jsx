@@ -3,9 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight } from "@phosphor-icons/react";
 import Benefits from "../components/Benefits";
 import CoverageMap from "../components/CoverageMap";
-import FundOverview from "../components/FundOverview";
 import Hero from "../components/Hero";
-import InstitutionalBacking from "../components/InstitutionalBacking";
 import PropertyCard from "../components/PropertyCard";
 import ScrollReveal from "../components/ScrollReveal";
 import SectionHeading from "../components/SectionHeading";
@@ -69,10 +67,6 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
-
-      <InstitutionalBacking />
-
-      <FundOverview />
 
       {/* Cobertura nacional */}
       <section aria-labelledby="cobertura-titulo" className="bg-mist-100">
